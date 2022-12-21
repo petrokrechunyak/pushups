@@ -37,7 +37,7 @@ class CommandContainerTest {
     @Test
     public void shouldReturnUnknownCommand() {
         //given
-        String unknownCommand = "/add_naME";
+        String unknownCommand = "/add_naMEe";
         //when
         Command command = commandContainer.retrieveCommand(unknownCommand);
         //then
