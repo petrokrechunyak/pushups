@@ -95,9 +95,9 @@ public class NoCommand implements Command {
                 .collect(Collectors.toCollection(LinkedHashSet::new)));
 
         for (CallerName name : chat.getCallerNames()) {
-//            if (name.getCallerUser().getUserId().equals(update.getMessage().getFrom().getId())) {
-//                continue;
-//            }
+            if (name.getCallerUser().getUserId().equals(update.getMessage().getFrom().getId())) {
+                continue;
+            }
             if (update.getMessage().getReplyToMessage() != null) {
                 if (name.getCallerUser().getUserId().equals(update.getMessage().getReplyToMessage().getFrom().getId())) {
                     continue;
