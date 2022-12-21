@@ -14,6 +14,7 @@ import com.alphabetas.caller.utils.CommandUtils;
 import com.alphabetas.caller.utils.DeleteNameUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.*;
@@ -108,9 +109,15 @@ public class NoCommand implements Command {
                 send = true;
             }
         }
-        if(send) {
+
+        if (send) {
             msgText = CommandUtils.decryptSpace(msgText);
-            messageService.sendMessage(chat.getId(), msgText);
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(update.getMessage().getChatId().toString());
+            sendMessage.setText(msgText);
+            sendMessage.setParseMode("html");
+            sendMessage.setReplyToMessageId(update.getMessage().getMessageId());
+            messageService.sendMessage(sendMessage);
         }
     }
 
