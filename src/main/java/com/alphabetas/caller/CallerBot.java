@@ -4,21 +4,17 @@ import com.alphabetas.caller.command.container.CommandContainer;
 import com.alphabetas.caller.model.CallerChat;
 import com.alphabetas.caller.model.CallerName;
 import com.alphabetas.caller.model.CallerUser;
-import com.alphabetas.caller.model.Names;
 import com.alphabetas.caller.repo.CallerNameRepo;
-import com.alphabetas.caller.repo.TestRepo;
 import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
 import com.alphabetas.caller.service.MessageService;
 import com.alphabetas.caller.service.impl.MessageServiceImpl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.alphabetas.caller.utils.AddNameUtils;
 import com.alphabetas.caller.utils.DeleteNameUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +32,7 @@ public class CallerBot extends TelegramLongPollingBot {
     private MessageService messageService;
 
     public CallerBot(CallerChatService chatService, CallerUserService userService,
-                     CallerNameService nameService, TestRepo testRepo, CallerNameRepo nameRepo) {
+                     CallerNameService nameService) {
         this.userService = userService;
         this.chatService = chatService;
         this.nameService = nameService;
@@ -45,23 +41,6 @@ public class CallerBot extends TelegramLongPollingBot {
                 nameService);
         setAllUtils(userService, chatService, nameService);
 
-        // temp
-        List<Names> names = testRepo.findAll();
-
-        Long i = 0L;
-        for (Names name: names) {
-            i--;
-
-            try {
-                CallerName name1 = new CallerName(i, name.getCallerUser(),
-                        chatService.getById(name.getChatId(), new Update()),
-                        name.getName());
-                nameService.save(name1);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
 
     }
 
