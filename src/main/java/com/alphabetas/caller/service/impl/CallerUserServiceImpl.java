@@ -42,11 +42,16 @@ public class CallerUserServiceImpl implements CallerUserService {
     public CallerUser getByUserIdAndCallerChat(Long userId, CallerChat callerChat, Update update) {
         CallerUser user = userRepo.getByUserIdAndCallerChat(userId, callerChat);
         if (user != null) {
-            if(!user.getUsername().equals(update.getMessage().getFrom().getUserName())
-                    || !user.getFirstname().equals(update.getMessage().getFrom().getFirstName())) {
-                user.setUsername(update.getMessage().getFrom().getUserName());
-                user.setFirstname(update.getMessage().getFrom().getFirstName());
-                save(user);
+            String updateUsername = update.getMessage().getFrom().getUserName();
+            String updateFirstname = update.getMessage().getFrom().getFirstName();
+
+            if (updateUsername != null) {
+                if(!updateUsername.equals(user.getUsername())
+                        || !updateFirstname.equals(user.getFirstname())) {
+                    user.setUsername(update.getMessage().getFrom().getUserName());
+                    user.setFirstname(update.getMessage().getFrom().getFirstName());
+                    save(user);
+                }
             }
             return user;
         }
