@@ -37,7 +37,7 @@ public class CommandContainer {
     }
 
     public Command retrieveCommand(String command){
-            return commands.getOrDefault(command.split(" ")[0].toLowerCase(), unknown);
+            return commands.getOrDefault(command.split("[ @]")[0].toLowerCase(), unknown);
     }
 
     public Command retrieveText(String text){

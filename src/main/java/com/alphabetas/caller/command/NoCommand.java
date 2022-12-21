@@ -95,7 +95,7 @@ public class NoCommand implements Command {
                 .collect(Collectors.toCollection(LinkedHashSet::new)));
 
         for (CallerName name : chat.getCallerNames()) {
-//            if (name.getCallerUser().getUserId().equals(user.getUserId())) {
+//            if (name.getCallerUser().getUserId().equals(update.getMessage().getFrom().getId())) {
 //                continue;
 //            }
             if (update.getMessage().getReplyToMessage() != null) {
@@ -112,10 +112,8 @@ public class NoCommand implements Command {
 
         if (send) {
             msgText = CommandUtils.decryptSpace(msgText);
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(update.getMessage().getChatId().toString());
-            sendMessage.setText(msgText);
-            sendMessage.setParseMode("html");
+            SendMessage sendMessage = new SendMessage(chat.getId().toString(), msgText);
+            sendMessage.enableHtml(true);
             sendMessage.setReplyToMessageId(update.getMessage().getMessageId());
             messageService.sendMessage(sendMessage);
         }

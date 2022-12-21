@@ -3,6 +3,7 @@ package com.alphabetas.caller.model;
 import com.alphabetas.caller.model.enums.ConfigEmojiEnum;
 import com.alphabetas.caller.model.enums.UserStates;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
@@ -50,6 +51,7 @@ public class CallerUser {
         this.firstname = firstname;
         this.username = username;
         this.callerChat = callerChat;
+        names = new HashSet<>();
     }
 
     @Override

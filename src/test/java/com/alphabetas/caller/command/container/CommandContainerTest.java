@@ -47,7 +47,7 @@ class CommandContainerTest {
     @Test
     public void shouldReturnAddNameCommand() {
         //given
-        String addCommand = "/aDd";
+        String addCommand = "/aDd@caller_ua_bot";
         //when
         Command command = commandContainer.retrieveCommand(addCommand);
         //then

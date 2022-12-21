@@ -85,6 +85,9 @@ public class CallerBot extends TelegramLongPollingBot {
     private void someOneEntered(Update update) {
         List<User> users = update.getMessage().getNewChatMembers();
         for (User u : users) {
+            if(u.getIsBot()) {
+                continue;
+            }
             SendMessage sendMessage = new SendMessage();
             sendMessage.setText("<b>Привіт " + u.getFirstName() + "!</b>\n" +
                     "Я Кликун - бот який буде кликати вас щоразу, коли хтось буде писати ваше ім'я.\n" +
