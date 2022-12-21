@@ -1,6 +1,5 @@
 package com.alphabetas.caller.command;
 
-import com.alphabetas.caller.command.Command;
 import com.alphabetas.caller.service.MessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

@@ -2,7 +2,11 @@ package com.alphabetas.caller;
 
 import com.alphabetas.caller.command.container.CommandContainer;
 import com.alphabetas.caller.model.CallerChat;
+import com.alphabetas.caller.model.CallerName;
 import com.alphabetas.caller.model.CallerUser;
+import com.alphabetas.caller.model.Names;
+import com.alphabetas.caller.repo.CallerNameRepo;
+import com.alphabetas.caller.repo.TestRepo;
 import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
@@ -32,7 +36,7 @@ public class CallerBot extends TelegramLongPollingBot {
     private MessageService messageService;
 
     public CallerBot(CallerChatService chatService, CallerUserService userService,
-                     CallerNameService nameService) {
+                     CallerNameService nameService, TestRepo testRepo, CallerNameRepo nameRepo) {
         this.userService = userService;
         this.chatService = chatService;
         this.nameService = nameService;
@@ -41,7 +45,21 @@ public class CallerBot extends TelegramLongPollingBot {
                 nameService);
         setAllUtils(userService, chatService, nameService);
 
+        // temp
+        List<Names> names = testRepo.findAll();
+
+        Long i = 0L;
+        for (Names name: names) {
+            i--;
+
+            CallerName name1 = new CallerName(i, name.getCallerUser(),
+                    chatService.getById(name.getChatId(), new Update()),
+                    name.getName());
+            nameService.save(name1);
+        }
+
     }
+
 
     @Override
     public void onUpdateReceived(Update update) {
