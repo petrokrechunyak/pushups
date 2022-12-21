@@ -52,10 +52,15 @@ public class CallerBot extends TelegramLongPollingBot {
         for (Names name: names) {
             i--;
 
-            CallerName name1 = new CallerName(i, name.getCallerUser(),
-                    chatService.getById(name.getChatId(), new Update()),
-                    name.getName());
-            nameService.save(name1);
+            try {
+                CallerName name1 = new CallerName(i, name.getCallerUser(),
+                        chatService.getById(name.getChatId(), new Update()),
+                        name.getName());
+                nameService.save(name1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
     }
