@@ -22,6 +22,8 @@ public final class CommandUtils {
     public static String trimMessage(String message, String[] params) {
         message = message.toLowerCase();
         for (String param: params) {
+            message = message.replaceAll("@caller_ua_bot", "");
+            message = message.replaceAll("@bunker_ua_bot", "");
             message = message.replaceAll(param + " *", "");
         }
         return message.trim();
