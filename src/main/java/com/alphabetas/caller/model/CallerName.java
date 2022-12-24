@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "caller_names", uniqueConstraints=
-@UniqueConstraint(columnNames={"chat_id", "name"}))
+@UniqueConstraint(columnNames={"caller_chat_id", "name"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,9 +21,9 @@ public class CallerName {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="caller_chat_id", referencedColumnName="caller_chat_id",
+    @JoinColumn(name="caller_chat_id",
             insertable = false, updatable = false)
-    @JoinColumn(name="caller_user_id", referencedColumnName="user_id",
+    @JoinColumn(name="caller_user_id",
             insertable = false, updatable = false)
     private CallerUser callerUser;
 
