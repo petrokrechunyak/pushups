@@ -21,10 +21,10 @@ public final class CommandUtils {
      * Removes start of message such as "Кликун", ".", etc
      */
     public static String trimMessage(String message, String[] params) {
+        message = message.replaceAll("@caller_ua_bot", "");
+        message = message.replaceAll("@bunker_ua_bot", "");
         for (String param: params) {
-            message = message.replaceAll("@caller_ua_bot", "");
-            message = message.replaceAll("@bunker_ua_bot", "");
-            message = StringUtils.replaceIgnoreCase(message, param + " ", "");
+            message = StringUtils.replaceIgnoreCase(message, param, "");
         }
         return message.trim();
     }
