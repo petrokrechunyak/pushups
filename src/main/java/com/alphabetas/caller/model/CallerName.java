@@ -21,17 +21,17 @@ public class CallerName {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="chat_id", referencedColumnName="caller_chat_id",
+    @JoinColumn(name="caller_chat_id", referencedColumnName="caller_chat_id",
             insertable = false, updatable = false)
-    @JoinColumn(name="user_id", referencedColumnName="user_id",
+    @JoinColumn(name="caller_user_id", referencedColumnName="user_id",
             insertable = false, updatable = false)
     private CallerUser callerUser;
 
-    @Column(name = "user_id")
+    @Column(name = "caller_user_id")
     private Long userId;
 
     @ManyToOne
-    @JoinColumn(name = "chat_id")
+    @JoinColumn(name = "caller_chat_id")
     private CallerChat chat;
 
     private String name;
