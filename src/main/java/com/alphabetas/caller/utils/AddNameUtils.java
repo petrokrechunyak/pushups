@@ -25,10 +25,15 @@ public class AddNameUtils extends AbstractNameUtils {
                             name.getCallerUser().getUserId(),
                             name.getCallerUser().getFirstname()
                     ));
+                    builder.append("\n");
+                    continue;
+                }
+                if(arg.length() < 3) {
+                    builder.append("занадто мале! Мінімальна кількість символів: <u>3</u>\n");
                     continue;
                 }
                 arg = CommandUtils.encryptSpace(arg);
-                name = new CallerName(user, chat, arg);
+                name = new CallerName(user.getUserId(), chat, arg);
                 nameService.save(name);
                 builder.append("успішно додано!");
             } else

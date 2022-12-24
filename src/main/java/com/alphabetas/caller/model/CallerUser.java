@@ -3,6 +3,7 @@ package com.alphabetas.caller.model;
 import com.alphabetas.caller.model.enums.ConfigEmojiEnum;
 import com.alphabetas.caller.model.enums.UserStates;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,18 +15,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "caller_users",
-        uniqueConstraints=@UniqueConstraint(columnNames={"user_id", "caller_chat_id"}))
+@Table(name = "caller_users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(CallerUser.UserId.class)
 public class CallerUser {
 
-    @Id
-    @GeneratedValue
-    private Long id;
 
+    @Id
     @Column(name = "user_id")
     private Long userId;
 
@@ -33,8 +32,8 @@ public class CallerUser {
 
     private String username;
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "caller_chat_id")
     private CallerChat callerChat;
 
     @OneToMany(mappedBy = "callerUser", cascade = CascadeType.REMOVE)
@@ -77,5 +76,17 @@ public class CallerUser {
                 ", userState=" + userState +
                 ", emojiEnum=" + emojiEnum +
                 '}';
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    public static class UserId implements Serializable {
+        private Long userId;
+
+        private Long callerChat;
+
+
     }
 }

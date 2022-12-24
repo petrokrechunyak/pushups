@@ -32,12 +32,12 @@ public class CallerNameServiceImpl implements CallerNameService {
 
     @Override
     public CallerName getByCallerChatAndName(CallerChat chat, String name) {
-        return nameRepo.getByCallerChatAndNameIgnoreCase(chat, name);
+        return nameRepo.getByChatAndNameIgnoreCase(chat, name);
     }
 
     @Override
     public Set<CallerName> getAllByCallerChat(CallerChat chat) {
-        return nameRepo.getAllByCallerChat(chat);
+        return nameRepo.getAllByChat(chat);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class DeleteCommand implements Command {
     @Override
     public void execute(Update update) {
         String msgText = update.getMessage().getText();
-        log.info("Entered into AddNameCommand with text {}", msgText);
+        log.info("Entered into DeleteCommand with text {}", msgText);
         Long chatId = update.getMessage().getChatId();
 
         CallerChat chat = chatService.getById(chatId, update);
