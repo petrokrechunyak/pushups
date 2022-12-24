@@ -1,5 +1,6 @@
 package com.alphabetas.caller.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public final class CommandUtils {
@@ -20,11 +21,10 @@ public final class CommandUtils {
      * Removes start of message such as "Кликун", ".", etc
      */
     public static String trimMessage(String message, String[] params) {
-        message = message.toLowerCase();
         for (String param: params) {
             message = message.replaceAll("@caller_ua_bot", "");
             message = message.replaceAll("@bunker_ua_bot", "");
-            message = message.replaceAll(param + " *", "");
+            message = StringUtils.replaceIgnoreCase(message, param + " ", "");
         }
         return message.trim();
     }
