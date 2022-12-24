@@ -26,7 +26,7 @@ public class DeleteNameUtils extends AbstractNameUtils {
                     builder.append("зайнято іншою людиною. Чужі імена видаляти не можна!");
                 }
             } else {
-                builder.append("У вас немає такого імені!");
+                builder.append("У вас немає імені ").append(arg);
             }
             builder.append("\n");
         }
