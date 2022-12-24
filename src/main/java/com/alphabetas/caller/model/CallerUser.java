@@ -23,9 +23,8 @@ import lombok.Setter;
 @IdClass(CallerUser.UserId.class)
 public class CallerUser {
 
-
     @Id
-    @Column(name = "user_id")
+    @Column(name = "caller_user_id")
     private Long userId;
 
     private String firstname;
