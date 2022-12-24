@@ -29,7 +29,7 @@ public class CallerChat {
     @OneToMany(mappedBy = "callerChat", cascade = CascadeType.REMOVE)
     private Set<CallerUser> callerUsers;
 
-    @OneToMany(mappedBy = "callerChat", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
     private Set<CallerName> callerNames;
 
     @Override

@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "caller_names", uniqueConstraints=
-@UniqueConstraint(columnNames={"caller_chat_id", "name"}))
+@UniqueConstraint(columnNames={"chat_id", "name"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,18 +21,24 @@ public class CallerName {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "caller_user_id")
+    @JoinColumn(name="chat_id", referencedColumnName="caller_chat_id",
+            insertable = false, updatable = false)
+    @JoinColumn(name="user_id", referencedColumnName="user_id",
+            insertable = false, updatable = false)
     private CallerUser callerUser;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     @ManyToOne
-    @JoinColumn(name = "caller_chat_id")
-    private CallerChat callerChat;
+    @JoinColumn(name = "chat_id")
+    private CallerChat chat;
 
     private String name;
 
-    public CallerName(CallerUser callerUser, CallerChat callerChat, String name) {
-        this.callerUser = callerUser;
-        this.callerChat = callerChat;
+    public CallerName(Long userId, CallerChat callerChat, String name) {
+        this.userId = userId;
+        this.chat = callerChat;
         this.name = name;
     }
 
@@ -40,7 +46,7 @@ public class CallerName {
     public String toString() {
         return "CallerName{" +
                 "callerUser=" + callerUser +
-                ", callerChat=" + callerChat +
+                ", callerChat=" + chat +
                 ", name='" + name + '\'' +
                 '}';
     }

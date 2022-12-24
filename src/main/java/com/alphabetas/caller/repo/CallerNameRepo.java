@@ -7,9 +7,9 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CallerNameRepo extends JpaRepository<CallerName, Long> {
-    CallerName getByCallerChatAndNameIgnoreCase(CallerChat chat, String name);
+    CallerName getByChatAndNameIgnoreCase(CallerChat chat, String name);
 
-    Set<CallerName> getAllByCallerChat(CallerChat chat);
+    Set<CallerName> getAllByChat(CallerChat chat);
 
     boolean deleteAllByCallerUser(CallerUser callerUser);
 
