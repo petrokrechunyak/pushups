@@ -22,7 +22,7 @@ public class CallerNameServiceImpl implements CallerNameService {
 
     @Override
     public CallerName save(CallerName callerName) {
-        return nameRepo.save(callerName);
+        return nameRepo.saveAndFlush(callerName);
     }
 
     @Override
@@ -43,5 +43,10 @@ public class CallerNameServiceImpl implements CallerNameService {
     @Override
     public void deleteAllByCallerUser(CallerUser user) {
         nameRepo.deleteAllByCallerUser(user);
+    }
+
+    @Override
+    public Set<CallerName> getAllByCallerUser(CallerUser user) {
+        return nameRepo.getAllByCallerUser(user);
     }
 }
