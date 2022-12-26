@@ -18,8 +18,7 @@ public class CancelCommand implements Command{
     private final CallerNameService nameService;
     private final MessageService messageService;
     public final static String[] specialArgs = new String[]{"/cancel",
-            "кликун відміна",
-            ".відміна"};
+            "відміна", "відмінити"};
 
     public CancelCommand(CallerUserService userService, CallerChatService chatService, CallerNameService nameService, MessageService messageService) {
         this.userService = userService;

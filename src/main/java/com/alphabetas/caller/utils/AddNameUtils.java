@@ -3,6 +3,7 @@ package com.alphabetas.caller.utils;
 import com.alphabetas.caller.model.CallerChat;
 import com.alphabetas.caller.model.CallerName;
 import com.alphabetas.caller.model.CallerUser;
+import com.alphabetas.caller.model.enums.UserStates;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -42,6 +43,8 @@ public class AddNameUtils extends AbstractNameUtils {
                 arg = CommandUtils.encryptSpace(arg);
                 name = new CallerName(user.getUserId(), chat, arg);
                 nameService.save(name);
+                user.setUserState(UserStates.OFF);
+                userService.save(user);
                 builder.append("успішно додано!");
             } else
                 builder.append("не може бути додано через через заборонені символи.");

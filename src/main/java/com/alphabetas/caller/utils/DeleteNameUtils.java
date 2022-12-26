@@ -3,6 +3,7 @@ package com.alphabetas.caller.utils;
 import com.alphabetas.caller.model.CallerChat;
 import com.alphabetas.caller.model.CallerName;
 import com.alphabetas.caller.model.CallerUser;
+import com.alphabetas.caller.model.enums.UserStates;
 
 import java.util.Arrays;
 
@@ -21,6 +22,8 @@ public class DeleteNameUtils extends AbstractNameUtils {
                 builder.append("Ім'я <b>").append(arg).append("</b> ");
                 if (name.getCallerUser().equals(user)) {
                     nameService.delete(name);
+                    user.setUserState(UserStates.OFF);
+                    userService.save(user);
                     builder.append("успішно видалено!");
                 } else {
                     builder.append("зайнято іншою людиною. Чужі імена видаляти не можна!");

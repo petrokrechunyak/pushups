@@ -27,8 +27,8 @@ public class AddNameCommand implements Command {
     private CallerNameService nameService;
     private MessageService messageService;
     public final static String[] specialArgs = new String[]{"/add_name", "/add",
-            "кликун додай ім'я", "кликун додай",
-            ".додати імена", ".додати ім'я", ".додати"};
+            "додай ім'я", "додай",
+            "додати імена", "додати ім'я", "додати"};
     private String[] addNameMessages = new String[]{"Напишіть ім'я, яке хочете добавити\n" +
             "(Якщо нічого не хочете добавляти напишіть /cancel)",
             "Все, а тепер просто напишіть ім'я яке хочете добавити, але якщо не хочете нічого добавляти напишіть /cancel",
