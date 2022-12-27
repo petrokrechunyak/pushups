@@ -5,6 +5,8 @@ import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
 import com.alphabetas.caller.service.MessageService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,7 +46,9 @@ public class CommandContainer {
 
         text = text.toLowerCase();
         text = text.replaceFirst("^[.|!]|кликун?", "");
-        String[] splitted = text.split(" ", 3);
+        text = StringUtils.replaceIgnoreCase(text, "кликун", "");
+        String[] splitted = ArrayUtils.removeAllOccurrences(text.split(" ", 3), "");
+
         if(text.equals("кликун")) {
             return iamhere;
         }

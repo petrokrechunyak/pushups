@@ -112,8 +112,8 @@ public class CallerBot extends TelegramLongPollingBot {
     }
 
     private void setAllUtils(CallerUserService userService, CallerChatService chatService, CallerNameService nameService) {
-        AddNameUtils.setServices(userService, chatService, nameService);
-        DeleteNameUtils.setServices(userService, chatService, nameService);
+        AddNameUtils.setServices(userService, chatService, nameService, messageService);
+        DeleteNameUtils.setServices(userService, chatService, nameService, messageService);
     }
 
     @Value("${bot.username}")

@@ -7,6 +7,7 @@ import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
 import com.alphabetas.caller.service.MessageService;
+import com.alphabetas.caller.utils.AbstractNameUtils;
 import com.alphabetas.caller.utils.CommandUtils;
 import com.alphabetas.caller.utils.DeleteNameUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +53,7 @@ public class DeleteCommand implements Command {
         CallerUser user;
 
         if(msgText.startsWith("!") && update.getMessage().getReplyToMessage() != null) {
-            if(isUserAdmin(userId, chatId)) {
+            if(AbstractNameUtils.isUserAdmin(userId, chatId)) {
                 CommandUtils.setUserToUpdate(update);
             } else {
                 messageService.sendMessage(chatId, "Тільки адміністратори можуть керувати іменами інших!");
@@ -74,14 +75,6 @@ public class DeleteCommand implements Command {
         messageService.sendMessage(chatId, savedText);
     }
 
-    public boolean isUserAdmin(Long userId, Long chatId) {
-        List<ChatMember> admins = messageService.getAdminsByChatId(chatId);
-        for (ChatMember admin: admins) {
-            if(userId.equals(admin.getUser().getId()))
-                return true;
-        }
-        return false;
-    }
 
     public void sendMessageToDeleteName(Long chatId, CallerUser user) {
         user.setUserState(UserStates.DELETE);

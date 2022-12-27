@@ -1,22 +1,21 @@
 package com.alphabetas.caller.command;
 
-import com.alphabetas.caller.utils.AddNameUtils;
-import com.alphabetas.caller.utils.CommandUtils;
 import com.alphabetas.caller.model.CallerChat;
-import com.alphabetas.caller.model.CallerName;
 import com.alphabetas.caller.model.CallerUser;
 import com.alphabetas.caller.model.enums.UserStates;
 import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
 import com.alphabetas.caller.service.MessageService;
-
-import java.util.Arrays;
-import java.util.Random;
-
+import com.alphabetas.caller.utils.AddNameUtils;
+import com.alphabetas.caller.utils.CommandUtils;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.Random;
+
+import static com.alphabetas.caller.utils.AbstractNameUtils.isUserAdmin;
 
 @NoArgsConstructor
 @Slf4j
@@ -49,9 +48,21 @@ public class AddNameCommand implements Command {
         String msgText = update.getMessage().getText();
         log.info("Entered into AddNameCommand with text {}", msgText);
         Long chatId = update.getMessage().getChatId();
+        Long userId = update.getMessage().getFrom().getId();
 
         CallerChat chat = chatService.getById(chatId, update);
-        CallerUser user = userService.getByUserIdAndCallerChat(chat, update);
+        CallerUser user;
+
+        if(msgText.startsWith("!") && update.getMessage().getReplyToMessage() != null) {
+            if(isUserAdmin(userId, chatId)) {
+                CommandUtils.setUserToUpdate(update);
+            } else {
+                messageService.sendMessage(chatId, "Тільки адміністратори можуть керувати іменами інших!");
+                return;
+            }
+        }
+
+        user = userService.getByUserIdAndCallerChat(chat, update);
 
         // remove start of message, leaving only arguments
         msgText = CommandUtils.trimMessage(msgText, specialArgs);
@@ -63,6 +74,8 @@ public class AddNameCommand implements Command {
         String savedText = AddNameUtils.saveNames(msgText, user, chat);
 
         messageService.sendMessage(chatId, savedText);
+
+
     }
 
 
