@@ -55,6 +55,10 @@ public final class CommandUtils {
         update.getMessage().getFrom().setFirstName(update.getMessage().getReplyToMessage().getFrom().getFirstName());
     }
 
+    public static boolean isCommand(String text) {
+        return text.startsWith("!") || text.startsWith(".") || text.toLowerCase().startsWith("кликун");
+    }
+
 
 
 }

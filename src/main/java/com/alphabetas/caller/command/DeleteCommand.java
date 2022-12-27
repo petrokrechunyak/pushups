@@ -45,6 +45,7 @@ public class DeleteCommand implements Command {
     @Override
     public void execute(Update update) {
         String msgText = update.getMessage().getText();
+
         log.info("Entered into DeleteCommand with text {}", msgText);
         Long chatId = update.getMessage().getChatId();
         Long userId = update.getMessage().getFrom().getId();

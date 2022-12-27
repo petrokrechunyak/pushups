@@ -5,6 +5,7 @@ import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
 import com.alphabetas.caller.service.MessageService;
+import com.alphabetas.caller.utils.CommandUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,6 +44,10 @@ public class CommandContainer {
     }
 
     public Command retrieveText(String text){
+
+        if(!CommandUtils.isCommand(text)) {
+            return noCommand;
+        }
 
         text = text.toLowerCase();
         text = text.replaceFirst("^[.|!]|кликун?", "");
