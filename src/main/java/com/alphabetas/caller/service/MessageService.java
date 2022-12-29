@@ -4,6 +4,8 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -53,5 +55,8 @@ public interface MessageService {
      * @param text new text of edited message
      */
     void editMessage(Long chatId, Long msgToUpdate, String text);
+
+    void sendPhoto(SendPhoto photo);
+    void sendVideo(SendVideo video);
 
 }
