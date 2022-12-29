@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.alphabetas.caller.utils.AddNameUtils;
 import com.alphabetas.caller.utils.DeleteNameUtils;
+import com.alphabetas.caller.utils.SpaceUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,10 @@ public class CallerBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if(update.hasMessage()) {
+
+            SpaceUtils utils = new SpaceUtils(messageService, botToken);
+            String trimSpaces = utils.trimSpaces(update);
+
             // if message is sent by bot
             if(update.getMessage().getFrom().getIsBot()) {
                 return;
