@@ -53,9 +53,11 @@ public class DeleteCommand implements Command {
         CallerChat chat = chatService.getById(chatId, update);
         CallerUser user;
 
+        boolean admin = false;
         if(msgText.startsWith("!") && update.getMessage().getReplyToMessage() != null) {
             if(AbstractNameUtils.isUserAdmin(userId, chatId)) {
                 CommandUtils.setUserToUpdate(update);
+                admin = true;
             } else {
                 messageService.sendMessage(chatId, "Тільки адміністратори можуть керувати іменами інших!");
                 return;
@@ -68,6 +70,11 @@ public class DeleteCommand implements Command {
         System.out.println(msgText);
         if (msgText.isBlank()) {
             sendMessageToDeleteName(chatId, user);
+            return;
+        }
+
+        if(admin) {
+            messageService.sendMessage(chatId, "Параметри повинні бути в одному повідомленні адмін-командою!");
             return;
         }
 

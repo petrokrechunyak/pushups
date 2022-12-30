@@ -85,7 +85,7 @@ public class MessageServiceImpl implements MessageService {
         try {
             return bot.execute(chatAdministrators);
         } catch (TelegramApiException e) {
-
+            throw new RuntimeException(e);
         }
     }
 
