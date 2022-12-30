@@ -69,14 +69,15 @@ public class DeleteCommand implements Command {
         msgText = CommandUtils.trimMessage(msgText, specialArgs);
         System.out.println(msgText);
         if (msgText.isBlank()) {
+            if(admin) {
+                messageService.sendMessage(chatId, "Параметри повинні бути в одному повідомленні з адмін-командою!");
+                return;
+            }
             sendMessageToDeleteName(chatId, user);
             return;
         }
 
-        if(admin) {
-            messageService.sendMessage(chatId, "Параметри повинні бути в одному повідомленні адмін-командою!");
-            return;
-        }
+
 
         String savedText = DeleteNameUtils.deleteNames(msgText, user, chat);
 

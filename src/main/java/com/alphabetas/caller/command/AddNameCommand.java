@@ -65,16 +65,16 @@ public class AddNameCommand implements Command {
             }
         }
 
-        if(admin) {
-            messageService.sendMessage(chatId, "Параметри повинні бути в одному повідомленні адмін-командою!");
-            return;
-        }
 
         user = userService.getByUserIdAndCallerChat(chat, update);
 
         // remove start of message, leaving only arguments
         msgText = CommandUtils.trimMessage(msgText, specialArgs);
         if (msgText.isBlank()) {
+            if(admin) {
+                messageService.sendMessage(chatId, "Параметри повинні бути в одному повідомленні з адмін-командою!");
+                return;
+            }
             sendMessageToAddName(chatId, user);
             return;
         }
