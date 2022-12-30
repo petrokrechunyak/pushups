@@ -45,6 +45,10 @@ public class CommandContainer {
 
     public Command retrieveText(String text){
 
+        if(text.equals("кликун")) {
+            return iamhere;
+        }
+
         if(!CommandUtils.isCommand(text)) {
             return noCommand;
         }
@@ -53,10 +57,6 @@ public class CommandContainer {
         text = text.replaceFirst("^[.|!]|кликун?", "");
         text = StringUtils.replaceIgnoreCase(text, "кликун", "");
         String[] splitted = ArrayUtils.removeAllOccurrences(text.split(" ", 3), "");
-
-        if(text.equals("кликун")) {
-            return iamhere;
-        }
 //        if(text.startsWith("кликун ")) {
 //            return commands.getOrDefault(splitted[1], noCommand);
 //        }
