@@ -56,7 +56,7 @@ public class SpaceUtils {
 
     public String trimSpaces(Update update) {
 
-        if (update.getMessage().getChat().getType().equals("private")) {
+        if (!update.getMessage().getChat().getType().equals("private")) {
             if (update.getMessage().hasText()) {
                 write(update, null);
             }
