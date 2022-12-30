@@ -23,6 +23,8 @@ public final class CommandUtils {
     public static String trimMessage(String message, String[] params) {
         message = message.replaceAll("@caller_ua_bot", "");
         message = message.replaceAll("@bunker_ua_bot", "");
+        message = StringUtils.replaceIgnoreCase(message, "кликун", "");
+        message = message.replaceFirst("^[.|!]|кликун?", "");
         for (String param: params) {
             message = StringUtils.replaceIgnoreCase(message, param, "");
         }
@@ -44,6 +46,17 @@ public final class CommandUtils {
 
     public static String decryptSpace(String text) {
         return text.replaceAll("ˁ", " ");
+    }
+
+
+    public static void setUserToUpdate(Update update) {
+        update.getMessage().getFrom().setId(update.getMessage().getReplyToMessage().getFrom().getId());
+        update.getMessage().getFrom().setUserName(update.getMessage().getReplyToMessage().getFrom().getUserName());
+        update.getMessage().getFrom().setFirstName(update.getMessage().getReplyToMessage().getFrom().getFirstName());
+    }
+
+    public static boolean isCommand(String text) {
+        return text.startsWith("!") || text.startsWith(".") || text.toLowerCase().startsWith("кликун");
     }
 
 

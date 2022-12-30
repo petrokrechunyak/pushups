@@ -24,7 +24,7 @@ public class ShowCommand implements Command {
     private String botUsername = "bunker_ua_bot";
 
     public final static String[] specialArgs = new String[]{"/show_names", "/show_name", "/show",
-            "кликун імена", "кликун шов", "кликун покажи",
+            "імена", "шов", "покажи",
             ".імена", ".шов"};
 
     public ShowCommand(CallerUserService userService, CallerChatService chatService, CallerNameService nameService, MessageService messageService) {
@@ -56,9 +56,7 @@ public class ShowCommand implements Command {
                         "У ботів не може бути імен :/");
                 return;
             }
-            update.getMessage().getFrom().setId(update.getMessage().getReplyToMessage().getFrom().getId());
-            update.getMessage().getFrom().setUserName(update.getMessage().getReplyToMessage().getFrom().getUserName());
-            update.getMessage().getFrom().setFirstName(update.getMessage().getReplyToMessage().getFrom().getFirstName());
+            CommandUtils.setUserToUpdate(update);
 
         }
 

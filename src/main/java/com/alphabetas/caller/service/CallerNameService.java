@@ -14,6 +14,7 @@ public interface CallerNameService extends AbstractService<CallerName> {
 
     void deleteAllByCallerUser(CallerUser user);
 
+    Set<CallerName> getAllByCallerUser(CallerUser user);
 
 
 }

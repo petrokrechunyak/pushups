@@ -4,6 +4,7 @@ import com.alphabetas.caller.CallerBot;
 import com.alphabetas.caller.service.MessageService;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatAdministrators;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -12,7 +13,10 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.List;
 
 public class MessageServiceImpl implements MessageService {
     private CallerBot bot;
@@ -76,6 +80,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public List<ChatMember> getAdminsByChatId(Long chatId) {
+        GetChatAdministrators chatAdministrators = new GetChatAdministrators(chatId.toString());
+        try {
+            return bot.execute(chatAdministrators);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void sendPhoto(SendPhoto photo) {
         try {
             bot.execute(photo);

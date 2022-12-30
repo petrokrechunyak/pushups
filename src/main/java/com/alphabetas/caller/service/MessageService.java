@@ -8,6 +8,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
+
+import java.util.List;
 
 /**
  * Sends, edits and deletes messages by different ways
@@ -56,6 +59,7 @@ public interface MessageService {
      */
     void editMessage(Long chatId, Long msgToUpdate, String text);
 
+    List<ChatMember> getAdminsByChatId(Long chatId);
     void sendPhoto(SendPhoto photo);
     void sendVideo(SendVideo video);
 

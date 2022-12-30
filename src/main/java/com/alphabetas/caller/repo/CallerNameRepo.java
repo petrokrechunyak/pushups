@@ -13,4 +13,6 @@ public interface CallerNameRepo extends JpaRepository<CallerName, Long> {
 
     boolean deleteAllByCallerUser(CallerUser callerUser);
 
+    Set<CallerName> getAllByCallerUser(CallerUser user);
+
 }

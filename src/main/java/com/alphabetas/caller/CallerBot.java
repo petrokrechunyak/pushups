@@ -82,8 +82,7 @@ public class CallerBot extends TelegramLongPollingBot {
             update.getMessage().getFrom().setId(left.getId());
             CallerUser user = userService.getByUserIdAndCallerChat(left.getId(), chat, update);
             userService.delete(user);
-            messageService.sendMessage(chat.getId(), "Бувай!\nНадіємо ти повернешся.");
-
+            messageService.sendMessage(chat.getId(), "Бувай!\nНадіємося ви повернетеся.");
         }
     }
 
@@ -117,8 +116,8 @@ public class CallerBot extends TelegramLongPollingBot {
     }
 
     private void setAllUtils(CallerUserService userService, CallerChatService chatService, CallerNameService nameService) {
-        AddNameUtils.setServices(userService, chatService, nameService);
-        DeleteNameUtils.setServices(userService, chatService, nameService);
+        AddNameUtils.setServices(userService, chatService, nameService, messageService);
+        DeleteNameUtils.setServices(userService, chatService, nameService, messageService);
     }
 
     @Value("${bot.username}")

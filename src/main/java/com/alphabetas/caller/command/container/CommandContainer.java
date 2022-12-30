@@ -5,6 +5,9 @@ import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
 import com.alphabetas.caller.service.MessageService;
+import com.alphabetas.caller.utils.CommandUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,17 +45,26 @@ public class CommandContainer {
 
     public Command retrieveText(String text){
 
+        if(!CommandUtils.isCommand(text)) {
+            return noCommand;
+        }
+
         text = text.toLowerCase();
-        String[] splitted = text.split(" ", 3);
+        text = text.replaceFirst("^[.|!]|кликун?", "");
+        text = StringUtils.replaceIgnoreCase(text, "кликун", "");
+        String[] splitted = ArrayUtils.removeAllOccurrences(text.split(" ", 3), "");
+
         if(text.equals("кликун")) {
             return iamhere;
         }
-        if(text.startsWith("кликун ")) {
-            return commands.getOrDefault(splitted[1], noCommand);
-        } else if(text.startsWith(".")) {
+//        if(text.startsWith("кликун ")) {
+//            return commands.getOrDefault(splitted[1], noCommand);
+//        }
+//        else
+//            if(text.startsWith(".") || text.startsWith("!")) {
             return commands.getOrDefault(splitted[0], noCommand);
-        }
-        return noCommand;
+//        }
+//        return noCommand;
     }
 
     public void prepareCommands() {
