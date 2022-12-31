@@ -2,9 +2,7 @@ package com.alphabetas.caller;
 
 import com.alphabetas.caller.command.container.CommandContainer;
 import com.alphabetas.caller.model.CallerChat;
-import com.alphabetas.caller.model.CallerName;
 import com.alphabetas.caller.model.CallerUser;
-import com.alphabetas.caller.repo.CallerNameRepo;
 import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
@@ -121,9 +119,9 @@ public class CallerBot extends TelegramLongPollingBot {
     }
 
     @Value("${bot.username}")
-    private static String botUsername;
+    private String botUsername;
     @Value("${bot.token}")
-    private static String botToken;
+    private String botToken;
 
     @Override
     public String getBotUsername() {
@@ -135,9 +133,6 @@ public class CallerBot extends TelegramLongPollingBot {
         return botToken;
     }
 
-    public static String botUsername() {
-        return botUsername;
-    }
 
 
 
