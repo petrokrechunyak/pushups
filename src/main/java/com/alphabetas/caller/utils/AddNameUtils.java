@@ -8,7 +8,7 @@ import com.alphabetas.caller.model.enums.UserStates;
 import java.util.Arrays;
 import java.util.Set;
 
-import static com.alphabetas.caller.utils.CommandUtils.SINGLE_WORD_REGEX;
+import static com.alphabetas.caller.utils.CommandUtils.CURRENT_REGEX;
 
 public class AddNameUtils extends AbstractNameUtils {
 
@@ -25,7 +25,7 @@ public class AddNameUtils extends AbstractNameUtils {
                 continue;
             }
             builder.append("Ім'я <b>").append(arg).append("</b> ");
-            if (arg.matches(SINGLE_WORD_REGEX)) {
+            if (arg.matches(CURRENT_REGEX)) {
                 arg = CommandUtils.encryptSpace(arg);
                 CallerName name = nameService.getByCallerChatAndName(chat, arg);
                 if(name != null) {

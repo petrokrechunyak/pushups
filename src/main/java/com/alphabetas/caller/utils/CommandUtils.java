@@ -9,12 +9,14 @@ public final class CommandUtils {
     public static final String SINGLE_WORD_REGEX = "[" + TEMPLATE_REGEX + "]*";
 
     public static final String NAME_WITH_SPACES_REGEX = "[" + TEMPLATE_REGEX + " ]*";
+
+    public static final String CURRENT_REGEX = SINGLE_WORD_REGEX;
     private CommandUtils() {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @param message start message, it we will be edited
+     * @param message start of message, which we will be edited
      * @param params params, which will be cleared
      * @return edited string
      *
@@ -23,8 +25,10 @@ public final class CommandUtils {
     public static String trimMessage(String message, String[] params) {
         message = message.replaceAll("@caller_ua_bot", "");
         message = message.replaceAll("@bunker_ua_bot", "");
-        message = StringUtils.replaceIgnoreCase(message, "кликун", "");
-        message = message.replaceFirst("^[.|!]|кликун?", "");
+        if(StringUtils.containsIgnoreCase(message.substring(0, 8), "кликун")) {
+            message = StringUtils.replaceOnceIgnoreCase(message, "кликун", "");
+        }
+        message = message.replaceFirst("[.!]", "");
         for (String param: params) {
             message = StringUtils.replaceIgnoreCase(message, param, "");
         }
@@ -37,6 +41,8 @@ public final class CommandUtils {
     }
 
     public static String makeLink(Long id, String firstName) {
+        firstName = firstName.replaceAll("[<>]", "");
+        System.out.println(firstName);
         return String.format("<a href='tg://user?id=%d'>%s</a>", id, firstName);
     }
 

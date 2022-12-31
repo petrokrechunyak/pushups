@@ -57,6 +57,10 @@ public class AddNameCommand implements Command {
 
         if(msgText.startsWith("!") && update.getMessage().getReplyToMessage() != null) {
             if(isUserAdmin(userId, chatId)) {
+                if(update.getMessage().getReplyToMessage().getFrom().getIsBot()) {
+                    messageService.sendMessage(chatId, "У ботів не може бути імен :/");
+                    return;
+                }
                 CommandUtils.setUserToUpdate(update);
                 admin = true;
             } else {

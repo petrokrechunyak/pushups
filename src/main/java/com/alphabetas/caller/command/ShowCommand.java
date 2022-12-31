@@ -1,5 +1,6 @@
 package com.alphabetas.caller.command;
 
+import com.alphabetas.caller.CallerBot;
 import com.alphabetas.caller.model.CallerChat;
 import com.alphabetas.caller.model.CallerName;
 import com.alphabetas.caller.model.CallerUser;
@@ -21,7 +22,6 @@ public class ShowCommand implements Command {
     private CallerNameService nameService;
     private MessageService messageService;
 
-    private String botUsername = "bunker_ua_bot";
 
     public final static String[] specialArgs = new String[]{"/show_names", "/show_name", "/show",
             "імена", "шов", "покажи",
@@ -46,18 +46,16 @@ public class ShowCommand implements Command {
 
             if(message.getFrom().getIsBot()) {
 
-                if(message.getFrom().getUserName().equals(botUsername)) {
+                if(message.getFrom().getUserName().equals(CallerBot.botUsername())) {
                     messageService.sendMessage(chat.getId(),
                             "У мене тільки одне ім'я - Кликун ;)");
                     return;
                 }
-
                 messageService.sendMessage(chat.getId(),
                         "У ботів не може бути імен :/");
                 return;
             }
             CommandUtils.setUserToUpdate(update);
-
         }
 
         user = userService.getByUserIdAndCallerChat(chat, update);
@@ -70,7 +68,9 @@ public class ShowCommand implements Command {
                     ) + " ще немає імен, але їх завжди можна додати командою /add");
             return;
         }
-        StringBuilder builder = new StringBuilder(String.format("<b>Імена <a href='tg://user?id=%d'>%s</a></b>\n", user.getUserId(), user.getFirstname()));
+        StringBuilder builder = new StringBuilder("<b>Імена ")
+                .append(CommandUtils.makeLink(user.getUserId(), user.getFirstname()))
+                .append("</b>\n");
         for (CallerName name: user.getNames()) {
             builder.append(name.getName()).append("\n");
         }
