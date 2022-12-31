@@ -57,14 +57,10 @@ public class CommandContainer {
         text = text.replaceFirst("^[.|!]|кликун?", "");
         text = StringUtils.replaceIgnoreCase(text, "кликун", "");
         String[] splitted = ArrayUtils.removeAllOccurrences(text.split(" ", 3), "");
-//        if(text.startsWith("кликун ")) {
-//            return commands.getOrDefault(splitted[1], noCommand);
-//        }
-//        else
-//            if(text.startsWith(".") || text.startsWith("!")) {
+        if(splitted.length > 0) {
             return commands.getOrDefault(splitted[0], noCommand);
-//        }
-//        return noCommand;
+        }
+        return noCommand;
     }
 
     public void prepareCommands() {

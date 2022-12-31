@@ -121,9 +121,9 @@ public class CallerBot extends TelegramLongPollingBot {
     }
 
     @Value("${bot.username}")
-    private String botUsername;
+    private static String botUsername;
     @Value("${bot.token}")
-    private String botToken;
+    private static String botToken;
 
     @Override
     public String getBotUsername() {
@@ -134,4 +134,11 @@ public class CallerBot extends TelegramLongPollingBot {
     public String getBotToken() {
         return botToken;
     }
+
+    public static String botUsername() {
+        return botUsername;
+    }
+
+
+
 }
