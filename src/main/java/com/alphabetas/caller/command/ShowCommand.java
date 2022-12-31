@@ -10,7 +10,6 @@ import com.alphabetas.caller.service.CallerUserService;
 import com.alphabetas.caller.service.MessageService;
 import com.alphabetas.caller.utils.CommandUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -46,7 +45,7 @@ public class ShowCommand implements Command {
 
             if(message.getFrom().getIsBot()) {
 
-                if(message.getFrom().getUserName().equals(CallerBot.botUsername())) {
+                if(message.getFrom().getUserName().equals("caller_ua_bot")) {
                     messageService.sendMessage(chat.getId(),
                             "У мене тільки одне ім'я - Кликун ;)");
                     return;
