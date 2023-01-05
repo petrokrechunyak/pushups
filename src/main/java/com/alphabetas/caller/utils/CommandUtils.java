@@ -25,7 +25,8 @@ public final class CommandUtils {
     public static String trimMessage(String message, String[] params) {
         message = message.replaceAll("@caller_ua_bot", "");
         message = message.replaceAll("@bunker_ua_bot", "");
-        if(StringUtils.containsIgnoreCase(message.substring(0, 8), "кликун")) {
+        int max = message.length() > 7 ? 8 : message.length();
+        if(StringUtils.containsIgnoreCase(message.substring(0, max), "кликун")) {
             message = StringUtils.replaceOnceIgnoreCase(message, "кликун", "");
         }
         message = message.replaceFirst("[.!]", "");
