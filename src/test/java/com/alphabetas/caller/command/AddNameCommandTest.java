@@ -25,11 +25,6 @@ class AddNameCommandTest extends AbstractCommandTest {
         addCommand = new AddNameCommand(userService, chatService, nameService, messageService);
     }
 
-
-    @Test
-    void execute() {
-    }
-
     @Test
     void sendMessageToAddName() {
         // given
@@ -40,7 +35,7 @@ class AddNameCommandTest extends AbstractCommandTest {
         addCommand.execute(update);
 
         //then
-        verify(chatService).getById(anyLong(), eq(update));
+        verify(addCommand).sendMessageToAddName(USER_ID, eq(any()));
 
     }
 
@@ -50,5 +45,10 @@ class AddNameCommandTest extends AbstractCommandTest {
 
     @Test
     void saveNames() {
+    }
+
+    @Test
+    void shouldReturnAddNameCommand() {
+
     }
 }

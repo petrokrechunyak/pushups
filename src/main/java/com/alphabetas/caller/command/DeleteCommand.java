@@ -53,6 +53,11 @@ public class DeleteCommand implements Command {
         CallerChat chat = chatService.getById(chatId, update);
         CallerUser user;
 
+        // delete message if starts with /
+        if(msgText.startsWith("/")) {
+            messageService.deleteMessage(chatId.toString(), update.getMessage().getMessageId());
+        }
+
         boolean admin = false;
         if(msgText.startsWith("!") && update.getMessage().getReplyToMessage() != null) {
             if(AbstractNameUtils.isUserAdmin(userId, chatId)) {

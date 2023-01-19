@@ -40,6 +40,14 @@ public class ShowCommand implements Command {
         CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
         CallerUser user;
 
+        Long chatId = update.getMessage().getChatId();
+        Long userId = update.getMessage().getFrom().getId();
+
+        // delete message if starts with /
+        if(msgText.startsWith("/")) {
+            messageService.deleteMessage(chatId.toString(), update.getMessage().getMessageId());
+        }
+
         if(update.getMessage().getReplyToMessage() != null) {
             Message message = update.getMessage().getReplyToMessage();
 

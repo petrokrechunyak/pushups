@@ -37,32 +37,83 @@ class CommandContainerTest {
     @Test
     public void shouldReturnUnknownCommand() {
         //given
-        String unknownCommand = "/add_naMEe";
-        //when
-        Command command = commandContainer.retrieveCommand(unknownCommand);
-        //then
-        assertEquals(UnknownCommand.class, command.getClass());
+        String[] args = {"/add_naMEe", "/do_something"};
+        for(String unknownCommand: args) {
+            //when
+            Command command = commandContainer.retrieveCommand(unknownCommand);
+            //then
+            assertEquals(UnknownCommand.class, command.getClass());
+        }
     }
 
     @Test
     public void shouldReturnAddNameCommand() {
-        //given
-        String addCommand = "/aDd@caller_ua_bot";
-        //when
-        Command command = commandContainer.retrieveCommand(addCommand);
-        //then
-        assertEquals(AddNameCommand.class, command.getClass());
+
+        String[] args = new String[]{"/add_naMe", "/add",
+                "/add_name@caller_ua_bot", "/add@caller_ua_bot"};
+        for(String addCommand: args) {
+            //when
+            Command command = commandContainer.retrieveCommand(addCommand);
+            System.out.println(addCommand);
+            //then
+            assertEquals(AddNameCommand.class, command.getClass());
+        }
     }
 
     @Test
     public void shouldReturnAddNameCommandText() {
-        //given
-        String addName = "КликУн доДАЙ Петро";
-        //when
-        Command command = commandContainer.retrieveText(addName);
-        //then
-        assertEquals(AddNameCommand.class, command.getClass());
+        String[] args = {"Кликун додай", "кликун додати", ".додай",
+                ".додати", "кликун додай ім'я", "кликун додай імена", ".додати ім'я",
+                ".додати імена", "!ДОДАТИ ІМЕНА", "!ДОДАЙ ІМЕНА", "!ДОДАЙ", "!ДОдати",
+                "!Додай ім'я", "!Додати ім'я",
+                // with argument
+                "Кликун додай щось", "кликун додати щось", ".додай щось",
+                ".додати щось", "кликун додай ім'я щось", "кликун додай імена щось", ".додати ім'я щось",
+                ".додати імена щось", "!ДОДАТИ ІМЕНА щось", "!ДОДАЙ ІМЕНА щось", "!ДОДАЙ щось", "!ДОдати щось",
+                "!Додай ім'я щось", "!Додати ім'я щось",
+                // with two arguments
+                "Кликун додай щось, ще", "кликун додати щось, ще", ".додай щось, ще",
+                ".додати щось, ще", "кликун додай ім'я щось, ще", "кликун додай імена щось, ще",
+                ".додати ім'я щось, ще", ".додати імена щось, ще", "!ДОДАТИ ІМЕНА щось, ще",
+                "!ДОДАЙ ІМЕНА щось, ще", "!ДОДАЙ щось, ще", "!ДОдати щось, ще",
+                "!Додай ім'я щось, ще", "!Додати ім'я щось, ще"
+        };
+        for(String addCommand: args) {
+            //when
+            Command command = commandContainer.retrieveText(addCommand);
+            System.out.println(addCommand);
+            //then
+            assertEquals(AddNameCommand.class, command.getClass());
+        }
     }
+
+    @Test
+    public void shouldReturnDeleteNameCommandText() {
+        String[] args = {"Кликун видали", "кликун видалити", ".видали",
+                ".видалити", "кликун видали ім'я", "кликун видали імена", ".видалити ім'я",
+                ".видалити імена", "!видалити ІМЕНА", "!видали ІМЕНА", "!видали", "!видалити",
+                "!видали ім'я", "!видалити ім'я",
+                // with argument
+                "Кликун видали щось", "кликун видалити щось", ".видали щось",
+                ".видалити щось", "кликун видали ім'я щось", "кликун видали імена щось", ".видалити ім'я щось",
+                ".видалити імена щось", "!видалити ІМЕНА щось", "!видали ІМЕНА щось", "!видали щось", "!видалити щось",
+                "!видали ім'я щось", "!видалити ім'я щось",
+                // with two arguments
+                "Кликун видали щось, ще", "кликун видалити щось, ще", ".видали щось, ще",
+                ".видалити щось, ще", "кликун видали ім'я щось, ще", "кликун видали імена щось, ще",
+                ".видалити ім'я щось, ще", ".видалити імена щось, ще", "!видалити ІМЕНА щось, ще",
+                "!видали ІМЕНА щось, ще", "!видали щось, ще", "!видалити щось, ще",
+                "!видали ім'я щось, ще", "!видалити ім'я щось, ще"
+        };
+        for(String deleteCommand: args) {
+            //when
+            Command command = commandContainer.retrieveText(deleteCommand);
+            System.out.println(deleteCommand);
+            //then
+            assertEquals(DeleteCommand.class, command.getClass());
+        }
+    }
+
 
     @Test
     public void shouldSayIAmHere() {
