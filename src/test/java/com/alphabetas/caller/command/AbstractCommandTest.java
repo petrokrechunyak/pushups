@@ -56,11 +56,7 @@ public class AbstractCommandTest {
     }
 
     protected CallerUser prepareUser() {
-        CallerUser user = mock(CallerUser.class);
-        when(user.getUserId()).thenReturn(USER_ID);
-        when(user.getUserState()).thenReturn(UserStates.OFF);
-
-        return user;
+return new CallerUser();
     }
 
     protected CallerChat prepareChat() {

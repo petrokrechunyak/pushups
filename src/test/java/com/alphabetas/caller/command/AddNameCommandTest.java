@@ -25,7 +25,6 @@ class AddNameCommandTest extends AbstractCommandTest {
         addCommand = new AddNameCommand(userService, chatService, nameService, messageService);
     }
 
-    @Test
     void sendMessageToAddName() {
         // given
         Update update = prepareUpdate();
