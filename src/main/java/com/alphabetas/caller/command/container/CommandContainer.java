@@ -45,7 +45,7 @@ public class CommandContainer {
 
     public Command retrieveText(String text){
 
-        if(text.equals("кликун")) {
+        if(text.toLowerCase().equals("кликун")) {
             return iamhere;
         }
 
