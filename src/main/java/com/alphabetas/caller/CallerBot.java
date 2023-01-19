@@ -55,7 +55,10 @@ public class CallerBot extends TelegramLongPollingBot {
             if(update.getMessage().getFrom().getIsBot()) {
                 return;
             }
-            // if message have have
+            if(update.getMessage().getCaption() != null) {
+                update.getMessage().setText(update.getMessage().getCaption());
+            }
+            // if message have Text
             if(update.getMessage().hasText()) {
                 String msgText = update.getMessage().getText();
                 if (msgText.startsWith("/")) {

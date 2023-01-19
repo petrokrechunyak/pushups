@@ -38,6 +38,11 @@ public class CancelCommand implements Command{
         Long chatId = update.getMessage().getChatId();
         Long userId = update.getMessage().getFrom().getId();
 
+        // delete message if starts with /
+        if(msgText.startsWith("/")) {
+            messageService.deleteMessage(chatId.toString(), update.getMessage().getMessageId());
+        }
+
         CallerChat chat = chatService.getById(chatId, update);
         CallerUser user = userService.getByUserIdAndCallerChat(chat, update);
 

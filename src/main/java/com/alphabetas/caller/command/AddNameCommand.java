@@ -26,7 +26,7 @@ public class AddNameCommand implements Command {
     private CallerNameService nameService;
     private MessageService messageService;
     public final static String[] specialArgs = new String[]{"/add_name", "/add",
-            "додай ім'я", "додай",
+            "додай імена", "додай ім'я", "додай",
             "додати імена", "додати ім'я", "додати"};
     private String[] addNameMessages = new String[]{"Напишіть ім'я, яке хочете добавити\n" +
             "(Якщо нічого не хочете добавляти напишіть /cancel)",
@@ -52,6 +52,11 @@ public class AddNameCommand implements Command {
 
         CallerChat chat = chatService.getById(chatId, update);
         CallerUser user;
+
+        // delete message if starts with /
+        if(msgText.startsWith("/")) {
+            messageService.deleteMessage(chatId.toString(), update.getMessage().getMessageId());
+        }
 
         boolean admin = false;
 
