@@ -46,7 +46,8 @@ public class AddNameCommand implements Command {
     @Override
     public void execute(Update update) {
         String msgText = update.getMessage().getText();
-        log.info("Entered into AddNameCommand with text {}", msgText);
+        log.info("Entered into AddNameCommand with text {} in chat {}", msgText,
+                update.getMessage().getChat().getTitle());
         Long chatId = update.getMessage().getChatId();
         Long userId = update.getMessage().getFrom().getId();
 
