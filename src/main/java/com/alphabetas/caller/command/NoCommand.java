@@ -40,8 +40,8 @@ public class NoCommand implements Command {
         put("посадити на гіляку", "%s посадив(ла) на гіляку %s \uD83D\uDE08\uD83E\uDEB5");
         put("вдарити", "%s вдарив(ла) \uD83E\uDD1C\uD83E\uDD15 %s");
         put("вкусити", "%s вкусив(ла) %s \uD83E\uDEE6");
-        put("покормити", "%s покормив(ла) %s \uD83C\uDF7D");
-        put("пожати руку", "%s пожав(ла) руку \uD83E\uDD1D\uD83E\uDD1D %s");
+        put("погодувати", "%s погодував(ла) %s \uD83C\uDF7D");
+        put("потиснути руку", "%s потиснув(ла) руку \uD83E\uDD1D\uD83E\uDD1D %s");
         put("тягнути за вухо", "%s потягнув(ла) за вухо \uD83D\uDC42\uD83E\uDD0F %s");
         put("дати п'ять", "%s дав(ла) п'ять \uD83D\uDC4B %s");
         put("похвалити", "%s похвалив(ла) %s \uD83E\uDD17");
@@ -68,6 +68,8 @@ public class NoCommand implements Command {
         put("споїти", "%s споїв(ла) %s \uD83E\uDD74");
         put("напитись з", "%s напився(лась) з %s \uD83E\uDD74");
         put("заїбатися", "%s заїбався(лась) через %s \uD83E\uDD74");
+        put("лизнути", "%s лизнув(ла) %s \uD83D\uDC45");
+
     }};
 
     public final static String[] specialArgs = new String[]{"/add",
