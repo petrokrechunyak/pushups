@@ -43,6 +43,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public Message sendMessage(Long chatId, String message, Long replyToMessage) {
+        SendMessage sendMessage = new SendMessage(chatId.toString(), message);
+        sendMessage.enableHtml(true);
+        sendMessage.setReplyToMessageId(replyToMessage.intValue());
+
+        return sendMessage(sendMessage);
+    }
+
+    @Override
     public File getFile(GetFile getFile) {
         try {
             return bot.execute(getFile);

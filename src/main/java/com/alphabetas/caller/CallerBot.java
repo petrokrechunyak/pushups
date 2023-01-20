@@ -51,22 +51,27 @@ public class CallerBot extends TelegramLongPollingBot {
             SpaceUtils utils = new SpaceUtils(messageService, botToken);
             String trimSpaces = utils.trimSpaces(update);
 
-            // if message is sent by bot
-            if(update.getMessage().getFrom().getIsBot()) {
-                return;
-            }
-            if(update.getMessage().getCaption() != null) {
-                update.getMessage().setText(update.getMessage().getCaption());
-            }
-            // if message have Text
-            if(update.getMessage().hasText()) {
-                String msgText = update.getMessage().getText();
-                if (msgText.startsWith("/")) {
-                    readCommand(update);
-                } else {
-                    container.retrieveText(msgText.toLowerCase()).execute(update);
+            try {
+                // if message is sent by bot
+                if(update.getMessage().getFrom().getIsBot()) {
+                    return;
                 }
+                if(update.getMessage().getCaption() != null) {
+                    update.getMessage().setText(update.getMessage().getCaption());
+                }
+                // if message have Text
+                if(update.getMessage().hasText()) {
+                    String msgText = update.getMessage().getText();
+                    if (msgText.startsWith("/")) {
+                        readCommand(update);
+                    } else {
+                        container.retrieveText(msgText.toLowerCase()).execute(update);
+                    }
+                }
+            } catch (Exception e) {
+
             }
+
             // if someone entered/left
             someOneEntered(update);
             someOneLeft(update);
