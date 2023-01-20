@@ -48,7 +48,7 @@ public class NoCommand implements Command {
         put("погладити", "%s погладив(ла) %s ☺️");
         put("випити кров", "%s випив(ла) кров у %s \uD83E\uDE78");
         put("прочитати думки", "%s прочитав думки у %s \uD83E\uDEAC");
-        put("чихнути", "%s чихнув(ла) на %s \uD83E\uDEAC");
+        put("чихнути", "%s чихнув(ла) на %s \uD83E\uDDA0");
         put("зненавидіти", "%s зненавидіти(ла) %s \uD83D\uDEA9");
         put("привітати", "%s привітав(ла) %s \uD83C\uDF82");
         put("записати в дез ноут", "%s записав(ла) в дез ноут %s \uD83D\uDCD3");
@@ -122,7 +122,7 @@ public class NoCommand implements Command {
             return;
         }
 
-        Long replyToMessage = update.getMessage().getReplyToMessage().getMessageId().longValue();
+        Long replyToMessage = update.getMessage().getMessageId().longValue();
 
         StringBuilder builder = new StringBuilder(answer);
         User to = update.getMessage().getReplyToMessage().getFrom();
@@ -177,6 +177,7 @@ public class NoCommand implements Command {
                     messageService.sendMessage(chatId,
                             String.format(builder.toString(), makeLink(to.getId(), "Кликун"),
                                     makeLink(user.getUserId(), user.getFirstname())), replyToMessage);
+                    break;
                 default:
                     messageService.sendMessage(chatId,
                             String.format(builder.toString(), makeLink(user.getUserId(), user.getFirstname()),
