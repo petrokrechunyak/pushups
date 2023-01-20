@@ -34,6 +34,8 @@ public interface MessageService {
      */
     Message sendMessage(BotApiMethod sendMessage);
 
+    Message sendMessage(Long chatId, String message, Long replyToMessage);
+
     /**
      * @param getFile contains basic information about file that need to be getted
      * @return downloaded file

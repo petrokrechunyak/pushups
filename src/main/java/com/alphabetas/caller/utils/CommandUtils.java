@@ -44,7 +44,6 @@ public final class CommandUtils {
 
     public static String makeLink(Long id, String firstName) {
         firstName = firstName.replaceAll("[<>]", "");
-        System.out.println(firstName);
         return String.format("<a href='tg://user?id=%d'>%s</a>", id, firstName);
     }
 
