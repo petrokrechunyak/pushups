@@ -148,6 +148,7 @@ public class NoCommand implements Command {
                 case "прочитати думки":
                 case "споїти":
                 case "зґвалтувати":
+                case "заїбатися":
                     builder.append("\nЗ словами: \"<b>Мене не обдуриш!</b>\"");
                     messageService.sendMessage(chatId,
                             String.format(builder.toString(), makeLink(to.getId(), "Кликун"),
