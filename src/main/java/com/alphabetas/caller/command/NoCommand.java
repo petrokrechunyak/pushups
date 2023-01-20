@@ -84,7 +84,8 @@ public class NoCommand implements Command {
     @Override
     public void execute(Update update) {
         String msgText = update.getMessage().getText();
-        log.info("Entered into NoCommand with text {}", msgText);
+        log.info("Entered into NoCommand with text {} in chat {}", msgText,
+                update.getMessage().getChat().getTitle());
         Long chatId = update.getMessage().getChatId();
 
         CallerChat chat = chatService.getById(chatId, update);
@@ -130,7 +131,7 @@ public class NoCommand implements Command {
                     .append("</b>\"");
         }
         // if it did with caller
-        if(to.getUserName().equals("caller_ua_bot")) {
+        if(to.getIsBot() && to.getUserName().equals("caller_ua_bot")) {
             switch (args[0]) {
                 case "вдарити":
                 case "вкусити":

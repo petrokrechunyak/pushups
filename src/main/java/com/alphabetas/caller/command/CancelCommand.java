@@ -34,7 +34,8 @@ public class CancelCommand implements Command{
         String msgText = update.getMessage().getText();
                 
 
-        log.info("Entered into CancelCommand with text {}", msgText);
+        log.info("Entered into CancelCommand with text {} in chat {}", msgText,
+                update.getMessage().getChat().getTitle());
         Long chatId = update.getMessage().getChatId();
         Long userId = update.getMessage().getFrom().getId();
 

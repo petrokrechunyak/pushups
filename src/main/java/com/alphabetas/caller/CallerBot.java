@@ -69,7 +69,7 @@ public class CallerBot extends TelegramLongPollingBot {
                     }
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
 
             // if someone entered/left
