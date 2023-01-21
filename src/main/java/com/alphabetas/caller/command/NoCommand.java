@@ -95,6 +95,7 @@ public class NoCommand implements Command {
         
         //check for rp commands
         checkForRp(update, user);
+        log.info("****************************************");
 
         // do action for state of user
         if (user.getUserState() != UserStates.OFF) {
@@ -115,13 +116,16 @@ public class NoCommand implements Command {
 
     private void checkForRp(Update update, CallerUser user) {
         String msgText = update.getMessage().getText().toLowerCase();
+        log.info("****************************************");
+        log.debug("In checkForRp with text {}", msgText);
         Long chatId = user.getCallerChat().getId();
         String[] args = msgText.split("\n");
+        log.debug("args: {}", Arrays.toString(args));
         String answer = rpCommands.get(args[0]);
         if(answer == null || update.getMessage().getReplyToMessage() == null) {
             return;
         }
-
+        log.debug("arg[0] is rp command, replyToMessage isn't null");
         Long replyToMessage = update.getMessage().getMessageId().longValue();
 
         StringBuilder builder = new StringBuilder(answer);
@@ -132,6 +136,7 @@ public class NoCommand implements Command {
                             args[0] + "\n", ""))
                     .append("</b>\"");
         }
+        log.debug("temporary builder value: {}", builder);
         // if it did with caller
         if(to.getIsBot() && to.getUserName().equals("caller_ua_bot")) {
             switch (args[0]) {
@@ -197,6 +202,7 @@ public class NoCommand implements Command {
                     "РП-комадни не можна виконувати з ботами", replyToMessage);
             return;
         }
+        log.debug("all right, continue...");
         messageService.sendMessage(chatId,
                 String.format(builder.toString(), makeLink(user.getUserId(), user.getFirstname()),
                         makeLink(to.getId(), to.getFirstName())), replyToMessage);
