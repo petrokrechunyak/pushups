@@ -117,7 +117,6 @@ public class NoCommand implements Command {
     private void checkForRp(Update update, CallerUser user) {
         String msgText = update.getMessage().getText().toLowerCase();
         log.info("****************************************");
-        log.info("In checkForRp with text {}", msgText);
         Long chatId = user.getCallerChat().getId();
         String[] args = msgText.split("\n");
         log.info("args: {}", Arrays.toString(args));
