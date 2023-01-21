@@ -121,7 +121,7 @@ public class NoCommand implements Command {
         Long chatId = user.getCallerChat().getId();
         String[] args = msgText.split("\n");
         log.info("args: {}", Arrays.toString(args));
-        String answer = rpCommands.get(args[0]);
+        String answer = rpCommands.get(args[0].trim());
         if(answer == null || update.getMessage().getReplyToMessage() == null) {
             return;
         }
