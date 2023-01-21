@@ -14,6 +14,7 @@ import java.util.List;
 import com.alphabetas.caller.utils.AddNameUtils;
 import com.alphabetas.caller.utils.DeleteNameUtils;
 import com.alphabetas.caller.utils.SpaceUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 @Component
+@Slf4j
 public class CallerBot extends TelegramLongPollingBot {
     private CommandContainer container;
     private CallerUserService userService;
@@ -82,11 +84,16 @@ public class CallerBot extends TelegramLongPollingBot {
     @Transactional
     public void someOneLeft(Update update) {
 
-        User left = update.getMessage().getLeftChatMember();
+         User left = update.getMessage().getLeftChatMember();
         if (left != null) {
             CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
             update.getMessage().getFrom().setId(left.getId());
             CallerUser user = userService.getByUserIdAndCallerChat(left.getId(), chat, update);
+            log.debug("Into someOneLeft before deleting user wth user {}", user.toString());
+            userService.delete(user);
+            user = userService.getByUserIdAndCallerChat(left.getId(), chat, update);
+            log.debug("Into someOneLeft AFTER deleting user {}",
+                    user);
             userService.delete(user);
             messageService.sendMessage(chat.getId(), "Бувай!\nНадіємося ви повернетеся.");
         }

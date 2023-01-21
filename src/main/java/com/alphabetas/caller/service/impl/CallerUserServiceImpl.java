@@ -5,11 +5,13 @@ import com.alphabetas.caller.model.CallerChat;
 import com.alphabetas.caller.model.CallerUser;
 import com.alphabetas.caller.repo.CallerUserRepo;
 import com.alphabetas.caller.service.CallerChatService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
+@Slf4j
 public class CallerUserServiceImpl implements CallerUserService {
 
     @Autowired
@@ -56,6 +58,7 @@ public class CallerUserServiceImpl implements CallerUserService {
             return user;
         }
 
+        log.debug("Creating new user..");
         Long chatId = update.getMessage().getChatId();
         CallerChat chat = chatService.getById(chatId, update);
         String firstName = update.getMessage().getFrom().getFirstName();
