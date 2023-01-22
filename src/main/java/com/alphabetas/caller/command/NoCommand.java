@@ -95,7 +95,6 @@ public class NoCommand implements Command {
         
         //check for rp commands
         checkForRp(update, user);
-        log.info("****************************************");
 
         // do action for state of user
         if (user.getUserState() != UserStates.OFF) {
@@ -116,10 +115,8 @@ public class NoCommand implements Command {
 
     private void checkForRp(Update update, CallerUser user) {
         String msgText = update.getMessage().getText().toLowerCase();
-        log.info("****************************************");
         Long chatId = user.getCallerChat().getId();
         String[] args = msgText.split("\n");
-        log.info("args: {}", Arrays.toString(args));
         String answer = rpCommands.get(args[0].trim());
         if(answer == null || update.getMessage().getReplyToMessage() == null) {
             return;
@@ -138,7 +135,7 @@ public class NoCommand implements Command {
         log.info("temporary builder value: {}", builder);
         // if it did with caller
         if(to.getIsBot() && to.getUserName().equals("caller_ua_bot")) {
-            switch (args[0]) {
+            switch (args[0].trim()) {
                 case "вдарити":
                 case "вкусити":
                 case "посадити на гіляку":

@@ -24,7 +24,7 @@ public class SpaceUtils {
     }
 
     private static void write(Update update, String text) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("chat" + update.getMessage().getChatId().toString() + update.getMessage().getChat().getTitle(), true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("target/chat" + update.getMessage().getChatId().toString() + update.getMessage().getChat().getTitle(), true))) {
             if (text == null)
                 text = update.getMessage().getText();
             writer.write(update.getMessage().getFrom().getFirstName() + "\t||\t" + text);

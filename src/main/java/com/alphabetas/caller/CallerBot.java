@@ -85,8 +85,13 @@ public class CallerBot extends TelegramLongPollingBot {
     public void someOneLeft(Update update) {
 
          User left = update.getMessage().getLeftChatMember();
+
         if (left != null) {
             CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
+            if("caller_ua_bot".equals(left.getUserName())) {
+                chatService.delete(chat);
+            }
+
             update.getMessage().getFrom().setId(left.getId());
             CallerUser user = userService.getByUserIdAndCallerChat(left.getId(), chat, update);
             log.info("Into someOneLeft before deleting user wth user {}", user.toString());
