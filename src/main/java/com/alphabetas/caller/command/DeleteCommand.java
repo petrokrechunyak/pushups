@@ -10,6 +10,7 @@ import com.alphabetas.caller.service.MessageService;
 import com.alphabetas.caller.utils.AbstractNameUtils;
 import com.alphabetas.caller.utils.CommandUtils;
 import com.alphabetas.caller.utils.DeleteNameUtils;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
@@ -17,68 +18,46 @@ import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import java.util.List;
 import java.util.Random;
 
+@NoArgsConstructor
 @Slf4j
-public class DeleteCommand implements Command {
-
-    private CallerUserService userService;
-    private CallerChatService chatService;
-    private CallerNameService nameService;
-    private MessageService messageService;
-
-    public static final String[] specialArgs = new String[]{"/delete_names", "/delete_name", "/delete",
-            "видалити імена", "видалити ім'я", "видалити",
-            "видали імена", "видали ім'я", "видали",
-    };
+public class DeleteCommand extends Command {
 
     private static final  String[] deleteNameMessages = new String[]{"Напишіть ім'я, яке хочете видалити\n" +
             "(Якщо нічого не хочете видаляти напишіть /cancel)",
             "Все, а тепер просто напишіть ім'я яке хочете видалити, але якщо не хочете нічого видаляти напишіть /cancel",
             "Хочете видалити ім'я? Просто напишіть його. Не хочете? - Напишіть /cancel"};
 
-    public DeleteCommand(CallerUserService userService, CallerChatService chatService, CallerNameService nameService, MessageService messageService) {
-        this.userService = userService;
-        this.chatService = chatService;
-        this.nameService = nameService;
-        this.messageService = messageService;
+    public DeleteCommand(String msgText, CallerChat chat, CallerUser user) {
+        super(msgText, chat, user);
     }
 
     @Override
     public void execute(Update update) {
-        String msgText = update.getMessage().getText();
-
-        log.info("Entered into DeleteCommand with text {} in chat {}", msgText,
-                update.getMessage().getChat().getTitle());
-        Long chatId = update.getMessage().getChatId();
-        Long userId = update.getMessage().getFrom().getId();
-
-        CallerChat chat = chatService.getById(chatId, update);
-        CallerUser user;
-
         // delete message if starts with /
         if(msgText.startsWith("/")) {
-            messageService.deleteMessage(chatId.toString(), update.getMessage().getMessageId());
+            messageService.deleteMessage(chat.getId().toString(), update.getMessage().getMessageId());
         }
 
         boolean admin = false;
         if(msgText.startsWith("!") && update.getMessage().getReplyToMessage() != null) {
-            if(AbstractNameUtils.isUserAdmin(userId, chatId)) {
+            if(AbstractNameUtils.isUserAdmin(user.getUserId(), chat.getId())) {
                 CommandUtils.setUserToUpdate(update);
                 admin = true;
             } else {
-                messageService.sendMessage(chatId, "Тільки адміністратори можуть керувати іменами інших!");
+                messageService.sendMessage(chat.getId(), "Тільки адміністратори можуть керувати іменами інших!");
                 return;
             }
         }
 
 
         user = userService.getByUserIdAndCallerChat(chat, update);
-        msgText = CommandUtils.trimMessage(msgText, specialArgs);
+        msgText = CommandUtils.trimMessage(msgText, getSpecialArgs());
         if (msgText.isBlank()) {
             if(admin) {
-                messageService.sendMessage(chatId, "Параметри повинні бути в одному повідомленні з адмін-командою!");
+                messageService.sendMessage(chat.getId(), "Параметри повинні бути в одному повідомленні з адмін-командою!");
                 return;
             }
-            sendMessageToDeleteName(chatId, user);
+            sendMessageToDeleteName();
             return;
         }
 
@@ -86,15 +65,22 @@ public class DeleteCommand implements Command {
 
         String savedText = DeleteNameUtils.deleteNames(msgText, user, chat);
 
-        messageService.sendMessage(chatId, savedText);
+        messageService.sendMessage(chat.getId(), savedText);
     }
 
 
-    public void sendMessageToDeleteName(Long chatId, CallerUser user) {
+    public void sendMessageToDeleteName() {
         user.setUserState(UserStates.DELETE);
         userService.save(user);
         String sendMessageText = deleteNameMessages[new Random().nextInt(3)];
-        messageService.sendMessage(chatId, sendMessageText);
+        messageService.sendMessage(chat.getId(), sendMessageText);
+    }
+
+    @Override
+    public String[] getSpecialArgs() {
+        return new String[]{"/delete_names", "/delete_name", "/delete",
+                "видалити імена", "видалити ім'я", "видалити",
+                "видали імена", "видали ім'я", "видали", };
     }
 
 }

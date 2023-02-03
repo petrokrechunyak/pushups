@@ -1,5 +1,6 @@
 package com.alphabetas.caller;
 
+import com.alphabetas.caller.command.Command;
 import com.alphabetas.caller.command.container.CommandContainer;
 import com.alphabetas.caller.model.CallerChat;
 import com.alphabetas.caller.model.CallerUser;
@@ -42,6 +43,8 @@ public class CallerBot extends TelegramLongPollingBot {
                 nameService);
         setAllUtils(userService, chatService, nameService);
 
+        Command.setService(messageService, chatService, userService, nameService);
+
 
     }
 
@@ -67,7 +70,7 @@ public class CallerBot extends TelegramLongPollingBot {
                     if (msgText.startsWith("/")) {
                         readCommand(update);
                     } else {
-                        container.retrieveText(msgText.toLowerCase()).execute(update);
+                        container.retrieveText(msgText, update).execute(update);
                     }
                 }
             } catch (Exception e) {
@@ -129,7 +132,7 @@ public class CallerBot extends TelegramLongPollingBot {
         String text = update.getMessage().getText().toLowerCase();
         String[] parts = text.split("@");
         if (parts.length == 1 || parts[1].equals(getBotUsername())) {
-            container.retrieveCommand(text).execute(update);
+            container.retrieveCommand(text, update).execute(update);
         }
     }
 

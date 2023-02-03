@@ -26,11 +26,7 @@ import java.util.stream.Collectors;
 import static com.alphabetas.caller.utils.CommandUtils.makeLink;
 
 @Slf4j
-public class NoCommand implements Command {
-    private CallerUserService userService;
-    private CallerChatService chatService;
-    private CallerNameService nameService;
-    private MessageService messageService;
+public class NoCommand extends Command {
 
     public static final Map<String, String> rpCommands = new HashMap<>(){{
         put("запросити на чай", "%s запросив(ла) на чай %s \uD83E\uDED6\uD83C\uDF6A");
@@ -69,30 +65,15 @@ public class NoCommand implements Command {
         put("напитись з", "%s напився(лась) з %s \uD83E\uDD74");
         put("заїбатися", "%s заїбався(лась) через %s \uD83E\uDD74");
         put("лизнути", "%s лизнув(ла) %s \uD83D\uDC45");
-
+        put("трахнути", "%s трахнув(ла) %s \uD83D\uDC49\uD83D\uDC4C\uD83D\uDCA6");
     }};
 
-    public final static String[] specialArgs = new String[]{"/add",
-            "кликун додай ім'я", "кликун додай",
-            ".додати ім'я", ".додати"};
-
-    public NoCommand(CallerUserService userService, CallerChatService chatService, CallerNameService nameService, MessageService messageService) {
-        this.userService = userService;
-        this.chatService = chatService;
-        this.nameService = nameService;
-        this.messageService = messageService;
+    public NoCommand(String msgText, CallerChat chat, CallerUser user) {
+        super(msgText, chat, user);
     }
 
     @Override
     public void execute(Update update) {
-        String msgText = update.getMessage().getText();
-        log.info("Entered into NoCommand with text {} in chat {}", msgText,
-                update.getMessage().getChat().getTitle());
-        Long chatId = update.getMessage().getChatId();
-
-        CallerChat chat = chatService.getById(chatId, update);
-        CallerUser user = userService.getByUserIdAndCallerChat(chat, update);
-        
         //check for rp commands
         checkForRp(update, user);
 
@@ -100,17 +81,17 @@ public class NoCommand implements Command {
         if (user.getUserState() != UserStates.OFF) {
             switch (user.getUserState()) {
                 case ADD:
-                    addState(chat, user, update);
+                    addState(update);
                     break;
                 case DELETE:
-                    deleteState(chat, user, update);
+                    deleteState(update);
                     break;
             }
             return;
         }
 
         // call user, if his name is in the chat
-        callUser(chat, update);
+        callUser(update);
     }
 
     private void checkForRp(Update update, CallerUser user) {
@@ -133,6 +114,7 @@ public class NoCommand implements Command {
                     .append("</b>\"");
         }
         log.info("temporary builder value: {}", builder);
+
         // if it did with caller
         if(to.getIsBot() && to.getUserName().equals("caller_ua_bot")) {
             switch (args[0].trim()) {
@@ -153,6 +135,7 @@ public class NoCommand implements Command {
                 case "споїти":
                 case "зґвалтувати":
                 case "заїбатися":
+                case "трахнути":
                     builder.append("\nЗ словами: \"<b>Мене не обдуриш!</b>\"");
                     messageService.sendMessage(chatId,
                             String.format(builder.toString(), makeLink(to.getId(), "Кликун"),
@@ -204,7 +187,7 @@ public class NoCommand implements Command {
                         makeLink(to.getId(), to.getFirstName())), replyToMessage);
     }
 
-    public void addState(CallerChat chat, CallerUser user, Update update) {
+    public void addState(Update update) {
         String msgText = update.getMessage().getText();
         String returnMessage = AddNameUtils.saveNames(msgText, user, chat);
 
@@ -214,7 +197,7 @@ public class NoCommand implements Command {
         messageService.sendMessage(chat.getId(), returnMessage);
     }
 
-    public void deleteState(CallerChat chat, CallerUser user, Update update) {
+    public void deleteState(Update update) {
         String msgText = update.getMessage().getText();
         String returnMessage = DeleteNameUtils.deleteNames(msgText, user, chat);
 
@@ -224,7 +207,7 @@ public class NoCommand implements Command {
         messageService.sendMessage(chat.getId(), returnMessage);
     }
 
-    public void callUser(CallerChat chat, Update update) {
+    public void callUser(Update update) {
         String msgText = " " + update.getMessage().getText() + " ";
         boolean send = false;
         chat.setCallerNames(chat.getCallerNames()

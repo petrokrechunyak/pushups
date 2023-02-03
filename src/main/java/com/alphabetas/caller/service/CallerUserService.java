@@ -6,6 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface CallerUserService extends AbstractService<CallerUser> {
 
+    CallerUser getByUpdate(Update update);
+
     CallerUser getByUserIdAndCallerChat(CallerChat callerChat, Update update);
 
     CallerUser getByUserIdAndCallerChat(Long userId, CallerChat callerChat, Update update);

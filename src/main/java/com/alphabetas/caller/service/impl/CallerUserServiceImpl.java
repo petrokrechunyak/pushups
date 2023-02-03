@@ -35,6 +35,12 @@ public class CallerUserServiceImpl implements CallerUserService {
     }
 
     @Override
+    public CallerUser getByUpdate(Update update) {
+        CallerChat chat = chatService.getByUpdate(update);
+        return getByUserIdAndCallerChat(chat, update);
+    }
+
+    @Override
     public CallerUser getByUserIdAndCallerChat(CallerChat callerChat, Update update) {
         Long userId = update.getMessage().getFrom().getId();
         return getByUserIdAndCallerChat(userId, callerChat, update);
