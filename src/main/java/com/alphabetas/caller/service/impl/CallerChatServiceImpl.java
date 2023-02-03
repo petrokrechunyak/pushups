@@ -18,6 +18,7 @@ public class CallerChatServiceImpl implements CallerChatService {
         try {
             return chatRepo.findById(id).get();
         } catch (NoSuchElementException e) {
+
             String chatTitle = update.getMessage().getChat().getTitle();
             CallerChat chat = new CallerChat(id, chatTitle);
             save(chat);
@@ -33,5 +34,10 @@ public class CallerChatServiceImpl implements CallerChatService {
     @Override
     public void delete(CallerChat chat) {
         chatRepo.delete(chat);
+    }
+
+    @Override
+    public CallerChat getByUpdate(Update update) {
+        return getById(update.getMessage().getChatId(), update);
     }
 }

@@ -22,7 +22,6 @@ class AddNameCommandTest extends AbstractCommandTest {
     @BeforeEach
     public void prepare() {
         super.prepare();
-        addCommand = new AddNameCommand(userService, chatService, nameService, messageService);
     }
 
     void sendMessageToAddName() {
@@ -34,7 +33,7 @@ class AddNameCommandTest extends AbstractCommandTest {
         addCommand.execute(update);
 
         //then
-        verify(addCommand).sendMessageToAddName(USER_ID, eq(any()));
+        verify(addCommand).sendMessageToAddName();
 
     }
 

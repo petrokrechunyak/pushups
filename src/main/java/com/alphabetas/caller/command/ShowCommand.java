@@ -9,43 +9,25 @@ import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
 import com.alphabetas.caller.service.MessageService;
 import com.alphabetas.caller.utils.CommandUtils;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+@NoArgsConstructor
 @Slf4j
-public class ShowCommand implements Command {
+public class ShowCommand extends Command {
 
-    private CallerUserService userService;
-    private CallerChatService chatService;
-    private CallerNameService nameService;
-    private MessageService messageService;
-
-
-    public final static String[] specialArgs = new String[]{"/show_names", "/show_name", "/show",
-            "імена", "шов", "покажи",
-            ".імена", ".шов"};
-
-    public ShowCommand(CallerUserService userService, CallerChatService chatService, CallerNameService nameService, MessageService messageService) {
-        this.userService = userService;
-        this.chatService = chatService;
-        this.nameService = nameService;
-        this.messageService = messageService;
+    public ShowCommand(String msgText, CallerChat chat, CallerUser user) {
+        super(msgText, chat, user);
     }
 
     @Override
     public void execute(Update update) {
-        String msgText = update.getMessage().getText();
-        log.info("Entered in ShowCommand with text {}", msgText);
-        CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
-        CallerUser user;
-
-        Long chatId = update.getMessage().getChatId();
-        Long userId = update.getMessage().getFrom().getId();
 
         // delete message if starts with /
         if(msgText.startsWith("/")) {
-            messageService.deleteMessage(chatId.toString(), update.getMessage().getMessageId());
+            messageService.deleteMessage(chat.getId().toString(), update.getMessage().getMessageId());
         }
 
         if(update.getMessage().getReplyToMessage() != null) {
@@ -83,5 +65,12 @@ public class ShowCommand implements Command {
         }
 
         messageService.sendMessage(user.getCallerChat().getId(), CommandUtils.decryptSpace(builder.toString()));
+    }
+
+    @Override
+    public String[] getSpecialArgs() {
+        return new String[]{"/show_names", "/show_name", "/show",
+                "імена", "шов", "покажи",
+                ".імена", ".шов"};
     }
 }

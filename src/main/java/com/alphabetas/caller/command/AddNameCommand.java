@@ -3,10 +3,6 @@ package com.alphabetas.caller.command;
 import com.alphabetas.caller.model.CallerChat;
 import com.alphabetas.caller.model.CallerUser;
 import com.alphabetas.caller.model.enums.UserStates;
-import com.alphabetas.caller.service.CallerChatService;
-import com.alphabetas.caller.service.CallerNameService;
-import com.alphabetas.caller.service.CallerUserService;
-import com.alphabetas.caller.service.MessageService;
 import com.alphabetas.caller.utils.AddNameUtils;
 import com.alphabetas.caller.utils.CommandUtils;
 import lombok.NoArgsConstructor;
@@ -19,96 +15,79 @@ import static com.alphabetas.caller.utils.AbstractNameUtils.isUserAdmin;
 
 @NoArgsConstructor
 @Slf4j
-public class AddNameCommand implements Command {
+public class AddNameCommand extends Command {
 
-    private CallerChatService chatService;
-    private CallerUserService userService;
-    private CallerNameService nameService;
-    private MessageService messageService;
-    public final static String[] specialArgs = new String[]{"/add_name", "/add",
-            "додай імена", "додай ім'я", "додай",
-            "додати імена", "додати ім'я", "додати"};
-    private String[] addNameMessages = new String[]{"Напишіть ім'я, яке хочете добавити\n" +
-            "(Якщо нічого не хочете добавляти напишіть /cancel)",
-            "Все, а тепер просто напишіть ім'я яке хочете добавити, але якщо не хочете нічого добавляти напишіть /cancel",
-            "Хочете добавити ім'я? Просто напишіть його. Не хочете? - Напишіть /cancel"};
+    private static final String[] addNameMessages = new String[]{"Напишіть ім'я, яке хочете додати\n" +
+            "(Якщо нічого не хочете додавати напишіть /cancel)",
+            "Все, а тепер просто напишіть ім'я яке хочете додати, але якщо не хочете нічого додавати напишіть /cancel",
+            "Хочете додати ім'я? Просто напишіть його. Не хочете? - Напишіть /cancel"};
 
     private String[] badWords = new String[]{"кликун", "додати"};
 
-
-    public AddNameCommand(CallerUserService userService, CallerChatService chatService, CallerNameService nameService, MessageService messageService) {
-        this.userService = userService;
-        this.chatService = chatService;
-        this.nameService = nameService;
-        this.messageService = messageService;
+    public AddNameCommand(String msgText, CallerChat chat, CallerUser user) {
+        super(msgText, chat, user);
     }
 
     @Override
     public void execute(Update update) {
-        String msgText = update.getMessage().getText();
-        log.info("Entered into AddNameCommand with text {} in chat {}", msgText,
-                update.getMessage().getChat().getTitle());
-        Long chatId = update.getMessage().getChatId();
-        Long userId = update.getMessage().getFrom().getId();
 
-        CallerChat chat = chatService.getById(chatId, update);
-        CallerUser user;
-
-        // delete message if starts with /
         if(msgText.startsWith("/")) {
-            messageService.deleteMessage(chatId.toString(), update.getMessage().getMessageId());
+            messageService.deleteMessage(chat.getId().toString(), update.getMessage().getMessageId());
         }
 
         boolean admin = false;
 
         if(msgText.startsWith("!") && update.getMessage().getReplyToMessage() != null) {
-            if(isUserAdmin(userId, chatId)) {
+            if(isUserAdmin(user.getUserId(), chat.getId())) {
                 if(update.getMessage().getReplyToMessage().getFrom().getIsBot()) {
-                    messageService.sendMessage(chatId, "У ботів не може бути імен :/");
+                    messageService.sendMessage(chat.getId(), "У ботів не може бути імен :/");
                     return;
                 }
                 CommandUtils.setUserToUpdate(update);
                 admin = true;
             } else {
-                messageService.sendMessage(chatId, "Тільки адміністратори можуть керувати іменами інших!");
+                messageService.sendMessage(chat.getId(), "Тільки адміністратори можуть керувати іменами інших!");
                 return;
             }
         }
 
-
-        user = userService.getByUserIdAndCallerChat(chat, update);
+        user = userService.getByUpdate(update);
 
         // remove start of message, leaving only arguments
-        msgText = CommandUtils.trimMessage(msgText, specialArgs);
+        msgText = CommandUtils.trimMessage(msgText, getSpecialArgs());
         if (msgText.isBlank()) {
             if(admin) {
-                messageService.sendMessage(chatId, "Параметри повинні бути в одному повідомленні з адмін-командою!");
+                messageService.sendMessage(chat.getId(), "Параметри повинні бути в одному повідомленні з адмін-командою!");
                 return;
             }
-            sendMessageToAddName(chatId, user);
+            sendMessageToAddName();
             return;
         }
 
         String savedText = AddNameUtils.saveNames(msgText, user, chat);
 
-        messageService.sendMessage(chatId, savedText);
-
-
+        messageService.sendMessage(chat.getId(), savedText);
     }
+
 
 
     /**
      * Changes userState to ADD, what means that next message will add name to him
-     * @param chatId chat, where message will be sent
-     * @param user   user, whose UserState will be changed
-     *
      */
-    public void sendMessageToAddName(Long chatId, CallerUser user) {
+    public void sendMessageToAddName() {
         user.setUserState(UserStates.ADD);
         userService.save(user);
         String sendMessageText = addNameMessages[new Random().nextInt(3)];
-        messageService.sendMessage(chatId, sendMessageText);
+        messageService.sendMessage(chat.getId(), sendMessageText);
     }
+
+    @Override
+    public String[] getSpecialArgs() {
+        return new String[]{"/add_name", "/add",
+                "додай імена", "додай ім'я", "додай",
+                "додати імена", "додати ім'я", "додати"};
+    }
+
 
 
 }

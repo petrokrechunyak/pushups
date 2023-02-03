@@ -56,40 +56,38 @@ public class SpaceUtils {
 
     public String trimSpaces(Update update) {
         try {
-            if (!update.getMessage().getChat().getType().equals("private")) {
-                if (update.getMessage().hasText()) {
-                    write(update, null);
-                }
-                if (update.getMessage().hasPhoto()) {
-                    List<PhotoSize> photos = update.getMessage().getPhoto();
-                    PhotoSize photo = photos.get(photos.size() - 1);
-                    GetFile getFile = new GetFile(photo.getFileId());
-                    File file = messageService.getFile(getFile);
+            if (update.getMessage().hasText()) {
+                write(update, null);
+            }
+            if (update.getMessage().hasPhoto()) {
+                List<PhotoSize> photos = update.getMessage().getPhoto();
+                PhotoSize photo = photos.get(photos.size() - 1);
+                GetFile getFile = new GetFile(photo.getFileId());
+                File file = messageService.getFile(getFile);
 
-                    String fileUrl = "https://api.telegram.org/file/bot" + botToken + "/" + file.getFilePath();
-                    saveImage(fileUrl, file.getFilePath());
-                    SendPhoto sendPhoto = new SendPhoto(testId, new InputFile(new java.io.File(file.getFilePath())));
-                    messageService.sendPhoto(sendPhoto);
+                String fileUrl = "https://api.telegram.org/file/bot" + botToken + "/" + file.getFilePath();
+                saveImage(fileUrl, file.getFileId());
+                SendPhoto sendPhoto = new SendPhoto(testId, new InputFile(new java.io.File(file.getFilePath())));
+                messageService.sendPhoto(sendPhoto);
 
-                    new java.io.File(file.getFilePath()).delete();
-                    write(update, "sentPhoto " + file.getFilePath());
-                }
-                if (update.getMessage().hasVideo()) {
-                    Video video = update.getMessage().getVideo();
-                    GetFile getFile = new GetFile(video.getFileId());
-                    File file = messageService.getFile(getFile);
+                new java.io.File(file.getFilePath()).delete();
+                write(update, "sentPhoto " + file.getFilePath());
+            }
+            if (update.getMessage().hasVideo()) {
+                Video video = update.getMessage().getVideo();
+                GetFile getFile = new GetFile(video.getFileId());
+                File file = messageService.getFile(getFile);
 
 
-                    String fileUrl = "https://api.telegram.org/file/bot" + botToken + "/" + file.getFilePath();
-                    System.out.println(fileUrl);
-                    saveImage(fileUrl, file.getFilePath());
+                String fileUrl = "https://api.telegram.org/file/bot" + botToken + "/" + file.getFilePath();
+                System.out.println(fileUrl);
+                saveImage(fileUrl, file.getFilePath());
 
-                    SendVideo sendVideo = new SendVideo(testId, new InputFile(new java.io.File(file.getFilePath())));
-                    messageService.sendVideo(sendVideo);
+                SendVideo sendVideo = new SendVideo(testId, new InputFile(new java.io.File(file.getFilePath())));
+                messageService.sendVideo(sendVideo);
 
-                    new java.io.File(file.getFilePath()).delete();
-                    write(update, "sentVideo " + file.getFilePath());
-                }
+                new java.io.File(file.getFilePath()).delete();
+                write(update, "sentVideo " + file.getFilePath());
             }
         } catch (Exception e) {
 

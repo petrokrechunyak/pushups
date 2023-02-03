@@ -1,6 +1,8 @@
 package com.alphabetas.caller.command.container;
 
 import com.alphabetas.caller.command.*;
+import com.alphabetas.caller.model.CallerChat;
+import com.alphabetas.caller.model.CallerUser;
 import com.alphabetas.caller.service.CallerChatService;
 import com.alphabetas.caller.service.CallerNameService;
 import com.alphabetas.caller.service.CallerUserService;
@@ -9,8 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @DisplayName("Command Container Test")
 class CommandContainerTest {
@@ -19,6 +26,7 @@ class CommandContainerTest {
     private CallerChatService chatService;
     private CallerUserService userService;
     private CallerNameService nameService;
+    private Update update;
 
 
     @BeforeEach
@@ -31,16 +39,21 @@ class CommandContainerTest {
         commandContainer = new CommandContainer(sendBotMessageService, chatService, userService,
                 nameService);
 
+        update = mock(Update.class);
+        when(chatService.getByUpdate(update)).thenReturn(new CallerChat());
+        when(userService.getByUpdate(update)).thenReturn(new CallerUser());
+        when(update.getMessage()).thenReturn(mock(Message.class));
+        when(update.getMessage().getText()).thenReturn("text");
     }
-
 
     @Test
     public void shouldReturnUnknownCommand() {
         //given
         String[] args = {"/add_naMEe", "/do_something"};
+
         for(String unknownCommand: args) {
             //when
-            Command command = commandContainer.retrieveCommand(unknownCommand);
+            Command command = commandContainer.retrieveCommand(unknownCommand, update);
             //then
             assertEquals(UnknownCommand.class, command.getClass());
         }
@@ -53,8 +66,7 @@ class CommandContainerTest {
                 "/add_name@caller_ua_bot", "/add@caller_ua_bot"};
         for(String addCommand: args) {
             //when
-            Command command = commandContainer.retrieveCommand(addCommand);
-            System.out.println(addCommand);
+            Command command = commandContainer.retrieveCommand(addCommand, update);
             //then
             assertEquals(AddNameCommand.class, command.getClass());
         }
@@ -80,7 +92,7 @@ class CommandContainerTest {
         };
         for(String addCommand: args) {
             //when
-            Command command = commandContainer.retrieveText(addCommand);
+            Command command = commandContainer.retrieveText(addCommand, update);
             System.out.println(addCommand);
             //then
             assertEquals(AddNameCommand.class, command.getClass());
@@ -107,7 +119,7 @@ class CommandContainerTest {
         };
         for(String deleteCommand: args) {
             //when
-            Command command = commandContainer.retrieveText(deleteCommand);
+            Command command = commandContainer.retrieveText(deleteCommand, update);
             System.out.println(deleteCommand);
             //then
             assertEquals(DeleteCommand.class, command.getClass());
@@ -120,7 +132,7 @@ class CommandContainerTest {
         //given
         String iAmHere = "КлИкУн";
         //when
-        Command command = commandContainer.retrieveText(iAmHere);
+        Command command = commandContainer.retrieveText(iAmHere, update);
         //then
         assertEquals(IAmHereCommand.class, command.getClass());
     }
@@ -130,11 +142,9 @@ class CommandContainerTest {
         //given
         String iAmHere = "КлИкУн привіт, як справи?";
         //when
-        Command command = commandContainer.retrieveText(iAmHere);
+        Command command = commandContainer.retrieveText(iAmHere, update);
         //then
         assertEquals(NoCommand.class, command.getClass());
     }
-
-
 
 }
