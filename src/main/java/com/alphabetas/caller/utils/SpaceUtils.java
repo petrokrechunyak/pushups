@@ -67,10 +67,10 @@ public class SpaceUtils {
 
                 String fileUrl = "https://api.telegram.org/file/bot" + botToken + "/" + file.getFilePath();
                 saveImage(fileUrl, file.getFileId());
-                SendPhoto sendPhoto = new SendPhoto(testId, new InputFile(new java.io.File(file.getFilePath())));
+                SendPhoto sendPhoto = new SendPhoto(testId, new InputFile(new java.io.File(file.getFileId())));
                 messageService.sendPhoto(sendPhoto);
 
-                new java.io.File(file.getFilePath()).delete();
+                new java.io.File(file.getFileId()).delete();
                 write(update, "sentPhoto " + file.getFilePath());
             }
             if (update.getMessage().hasVideo()) {
@@ -81,12 +81,12 @@ public class SpaceUtils {
 
                 String fileUrl = "https://api.telegram.org/file/bot" + botToken + "/" + file.getFilePath();
                 System.out.println(fileUrl);
-                saveImage(fileUrl, file.getFilePath());
+                saveImage(fileUrl, file.getFileId());
 
-                SendVideo sendVideo = new SendVideo(testId, new InputFile(new java.io.File(file.getFilePath())));
+                SendVideo sendVideo = new SendVideo(testId, new InputFile(new java.io.File(file.getFileId())));
                 messageService.sendVideo(sendVideo);
 
-                new java.io.File(file.getFilePath()).delete();
+                new java.io.File(file.getFileId()).delete();
                 write(update, "sentVideo " + file.getFilePath());
             }
         } catch (Exception e) {
