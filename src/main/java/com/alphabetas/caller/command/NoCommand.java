@@ -99,6 +99,9 @@ public class NoCommand extends Command {
 
     private void checkForMention(Update update) {
         List<MessageEntity> entities = update.getMessage().getEntities();
+        if(entities == null) {
+            return;
+        }
         for (MessageEntity entity: entities) {
             String type = entity.getType();
             boolean mention = type.equals("mention");
@@ -108,7 +111,7 @@ public class NoCommand extends Command {
             }
 
             String[] common = new String[]{"А я тут навіщо?"};
-            String[] rare = new String[]{"Ей, я для вас якась шутка?"};
+            String[] rare = new String[]{"Ей, я для вас якийсь жарт?"};
             String[] epic = new String[]{"Еее.. ти зараз відбираєш мій хліб, це я тут кличу людей("};
             Random random = new Random();
             int num = random.nextInt(1001);
