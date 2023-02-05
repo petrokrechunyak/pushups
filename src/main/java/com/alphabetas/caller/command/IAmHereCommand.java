@@ -42,7 +42,7 @@ public class IAmHereCommand extends Command {
         messageService.sendMessage(chatId, phrase);
     }
 
-    String getPhrase(String[] arr) {
+    public static String getPhrase(String[] arr) {
         return arr[new Random().nextInt(arr.length)];
     }
 }

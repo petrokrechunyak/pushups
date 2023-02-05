@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -52,10 +53,8 @@ public class CallerBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if(update.hasMessage()) {
-
             SpaceUtils utils = new SpaceUtils(messageService, botToken);
             String trimSpaces = utils.trimSpaces(update);
-
             try {
                 // if message is sent by bot
                 if(update.getMessage().getFrom().getIsBot()) {
