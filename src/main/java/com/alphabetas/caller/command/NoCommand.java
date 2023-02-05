@@ -15,6 +15,7 @@ import com.alphabetas.caller.utils.DeleteNameUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -75,7 +76,9 @@ public class NoCommand extends Command {
     @Override
     public void execute(Update update) {
         //check for rp commands
-        checkForRp(update, user);
+        checkForRp(update);
+
+        checkForMention(update);
 
         // do action for state of user
         if (user.getUserState() != UserStates.OFF) {
@@ -94,7 +97,38 @@ public class NoCommand extends Command {
         callUser(update);
     }
 
-    private void checkForRp(Update update, CallerUser user) {
+    private void checkForMention(Update update) {
+        List<MessageEntity> entities = update.getMessage().getEntities();
+        for (MessageEntity entity: entities) {
+            String type = entity.getType();
+            boolean mention = type.equals("mention");
+            boolean text_mention = type.equals("text_mention");
+            if(!mention && !text_mention) {
+                continue;
+            }
+
+            String[] common = new String[]{"А я тут навіщо?"};
+            String[] rare = new String[]{"Ей, я для вас якась шутка?"};
+            String[] epic = new String[]{"Еее.. ти зараз відбираєш мій хліб, це я тут кличу людей("};
+            Random random = new Random();
+            int num = random.nextInt(1001);
+
+            String phrase;
+            if(num > 990) {
+                phrase = IAmHereCommand.getPhrase(epic);
+            } else if(num > 900){
+                phrase = IAmHereCommand.getPhrase(rare);
+            } else {
+                phrase = IAmHereCommand.getPhrase(common);
+            }
+
+            SendMessage message = new SendMessage(chat.getId().toString(), phrase);
+            message.setReplyToMessageId(update.getMessage().getMessageId());
+            messageService.sendMessage(message);
+        }
+    }
+
+    private void checkForRp(Update update) {
         String msgText = update.getMessage().getText().toLowerCase();
         Long chatId = user.getCallerChat().getId();
         String[] args = msgText.split("\n");
