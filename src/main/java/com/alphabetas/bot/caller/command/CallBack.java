@@ -47,6 +47,12 @@ public class CallBack extends Command {
             ConfigStateEnum state = ConfigStateEnum.valueOf(params[2]);
             ChatConfig config = configService.findById(chat.getId());
             switch (state) {
+                case CLOSE:
+                    EditMessageText text = new EditMessageText("Налаштування завершено!");
+                    text.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+                    text.setChatId(chat.getId());
+                    messageService.sendMessage(text);
+                    break;
                 case MAIN_MENU:
                 case BACK:
                     edit(String.format(ConfigUtils.MAIN_MENU_TEXT, chat.getTitle()),

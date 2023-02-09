@@ -19,7 +19,15 @@ public class ConfigUtils {
 
     public static InlineKeyboardMarkup mainMenu(CallerChat chat) {
         return createMarkupByButton(limitNamesMenu(chat),
-                rpCommandsMenu(chat), aggressionMenu(chat));
+                rpCommandsMenu(chat), aggressionMenu(chat)
+        , close(chat));
+    }
+
+    public static InlineKeyboardButton close(CallerChat chat) {
+        return InlineKeyboardButton.builder()
+                .callbackData(CONFIG_DATA + chat.getId() + "." + ConfigStateEnum.CLOSE)
+                .text("Завершити налаштування")
+                .build();
     }
 
     public static InlineKeyboardButton limitNamesMenu(CallerChat chat) {

@@ -1,6 +1,7 @@
 package com.alphabetas.bot.caller.model.enums;
 
 public enum ConfigStateEnum {
+    CLOSE,
     BACK,
     MAIN_MENU,
     LIMIT_MENU,
