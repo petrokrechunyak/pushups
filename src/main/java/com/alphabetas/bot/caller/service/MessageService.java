@@ -18,6 +18,8 @@ import java.util.List;
 public interface MessageService {
 
 
+    ChatMember getChatMember(Long chatId, Long userId);
+
     /**
      * @param chatId  chat, in which message need to be sent
      * @param message message text that need to be sent

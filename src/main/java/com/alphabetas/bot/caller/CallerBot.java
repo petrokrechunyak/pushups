@@ -19,6 +19,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import java.util.List;
 
@@ -94,9 +95,6 @@ public class CallerBot extends TelegramLongPollingBot {
 
         if (left != null) {
             CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
-            if ("caller_ua_bot".equals(left.getUserName())) {
-                chatService.delete(chat);
-            }
 
             update.getMessage().getFrom().setId(left.getId());
             CallerUser user = userService.getByUserIdAndCallerChat(left.getId(), chat, update);
@@ -106,7 +104,13 @@ public class CallerBot extends TelegramLongPollingBot {
             log.info("Into someOneLeft AFTER deleting user {}",
                     user);
             userService.delete(user);
-            messageService.sendMessage(chat.getId(), "Бувай!\nНадіємося ви повернетеся.");
+            try {
+                messageService.sendMessage(chat.getId(), "Бувай!\nНадіємося ви повернетеся.");
+            } catch (Exception e) {
+                if (e.getMessage().contains("bot was kicked")) {
+                    chatService.delete(chat);
+                }
+            }
         }
     }
 

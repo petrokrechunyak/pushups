@@ -5,6 +5,7 @@ import com.alphabetas.bot.caller.service.MessageService;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatAdministrators;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -23,6 +24,16 @@ public class MessageServiceImpl implements MessageService {
 
     public MessageServiceImpl(CallerBot bot) {
         this.bot = bot;
+    }
+
+    @Override
+    public ChatMember getChatMember(Long chatId, Long userId) {
+        GetChatMember getChatMember = new GetChatMember(chatId.toString(), userId);
+        try {
+            return bot.execute(getChatMember);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

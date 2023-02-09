@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -55,6 +56,11 @@ public class CallerChatServiceImpl implements CallerChatService {
                 : update.getMessage().getChatId();
 
         return getById(chatId, update);
+    }
+
+    @Override
+    public List<CallerChat> findAll() {
+        return chatRepo.findAll();
     }
 
     private CallerChat saveWithConfig(CallerChat chat) {

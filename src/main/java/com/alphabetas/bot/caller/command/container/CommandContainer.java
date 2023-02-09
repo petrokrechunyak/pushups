@@ -86,6 +86,8 @@ public class CommandContainer {
         prepareCommand(new DeleteCommand());
         // config command
         prepareCommand(new ConfigCommand());
+        // clear command
+        prepareCommand(new ClearCommand());
     }
 
     public void prepareCommand(Command command) {

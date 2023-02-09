@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,6 +35,8 @@ public class CallerChat {
     public CallerChat(Long id, String title) {
         this.id = id;
         this.title = title;
+        callerNames = new HashSet<>();
+        callerUsers = new HashSet<>();
     }
 
     @Override
