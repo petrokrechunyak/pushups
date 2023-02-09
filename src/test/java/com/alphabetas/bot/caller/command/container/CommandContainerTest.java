@@ -1,13 +1,12 @@
 package com.alphabetas.bot.caller.command.container;
 
 import com.alphabetas.bot.caller.command.*;
-import com.alphabetas.bot.caller.service.MessageService;
-import com.alphabetas.caller.command.*;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.service.CallerChatService;
 import com.alphabetas.bot.caller.service.CallerNameService;
 import com.alphabetas.bot.caller.service.CallerUserService;
+import com.alphabetas.bot.caller.service.MessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
