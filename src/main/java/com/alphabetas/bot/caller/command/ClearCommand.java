@@ -18,7 +18,14 @@ public class ClearCommand extends Command{
     public void execute(Update update) {
         int counter = 0;
         for(CallerUser u: chat.getCallerUsers()) {
-            ChatMember chatMember = messageService.getChatMember(chat.getId(), u.getUserId());
+            ChatMember chatMember = null;
+            try {
+                chatMember = messageService.getChatMember(chat.getId(), u.getUserId());
+            } catch (Exception e) {
+                userService.delete(user);
+                counter += u.getNames().size();
+                continue;
+            }
             if(chatMember instanceof ChatMemberLeft) {
                 userService.delete(u);
                 counter += u.getNames().size();
