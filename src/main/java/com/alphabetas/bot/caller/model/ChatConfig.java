@@ -35,6 +35,8 @@ public class ChatConfig {
     public ChatConfig(Long chatId, Integer nameLimit) {
         this.chatId = chatId;
         this.nameLimit = nameLimit;
+        this.aggressionEnabled = true;
+        this.rpEnabled = true;
     }
 
     public void setNameLimit(Integer nameLimit) {
