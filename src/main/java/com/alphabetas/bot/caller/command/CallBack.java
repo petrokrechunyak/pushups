@@ -52,6 +52,13 @@ public class CallBack extends Command {
                     text.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
                     text.setChatId(chat.getId());
                     messageService.sendMessage(text);
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    messageService.deleteMessage(chat.getId().toString(),
+                            update.getCallbackQuery().getMessage().getMessageId());
                     break;
                 case MAIN_MENU:
                 case BACK:
