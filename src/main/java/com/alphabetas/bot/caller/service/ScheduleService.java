@@ -29,10 +29,11 @@ public class ScheduleService {
     }
 
     // every 1 hour
-//    @Scheduled(fixedDelay = 1000 * 60 * 60)
+    @Scheduled(fixedDelay = 1000 * 60 * 60)
     public void checkForDeletion() {
         List<CallerChat> all = chatService.findAll();
         for(CallerChat chat: all) {
+            int counter = 0;
             for (CallerUser user: chat.getCallerUsers()) {
                 ChatMember member = null;
                 try {
@@ -42,11 +43,14 @@ public class ScheduleService {
                         chatService.delete(chat);
                     }
                 }
-                System.out.println(member.toString());
                 if(member instanceof ChatMemberLeft) {
                     userService.delete(user);
+                    counter += user.getNames().size();
                     break;
                 }
+            }
+            if(counter > 0) {
+                messageService.sendMessage(chat.getId(), "Очищено імен: " + counter);
             }
         }
     }
