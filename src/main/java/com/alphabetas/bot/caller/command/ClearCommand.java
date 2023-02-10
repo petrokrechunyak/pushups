@@ -2,10 +2,12 @@ package com.alphabetas.bot.caller.command;
 
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberLeft;
 
+@Slf4j
 public class ClearCommand extends Command{
     public ClearCommand(String msgText, CallerChat chat, CallerUser user) {
         super(msgText, chat, user);
@@ -17,8 +19,8 @@ public class ClearCommand extends Command{
     @Override
     public void execute(Update update) {
         int counter = 0;
-        System.out.println("searching users for deleting:");
-        System.out.println(chat.getCallerUsers());
+        log.info("searching users for deleting:");
+        log.info(chat.getCallerUsers().toString());
         for(CallerUser u: chat.getCallerUsers()) {
             ChatMember chatMember = null;
             try {
@@ -26,13 +28,13 @@ public class ClearCommand extends Command{
             } catch (Exception e) {
                 userService.delete(u);
                 counter += u.getNames().size();
-                System.out.println("user to delete found:(Exception)" + u);
+                log.info("user to delete found:(Exception)" + u);
                 continue;
             }
             if(chatMember instanceof ChatMemberLeft) {
                 userService.delete(u);
                 counter += u.getNames().size();
-                System.out.println("user to delete found: " + u);
+                log.info("user to delete found: " + u);
 
             }
         }
