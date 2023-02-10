@@ -41,12 +41,14 @@ public class ScheduleService {
                 } catch (Exception e) {
                     if(e.getMessage().contains("bot was kicked")) {
                         chatService.delete(chat);
+                        chat.getCallerUsers().remove(user);
                     } else {
                         e.printStackTrace();
                     }
                 }
                 if(member instanceof ChatMemberLeft) {
                     userService.delete(user);
+                    chat.getCallerUsers().remove(user);
                     counter += user.getNames().size();
                     break;
                 }
