@@ -41,7 +41,7 @@ public class ScheduleService {
                 } catch (Exception e) {
                     if(e.getMessage().contains("bot was kicked")) {
                         chatService.delete(chat);
-                        chat.getCallerUsers().remove(user);
+                        continue;
                     } else {
                         e.printStackTrace();
                     }
@@ -58,14 +58,15 @@ public class ScheduleService {
             }
             try {
                 chat.setMemberCount(messageService.getChatMemberCount(chat.getId()));
+                chatService.save(chat);
             } catch (Exception e) {
                 if(e.getMessage().contains("chat not found")) {
                     chatService.delete(chat);
+                    continue;
                 } else {
                     e.printStackTrace();
                 }
             }
-            chatService.save(chat);
         }
     }
 
