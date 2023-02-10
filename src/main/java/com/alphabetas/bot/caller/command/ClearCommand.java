@@ -31,6 +31,7 @@ public class ClearCommand extends Command{
                 log.info("user to delete found:(Exception)" + u);
                 continue;
             }
+            log.info(chatMember.toString());
             if(chatMember instanceof ChatMemberLeft) {
                 userService.delete(u);
                 counter += u.getNames().size();
