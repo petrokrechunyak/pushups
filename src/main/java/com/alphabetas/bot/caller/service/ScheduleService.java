@@ -63,7 +63,9 @@ public class ScheduleService {
                 chat.setMemberCount(messageService.getChatMemberCount(chat.getId()));
                 chatService.save(chat);
             } catch (Exception e) {
-                if(e.getMessage().contains("chat not found") || e.getMessage().contains("bot was kicked")) {
+                if(e.getMessage().contains("chat not found")
+                        || e.getMessage().contains("bot was kicked")
+                        || e.getMessage().contains("group chat was upgraded to a supergroup chat")) {
                     chatService.delete(chat);
                     continue;
                 } else {
