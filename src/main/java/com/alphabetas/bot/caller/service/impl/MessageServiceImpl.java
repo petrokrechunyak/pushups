@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatAdministrators;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMemberCount;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -121,6 +122,16 @@ public class MessageServiceImpl implements MessageService {
     public void sendVideo(SendVideo video) {
         try {
             bot.execute(video);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getChatMemberCount(Long chatId) {
+        GetChatMemberCount count = new GetChatMemberCount(chatId.toString());
+        try {
+            return bot.execute(count);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

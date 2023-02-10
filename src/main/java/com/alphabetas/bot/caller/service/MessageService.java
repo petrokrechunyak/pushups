@@ -2,6 +2,7 @@ package com.alphabetas.bot.caller.service;
 
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMemberCount;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -67,5 +68,7 @@ public interface MessageService {
     void sendPhoto(SendPhoto photo);
 
     void sendVideo(SendVideo video);
+
+    int getChatMemberCount(Long chatId);
 
 }
