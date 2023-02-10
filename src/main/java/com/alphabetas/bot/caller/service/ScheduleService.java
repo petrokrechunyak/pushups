@@ -41,6 +41,8 @@ public class ScheduleService {
                 } catch (Exception e) {
                     if(e.getMessage().contains("bot was kicked")) {
                         chatService.delete(chat);
+                    } else {
+                        e.printStackTrace();
                     }
                 }
                 if(member instanceof ChatMemberLeft) {
@@ -52,7 +54,15 @@ public class ScheduleService {
             if(counter > 0) {
                 messageService.sendMessage(chat.getId(), "Очищено імен: " + counter);
             }
-            chat.setMemberCount(messageService.getChatMemberCount(chat.getId()));
+            try {
+                chat.setMemberCount(messageService.getChatMemberCount(chat.getId()));
+            } catch (Exception e) {
+                if(e.getMessage().contains("chat not found")) {
+                    chatService.delete(chat);
+                } else {
+                    e.printStackTrace();
+                }
+            }
             chatService.save(chat);
         }
     }
