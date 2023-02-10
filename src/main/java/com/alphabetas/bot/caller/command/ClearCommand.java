@@ -22,7 +22,7 @@ public class ClearCommand extends Command{
             try {
                 chatMember = messageService.getChatMember(chat.getId(), u.getUserId());
             } catch (Exception e) {
-                userService.delete(user);
+                userService.delete(u);
                 counter += u.getNames().size();
                 continue;
             }

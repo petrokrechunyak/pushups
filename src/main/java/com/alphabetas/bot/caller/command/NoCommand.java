@@ -63,6 +63,7 @@ public class NoCommand extends Command {
         put("заїбатися", "%s заїбався(лась) через %s \uD83E\uDD74");
         put("лизнути", "%s лизнув(ла) %s \uD83D\uDC45");
         put("трахнути", "%s трахнув(ла) %s \uD83D\uDC49\uD83D\uDC4C\uD83D\uDCA6");
+        put("ляснути по попі", "%s ляснув(ла) по попі %s \uD83D\uDD90\uD83C\uDFFB \uD83C\uDF51");
     }};
 
     public NoCommand(String msgText, CallerChat chat, CallerUser user) {
@@ -212,7 +213,7 @@ public class NoCommand extends Command {
                 case "поцілувати":
                 case "кохатися":
                 case "звабити":
-                case "напитися з":
+                case "напитись з":
                     if (user.getUserId().equals(731921794L)) {
                         builder.append("\nЗі словами: \uD83E\uDD70");
                         messageService.sendMessage(chatId,
