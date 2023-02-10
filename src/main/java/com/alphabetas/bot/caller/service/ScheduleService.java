@@ -42,7 +42,10 @@ public class ScheduleService {
                     if(e.getMessage().contains("bot was kicked")) {
                         chatService.delete(chat);
                         continue;
-                    } else {
+                    } else if(e.getMessage().contains("user not found")) {
+                        userService.delete(user);
+                        continue;
+                    }else {
                         e.printStackTrace();
                     }
                 }
