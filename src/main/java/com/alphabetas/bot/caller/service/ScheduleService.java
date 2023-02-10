@@ -60,7 +60,7 @@ public class ScheduleService {
                 chat.setMemberCount(messageService.getChatMemberCount(chat.getId()));
                 chatService.save(chat);
             } catch (Exception e) {
-                if(e.getMessage().contains("chat not found")) {
+                if(e.getMessage().contains("chat not found") || e.getMessage().contains("bot was kicked")) {
                     chatService.delete(chat);
                     continue;
                 } else {
