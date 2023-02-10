@@ -214,6 +214,7 @@ public class NoCommand extends Command {
                 case "кохатися":
                 case "звабити":
                 case "напитись з":
+                case "ляснути по попі":
                     if (user.getUserId().equals(731921794L)) {
                         builder.append("\nЗі словами: \uD83E\uDD70");
                         messageService.sendMessage(chatId,

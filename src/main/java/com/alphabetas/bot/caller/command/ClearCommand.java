@@ -17,6 +17,8 @@ public class ClearCommand extends Command{
     @Override
     public void execute(Update update) {
         int counter = 0;
+        System.out.println("searching users for deleting:");
+        System.out.println(chat.getCallerUsers());
         for(CallerUser u: chat.getCallerUsers()) {
             ChatMember chatMember = null;
             try {
@@ -24,11 +26,14 @@ public class ClearCommand extends Command{
             } catch (Exception e) {
                 userService.delete(u);
                 counter += u.getNames().size();
+                System.out.println("user to delete found:(Exception)" + u);
                 continue;
             }
             if(chatMember instanceof ChatMemberLeft) {
                 userService.delete(u);
                 counter += u.getNames().size();
+                System.out.println("user to delete found: " + u);
+
             }
         }
         messageService.sendMessage(chat.getId(), "Очищено імен: " + counter);
