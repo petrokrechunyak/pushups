@@ -57,7 +57,7 @@ public class ScheduleService {
                 }
             }
             if(counter > 0) {
-                messageService.sendMessage(chat.getId(), "Очищено імен: " + counter);
+                messageService.sendMessage(chat.getId(), "Очищено імен: " + counter, (Integer) null);
             }
             try {
                 chat.setMemberCount(messageService.getChatMemberCount(chat.getId()));

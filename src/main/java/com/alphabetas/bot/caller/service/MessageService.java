@@ -28,7 +28,7 @@ public interface MessageService {
      * <br>
      * {@link SendMessage} object creates automatically, with html parsing - true
      */
-    Message sendMessage(Long chatId, String message);
+    Message sendMessage(Long chatId, String message, Integer threadId);
 
     /**
      * @param sendMessage {@link SendMessage} object that need to be sent

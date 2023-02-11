@@ -66,8 +66,8 @@ public class NoCommand extends Command {
         put("ляснути по попі", "%s ляснув(ла) по попі %s \uD83D\uDD90\uD83C\uDFFB \uD83C\uDF51");
     }};
 
-    public NoCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public NoCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     private static boolean contains(String text, String toSearch) {
@@ -263,7 +263,7 @@ public class NoCommand extends Command {
         user.setUserState(UserStates.OFF);
         userService.save(user);
 
-        messageService.sendMessage(chat.getId(), returnMessage);
+        messageService.sendMessage(chat.getId(), returnMessage, threadId);
     }
 
     public void deleteState(Update update) {
@@ -273,7 +273,7 @@ public class NoCommand extends Command {
         user.setUserState(UserStates.OFF);
         userService.save(user);
 
-        messageService.sendMessage(chat.getId(), returnMessage);
+        messageService.sendMessage(chat.getId(), returnMessage, threadId);
     }
 
     public void callUser(Update update) {

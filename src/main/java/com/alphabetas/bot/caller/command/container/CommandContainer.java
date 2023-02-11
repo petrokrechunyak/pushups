@@ -38,10 +38,10 @@ public class CommandContainer {
 
     }
 
-    public Command classToCommand(Class<?> clazz, CallerChat chat, CallerUser user, String text) {
+    public Command classToCommand(Class<?> clazz, CallerChat chat, CallerUser user, String text, Integer threadId) {
         try {
-            Constructor<?> constructor = clazz.getConstructor(String.class, CallerChat.class, CallerUser.class);
-            return (Command) constructor.newInstance(text, chat, user);
+            Constructor<?> constructor = clazz.getConstructor(String.class, CallerChat.class, CallerUser.class, Integer.class);
+            return (Command) constructor.newInstance(text, chat, user, threadId);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException e) {
             throw new RuntimeException(e);
@@ -52,27 +52,29 @@ public class CommandContainer {
         CallerChat chat = chatService.getByUpdate(update);
         CallerUser user = userService.getByUpdate(update);
         String msgText = update.getMessage().getText();
+        Integer threadId = update.getMessage().getMessageThreadId();
         Class<?> clazz = classMap.getOrDefault(command.split("[ @]")[0].toLowerCase(), UnknownCommand.class);
-        return classToCommand(clazz, chat, user, msgText);
+        return classToCommand(clazz, chat, user, msgText, threadId);
     }
 
     public Command retrieveText(String text, Update update) {
         String startText = text;
         CallerChat chat = chatService.getByUpdate(update);
         CallerUser user = userService.getByUpdate(update);
+        Integer threadId = update.getMessage().getMessageThreadId();
         if (text.equalsIgnoreCase("кликун")) {
-            return classToCommand(IAmHereCommand.class, chat, user, startText);
+            return classToCommand(IAmHereCommand.class, chat, user, startText, threadId);
         }
 
         if (!CommandUtils.isCommand(text)) {
-            return classToCommand(NoCommand.class, chat, user, startText);
+            return classToCommand(NoCommand.class, chat, user, startText, threadId);
         }
         text = text.toLowerCase().replaceFirst("^[.|!]|кликун?", "");
         text = StringUtils.replaceIgnoreCase(text, "кликун", "");
         String[] splitted = ArrayUtils.removeAllOccurrences(text.split(" ", 3), "");
 
         Class<?> clazz = classMap.getOrDefault(splitted[0], NoCommand.class);
-        return classToCommand(clazz, chat, user, startText);
+        return classToCommand(clazz, chat, user, startText, threadId);
     }
 
     public void prepareCommands() {

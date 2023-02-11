@@ -13,8 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Slf4j
 public class CancelCommand extends Command {
 
-    public CancelCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public CancelCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     @Override
@@ -29,14 +29,15 @@ public class CancelCommand extends Command {
             if (AbstractNameUtils.isUserAdmin(user.getUserId(), chat.getId())) {
                 CommandUtils.setUserToUpdate(update);
             } else {
-                messageService.sendMessage(chat.getId(), "Тільки адміністратори можуть керувати іменами інших!");
+                messageService.sendMessage(chat.getId(), "Тільки адміністратори можуть керувати іменами інших!",
+                        threadId);
                 return;
             }
         }
         if (user.getUserState() != UserStates.OFF) {
             user.setUserState(UserStates.OFF);
             userService.save(user);
-            messageService.sendMessage(chat.getId(), "Дію відхилено");
+            messageService.sendMessage(chat.getId(), "Дію відхилено", threadId);
         }
     }
 

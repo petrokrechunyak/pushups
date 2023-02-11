@@ -17,8 +17,8 @@ import java.util.List;
 
 public class CallBack extends Command {
 
-    public CallBack(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public CallBack(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     public static void edit(String text, InlineKeyboardMarkup markup, Update update, CallerChat chat) {

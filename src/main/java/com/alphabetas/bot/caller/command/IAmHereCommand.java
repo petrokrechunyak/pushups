@@ -17,8 +17,8 @@ public class IAmHereCommand extends Command {
     private final String[] legendaryPhrases = new String[]{"Я тут та готовий вас кликат... Почекайте це ж легендарна фраза, якою я відповідаю з шансом в 1/1000. Вітаю! В честь цього підпишіться на хатину Кликуна будь ласка: \n\n" +
             "<a href='https://t.me/callerHut'>Моя хатина</a>)))"};
 
-    public IAmHereCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public IAmHereCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     public static String getPhrase(String[] arr) {
@@ -41,7 +41,7 @@ public class IAmHereCommand extends Command {
         } else {
             phrase = getPhrase(commonPhrases);
         }
-
-        messageService.sendMessage(chatId, phrase);
+        System.out.println(threadId);
+        messageService.sendMessage(chatId, phrase, threadId);
     }
 }

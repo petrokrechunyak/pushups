@@ -13,8 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Slf4j
 public class ShowCommand extends Command {
 
-    public ShowCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public ShowCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     @Override
@@ -32,11 +32,13 @@ public class ShowCommand extends Command {
 
                 if (message.getFrom().getUserName().equals("caller_ua_bot")) {
                     messageService.sendMessage(chat.getId(),
-                            "У мене тільки одне ім'я - Кликун ;)");
+                            "У мене тільки одне ім'я - Кликун ;)",
+                            threadId);
                     return;
                 }
                 messageService.sendMessage(chat.getId(),
-                        "У ботів не може бути імен :/");
+                        "У ботів не може бути імен :/",
+                        threadId);
                 return;
             }
             CommandUtils.setUserToUpdate(update);
@@ -49,7 +51,8 @@ public class ShowCommand extends Command {
                     "У користувача " + CommandUtils.makeLink(
                             user.getUserId(),
                             user.getFirstname()
-                    ) + " ще немає імен, але їх завжди можна додати командою /add");
+                    ) + " ще немає імен, але їх завжди можна додати командою /add",
+                    threadId);
             return;
         }
         StringBuilder builder = new StringBuilder("<b>Імена ")
@@ -59,7 +62,8 @@ public class ShowCommand extends Command {
             builder.append(name.getName()).append("\n");
         }
 
-        messageService.sendMessage(user.getCallerChat().getId(), CommandUtils.decryptSpace(builder.toString()));
+        messageService.sendMessage(user.getCallerChat().getId(), CommandUtils.decryptSpace(builder.toString()),
+                threadId);
     }
 
     @Override

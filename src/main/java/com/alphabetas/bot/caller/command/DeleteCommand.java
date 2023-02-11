@@ -21,8 +21,8 @@ public class DeleteCommand extends Command {
             "Все, а тепер просто напишіть ім'я яке хочете видалити, але якщо не хочете нічого видаляти напишіть /cancel",
             "Хочете видалити ім'я? Просто напишіть його. Не хочете? - Напишіть /cancel"};
 
-    public DeleteCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public DeleteCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DeleteCommand extends Command {
                 CommandUtils.setUserToUpdate(update);
                 admin = true;
             } else {
-                messageService.sendMessage(chat.getId(), "Тільки адміністратори можуть керувати іменами інших!");
+                messageService.sendMessage(chat.getId(), "Тільки адміністратори можуть керувати іменами інших!", threadId);
                 return;
             }
         }
@@ -48,7 +48,7 @@ public class DeleteCommand extends Command {
         msgText = CommandUtils.trimMessage(msgText, getSpecialArgs());
         if (msgText.isBlank()) {
             if (admin) {
-                messageService.sendMessage(chat.getId(), "Параметри повинні бути в одному повідомленні з адмін-командою!");
+                messageService.sendMessage(chat.getId(), "Параметри повинні бути в одному повідомленні з адмін-командою!", threadId);
                 return;
             }
             sendMessageToDeleteName();
@@ -58,7 +58,7 @@ public class DeleteCommand extends Command {
 
         String savedText = DeleteNameUtils.deleteNames(msgText, user, chat);
 
-        messageService.sendMessage(chat.getId(), savedText);
+        messageService.sendMessage(chat.getId(), savedText, threadId);
     }
 
 
@@ -66,7 +66,7 @@ public class DeleteCommand extends Command {
         user.setUserState(UserStates.DELETE);
         userService.save(user);
         String sendMessageText = deleteNameMessages[new Random().nextInt(3)];
-        messageService.sendMessage(chat.getId(), sendMessageText);
+        messageService.sendMessage(chat.getId(), sendMessageText, threadId);
     }
 
     @Override

@@ -38,8 +38,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message sendMessage(Long chatId, String message) {
+    public Message sendMessage(Long chatId, String message, Integer threadId) {
         SendMessage sendMessage = new SendMessage(chatId.toString(), message);
+        sendMessage.setMessageThreadId(threadId);
         sendMessage.enableHtml(true);
 
         return sendMessage(sendMessage);

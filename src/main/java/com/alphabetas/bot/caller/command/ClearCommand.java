@@ -11,8 +11,9 @@ import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberRestricte
 
 @Slf4j
 public class ClearCommand extends Command{
-    public ClearCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+
+    public ClearCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     public ClearCommand() {
@@ -47,7 +48,7 @@ public class ClearCommand extends Command{
                 }
              }
         }
-        messageService.sendMessage(chat.getId(), "Очищено імен: " + counter);
+        messageService.sendMessage(chat.getId(), "Очищено імен: " + counter, threadId);
     }
 
     @Override

@@ -15,8 +15,8 @@ import static com.alphabetas.bot.caller.utils.ConfigUtils.mainMenu;
 
 public class ConfigCommand extends Command {
 
-    public ConfigCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public ConfigCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     public ConfigCommand() {

@@ -24,8 +24,8 @@ public class AddNameCommand extends Command {
 
     private final String[] badWords = new String[]{"кликун", "додати"};
 
-    public AddNameCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public AddNameCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     @Override
@@ -40,13 +40,15 @@ public class AddNameCommand extends Command {
         if (msgText.startsWith("!") && update.getMessage().getReplyToMessage() != null) {
             if (isUserAdmin(user.getUserId(), chat.getId())) {
                 if (update.getMessage().getReplyToMessage().getFrom().getIsBot()) {
-                    messageService.sendMessage(chat.getId(), "У ботів не може бути імен :/");
+                    messageService.sendMessage(chat.getId(), "У ботів не може бути імен :/",
+                            threadId);
                     return;
                 }
                 CommandUtils.setUserToUpdate(update);
                 admin = true;
             } else {
-                messageService.sendMessage(chat.getId(), "Тільки адміністратори можуть керувати іменами інших!");
+                messageService.sendMessage(chat.getId(), "Тільки адміністратори можуть керувати іменами інших!",
+                        threadId);
                 return;
             }
         }
@@ -57,7 +59,8 @@ public class AddNameCommand extends Command {
         msgText = CommandUtils.trimMessage(msgText, getSpecialArgs());
         if (msgText.isBlank()) {
             if (admin) {
-                messageService.sendMessage(chat.getId(), "Параметри повинні бути в одному повідомленні з адмін-командою!");
+                messageService.sendMessage(chat.getId(), "Параметри повинні бути в одному повідомленні з адмін-командою!",
+                        threadId);
                 return;
             }
             sendMessageToAddName();
@@ -66,7 +69,7 @@ public class AddNameCommand extends Command {
 
         String savedText = AddNameUtils.saveNames(msgText, user, chat);
 
-        messageService.sendMessage(chat.getId(), savedText);
+        messageService.sendMessage(chat.getId(), savedText, threadId);
     }
 
 
@@ -77,7 +80,7 @@ public class AddNameCommand extends Command {
         user.setUserState(UserStates.ADD);
         userService.save(user);
         String sendMessageText = addNameMessages[new Random().nextInt(3)];
-        messageService.sendMessage(chat.getId(), sendMessageText);
+        messageService.sendMessage(chat.getId(), sendMessageText, threadId);
     }
 
     @Override

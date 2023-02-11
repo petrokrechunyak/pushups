@@ -16,11 +16,13 @@ public abstract class Command {
     protected String msgText;
     protected CallerChat chat;
     protected CallerUser user;
+    protected Integer threadId;
 
-    public Command(String msgText, CallerChat chat, CallerUser user) {
+    public Command(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
         this.msgText = msgText;
         this.chat = chat;
         this.user = user;
+        this.threadId = threadId;
     }
 
     public Command() {

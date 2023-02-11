@@ -8,8 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Slf4j
 public class UnknownCommand extends Command {
 
-    public UnknownCommand(String msgText, CallerChat chat, CallerUser user) {
-        super(msgText, chat, user);
+    public UnknownCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
+        super(msgText, chat, user, threadId);
     }
 
     @Override

@@ -82,7 +82,8 @@ public class CallerBot extends TelegramLongPollingBot {
         } else if (update.hasCallbackQuery()) {
             CallerUser user = userService.getByUpdate(update);
             CallerChat chat = chatService.getByUpdate(update);
-            CallBack callBackCommand = new CallBack(update.getCallbackQuery().getData(), chat, user);
+            Integer threadId = update.getMessage().getMessageThreadId();
+            CallBack callBackCommand = new CallBack(update.getCallbackQuery().getData(), chat, user, threadId);
             callBackCommand.execute(update);
         }
 
@@ -105,7 +106,8 @@ public class CallerBot extends TelegramLongPollingBot {
                     user);
             userService.delete(user);
             try {
-                messageService.sendMessage(chat.getId(), "Бувай!\nНадіємося ви повернетеся.");
+                messageService.sendMessage(chat.getId(), "Бувай!\nНадіємося ви повернетеся.",
+                        update.getMessage().getMessageThreadId());
             } catch (Exception e) {
                 if (e.getMessage().contains("bot was kicked")) {
                     chatService.delete(chat);
