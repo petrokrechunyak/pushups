@@ -11,6 +11,7 @@ import com.alphabetas.bot.caller.utils.CommandUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.forum.ForumTopic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -52,7 +53,7 @@ public class CommandContainer {
         CallerChat chat = chatService.getByUpdate(update);
         CallerUser user = userService.getByUpdate(update);
         String msgText = update.getMessage().getText();
-        Integer threadId = update.getMessage().getMessageThreadId();
+        Integer threadId = update.getMessage().getIsTopicMessage() != null ? update.getMessage().getMessageThreadId() : null;
         Class<?> clazz = classMap.getOrDefault(command.split("[ @]")[0].toLowerCase(), UnknownCommand.class);
         return classToCommand(clazz, chat, user, msgText, threadId);
     }
@@ -61,7 +62,8 @@ public class CommandContainer {
         String startText = text;
         CallerChat chat = chatService.getByUpdate(update);
         CallerUser user = userService.getByUpdate(update);
-        Integer threadId = update.getMessage().getMessageThreadId();
+        Integer threadId = update.getMessage().getIsTopicMessage() != null ? update.getMessage().getMessageThreadId() : null;
+
         if (text.equalsIgnoreCase("кликун")) {
             return classToCommand(IAmHereCommand.class, chat, user, startText, threadId);
         }

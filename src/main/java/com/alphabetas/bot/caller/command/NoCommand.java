@@ -140,7 +140,7 @@ public class NoCommand extends Command {
                 continue;
             }
 
-            String[] common = new String[]{"А я тут навіщо?"};
+            String[] common = new String[]{"А я тут навіщо?", "Кликати людей - це моя робота!"};
             String[] rare = new String[]{"Ей, я для вас якийсь жарт?"};
             String[] epic = new String[]{"Еее.. ти зараз відбираєш мій хліб, це я тут кличу людей("};
             Random random = new Random();
