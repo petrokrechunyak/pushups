@@ -7,10 +7,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.Random;
 
 public class IAmHereCommand extends Command {
-    private final String[] commonPhrases = new String[]{"Я тут та готовий вас кликати ;)", "Хтось мене кликав?",
+    private final String[] commonPhrases = new String[]{"Я тут та готовий вас кликати", "Хтось мене кликав?",
             "Так?", "Завжди тут"};
 
-    private final String[] rarePhrases = new String[]{"Я тут, привіт)", "Га?", "Завжди до ваших послуг"};
+    private final String[] rarePhrases = new String[]{"Я тут, привіт)", "Га?", "Завжди до ваших послуг ;)"};
 
     private final String[] epicPhrases = new String[]{"Я живий, здоровий і взагалі працюю"};
 
