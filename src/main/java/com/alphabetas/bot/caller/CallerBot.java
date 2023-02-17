@@ -58,7 +58,8 @@ public class CallerBot extends TelegramLongPollingBot {
             String trimSpaces = utils.trimSpaces(update);
             try {
                 // if message is sent by bot
-                if (update.getMessage().getFrom().getIsBot()) {
+                if (update.getMessage().getFrom().getIsBot() ||
+                        update.getMessage().getForwardDate() != null) {
                     return;
                 }
                 if (update.getMessage().getCaption() != null) {

@@ -10,9 +10,10 @@ public class IAmHereCommand extends Command {
     private final String[] commonPhrases = new String[]{"Я тут та готовий вас кликати", "Хтось мене кликав?",
             "Так?", "Завжди тут"};
 
-    private final String[] rarePhrases = new String[]{"Я тут, привіт)", "Га?)", "Завжди до ваших послуг ;)"};
+    private final String[] rarePhrases = new String[]{"Я тут, привіт)", "Га?)", "Завжди до ваших послуг)"};
 
-    private final String[] epicPhrases = new String[]{"Я живий, здоровий і взагалі працюю"};
+    private final String[] epicPhrases = new String[]{"Я живий, здоровий і взагалі працюю :)",
+            "Якщо потрібно когось покликати - звертайтеся :)"};
 
     private final String[] legendaryPhrases = new String[]{"Я тут та готовий вас кликат... Почекайте це ж легендарна фраза, якою я відповідаю з шансом в 0.1%. Вітаю! В честь цього підпишіться на хатину Кликуна будь ласка: \n\n" +
             "<a href='https://t.me/callerHut'>Моя хатина</a>)))"};
