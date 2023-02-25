@@ -19,7 +19,7 @@ public class ConfigUtils {
 
     public static InlineKeyboardMarkup mainMenu(CallerChat chat) {
         return createMarkupByButton(limitNamesMenu(chat),
-                rpCommandsMenu(chat), aggressionMenu(chat)
+                rpCommandsMenu(chat), aggressionMenu(chat), allowSpaceMenu(chat)
         , close(chat));
     }
 
@@ -48,6 +48,13 @@ public class ConfigUtils {
         return InlineKeyboardButton.builder()
                 .callbackData(CONFIG_DATA + chat.getId() + "." + ConfigStateEnum.AGGRESSION_MENU)
                 .text("Налаштування агресії")
+                .build();
+    }
+
+    public static InlineKeyboardButton allowSpaceMenu(CallerChat chat) {
+        return InlineKeyboardButton.builder()
+                .callbackData(CONFIG_DATA + chat.getId() + "." + ConfigStateEnum.ALLOW_SPACES)
+                .text("Імена з пробілами")
                 .build();
     }
 

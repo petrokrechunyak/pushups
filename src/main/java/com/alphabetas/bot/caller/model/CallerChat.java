@@ -33,6 +33,9 @@ public class CallerChat {
     @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
     private Set<CallerName> callerNames;
 
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+    private Set<GroupName> groupNames;
+
     @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "chat")
     private ChatConfig config;
 

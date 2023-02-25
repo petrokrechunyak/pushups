@@ -3,6 +3,7 @@ package com.alphabetas.bot.caller.command;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerName;
 import com.alphabetas.bot.caller.model.CallerUser;
+import com.alphabetas.bot.caller.model.GroupName;
 import com.alphabetas.bot.caller.utils.CommandUtils;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,6 @@ public class ShowCommand extends Command {
 
     @Override
     public void execute(Update update) {
-
         // delete message if starts with /
         if (msgText.startsWith("/")) {
             messageService.deleteMessage(chat.getId().toString(), update.getMessage().getMessageId());
@@ -46,7 +46,7 @@ public class ShowCommand extends Command {
 
         user = userService.getByUserIdAndCallerChat(chat, update);
 
-        if (user.getNames().size() == 0) {
+        if (user.getNames().size() == 0 && user.getGroupNames().size() == 0) {
             messageService.sendMessage(user.getCallerChat().getId(),
                     "У користувача " + CommandUtils.makeLink(
                             user.getUserId(),
@@ -59,6 +59,11 @@ public class ShowCommand extends Command {
                 .append(CommandUtils.makeLink(user.getUserId(), user.getFirstname()))
                 .append("</b>\n");
         for (CallerName name : user.getNames()) {
+            builder.append(name.getName()).append("\n");
+        }
+
+        builder.append("\n<b>Групові імена: </b>\n");
+        for (GroupName name : user.getGroupNames()) {
             builder.append(name.getName()).append("\n");
         }
 

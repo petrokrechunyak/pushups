@@ -1,29 +1,13 @@
 package com.alphabetas.bot.caller.utils;
 
-import com.alphabetas.bot.caller.service.CallerChatService;
-import com.alphabetas.bot.caller.service.CallerNameService;
-import com.alphabetas.bot.caller.service.CallerUserService;
-import com.alphabetas.bot.caller.service.MessageService;
+import com.alphabetas.bot.caller.model.Service;
+import com.alphabetas.bot.caller.service.*;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractNameUtils {
-
-    static CallerUserService userService;
-    static CallerChatService chatService;
-    static CallerNameService nameService;
-
-    static MessageService messageService;
-
-    public static void setServices(CallerUserService userService1, CallerChatService chatService1, CallerNameService nameService1,
-                                   MessageService messageService1) {
-        userService = userService1;
-        chatService = chatService1;
-        nameService = nameService1;
-        messageService = messageService1;
-    }
+public abstract class AbstractNameUtils extends Service {
 
     public static String[] getNamesFromMessage(String message) {
         return Arrays.stream(message.split(","))
