@@ -3,12 +3,13 @@ package com.alphabetas.bot.caller.utils;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerName;
 import com.alphabetas.bot.caller.model.CallerUser;
+import com.alphabetas.bot.caller.model.GroupName;
 import com.alphabetas.bot.caller.model.enums.UserStates;
 
 import java.util.Arrays;
 import java.util.Set;
 
-import static com.alphabetas.bot.caller.utils.CommandUtils.CURRENT_REGEX;
+import static com.alphabetas.bot.caller.utils.CommandUtils.*;
 
 public class AddNameUtils extends AbstractNameUtils {
 
@@ -29,7 +30,10 @@ public class AddNameUtils extends AbstractNameUtils {
                 continue;
             }
             builder.append("Ім'я <b>").append(arg).append("</b> ");
-            if (arg.matches(CURRENT_REGEX)) {
+            String currentRegex = chat.getConfig().isAllowSpace()
+                    ? NAME_WITH_SPACES_REGEX
+                    : SINGLE_WORD_REGEX;
+            if (arg.matches(currentRegex)) {
                 arg = CommandUtils.encryptSpace(arg);
                 CallerName name = nameService.getByCallerChatAndName(chat, arg);
                 if (name != null) {
@@ -42,6 +46,11 @@ public class AddNameUtils extends AbstractNameUtils {
                 }
                 if (arg.length() < 3) {
                     builder.append("занадто мале! Мінімальна кількість символів: <u>3</u>\n");
+                    continue;
+                }
+                if(groupNameService.getByNameAndChat(arg, chat) != null) {
+                    GroupUtils.joinGroup(arg, user, chat);
+                    builder.append("успішно додано як групове ім'я!");
                     continue;
                 }
                 arg = CommandUtils.encryptSpace(arg);

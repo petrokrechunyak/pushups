@@ -34,14 +34,17 @@ public class CallerUser {
     @ManyToOne
     private CallerChat callerChat;
 
-    @OneToMany(mappedBy = "callerUser", cascade = CascadeType.REMOVE)
-    private Set<CallerName> names;
-
     @Enumerated(EnumType.STRING)
     private UserStates userState = UserStates.OFF;
 
     @Enumerated(EnumType.STRING)
     private ConfigEmojiEnum emojiEnum = ConfigEmojiEnum.ALL;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<GroupName> groupNames;
+
+    @OneToMany(mappedBy = "callerUser", cascade = CascadeType.REMOVE)
+    private Set<CallerName> names;
 
     public CallerUser(Long userId, String firstname, String username, CallerChat callerChat) {
         this.userId = userId;
@@ -72,7 +75,6 @@ public class CallerUser {
                 ", username='" + username + '\'' +
                 ", callerChat=" + callerChat +
                 ", userState=" + userState +
-                ", emojiEnum=" + emojiEnum +
                 '}';
     }
 

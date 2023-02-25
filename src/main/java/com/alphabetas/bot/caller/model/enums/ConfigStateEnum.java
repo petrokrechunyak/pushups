@@ -12,5 +12,7 @@ public enum ConfigStateEnum {
     RP_MENU,
     // aggression config
     AGGRESSION_MENU,
+    // space config
+    ALLOW_SPACES,
 
 }

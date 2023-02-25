@@ -4,10 +4,12 @@ import com.alphabetas.bot.caller.comparator.StringLengthComparator;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerName;
 import com.alphabetas.bot.caller.model.CallerUser;
+import com.alphabetas.bot.caller.model.GroupName;
 import com.alphabetas.bot.caller.model.enums.UserStates;
 import com.alphabetas.bot.caller.utils.AddNameUtils;
 import com.alphabetas.bot.caller.utils.CommandUtils;
 import com.alphabetas.bot.caller.utils.DeleteNameUtils;
+import com.alphabetas.bot.caller.utils.GroupUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -109,14 +111,31 @@ public class NoCommand extends Command {
 
         // do action for state of user
         if (user.getUserState() != UserStates.OFF) {
+            String msgText = update.getMessage().getText();
+            String returnMessage = null;
             switch (user.getUserState()) {
                 case ADD:
-                    addState(update);
+                    returnMessage = AddNameUtils.saveNames(msgText, user, chat);
                     break;
                 case DELETE:
-                    deleteState(update);
+                    returnMessage = DeleteNameUtils.deleteNames(msgText, user, chat);
                     break;
+                case CREATE:
+                    returnMessage = GroupUtils.createGroup(msgText, user, chat);
+                    break;
+                case LEAVE:
+                    returnMessage = GroupUtils.leaveGroup(msgText, user, chat);
+                    break;
+                case JOIN:
+                    returnMessage = GroupUtils.joinGroup(msgText, user, chat);
+                    break;
+                case DELETE_GROUP:
+                    returnMessage = GroupUtils.removeGroup(msgText, user, chat);
             }
+            user.setUserState(UserStates.OFF);
+            userService.save(user);
+
+            messageService.sendMessage(chat.getId(), returnMessage, threadId);
             return;
         }
 
@@ -256,26 +275,6 @@ public class NoCommand extends Command {
                         makeLink(to.getId(), to.getFirstName())), replyToMessage);
     }
 
-    public void addState(Update update) {
-        String msgText = update.getMessage().getText();
-        String returnMessage = AddNameUtils.saveNames(msgText, user, chat);
-
-        user.setUserState(UserStates.OFF);
-        userService.save(user);
-
-        messageService.sendMessage(chat.getId(), returnMessage, threadId);
-    }
-
-    public void deleteState(Update update) {
-        String msgText = update.getMessage().getText();
-        String returnMessage = DeleteNameUtils.deleteNames(msgText, user, chat);
-
-        user.setUserState(UserStates.OFF);
-        userService.save(user);
-
-        messageService.sendMessage(chat.getId(), returnMessage, threadId);
-    }
-
     public void callUser(Update update) {
         String msgText = " " + update.getMessage().getText() + " ";
         boolean send = false;
@@ -283,6 +282,24 @@ public class NoCommand extends Command {
                 .stream()
                 .sorted(new StringLengthComparator())
                 .collect(Collectors.toCollection(LinkedHashSet::new)));
+
+        if(msgText.contains("$")) {
+            for(GroupName groupName: chat.getGroupNames()) {
+                String full = "$" + groupName.getName();
+                if(StringUtils.containsIgnoreCase(msgText, full)) {
+                    StringBuilder mentions = new StringBuilder();
+                    for(CallerUser user1: groupName.getUsers()) {
+                        mentions.append(CommandUtils.makeLink(user1.getUserId(),
+                                user1.getNames().size() == 0
+                                    ? user1.getFirstname()
+                                    : user1.getNames().stream().findFirst().get().getName()) + ", ");
+                    }
+                    mentions.delete(mentions.length() - 2, mentions.length() - 1);
+                    msgText = StringUtils.replaceIgnoreCase(msgText, full, mentions.toString());
+                    send = true;
+                }
+            }
+        }
 
         for (CallerName name : chat.getCallerNames()) {
             if (name.getCallerUser().getUserId().equals(update.getMessage().getFrom().getId())) {

@@ -1,6 +1,7 @@
 package com.alphabetas.bot.caller.command.container;
 
 import com.alphabetas.bot.caller.command.*;
+import com.alphabetas.bot.caller.command.group.*;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.service.CallerChatService;
@@ -11,7 +12,6 @@ import com.alphabetas.bot.caller.utils.CommandUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.forum.ForumTopic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -80,18 +80,19 @@ public class CommandContainer {
     }
 
     public void prepareCommands() {
-        // add command
         prepareCommand(new AddNameCommand());
-        // cancel command
         prepareCommand(new CancelCommand());
-        // show command
         prepareCommand(new ShowCommand());
-        // delete command
         prepareCommand(new DeleteCommand());
-        // config command
         prepareCommand(new ConfigCommand());
-        // clear command
         prepareCommand(new ClearCommand());
+        prepareCommand(new CreateCommand());
+        prepareCommand(new JoinCommand());
+        prepareCommand(new LeaveCommand());
+        prepareCommand(new RemoveCommand());
+        prepareCommand(new AllCommand());
+
+
     }
 
     public void prepareCommand(Command command) {

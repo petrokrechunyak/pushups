@@ -32,11 +32,15 @@ public class ChatConfig {
     @ColumnDefault("true")
     private boolean aggressionEnabled;
 
+    @ColumnDefault("false")
+    private boolean allowSpace;
+
     public ChatConfig(Long chatId, Integer nameLimit) {
         this.chatId = chatId;
         this.nameLimit = nameLimit;
         this.aggressionEnabled = true;
         this.rpEnabled = true;
+        this.allowSpace = false;
     }
 
     public void setNameLimit(Integer nameLimit) {

@@ -114,6 +114,8 @@ public class CallBack extends Command {
                     booleanChanger(config.isRpEnabled(), ConfigStateEnum.RP_MENU,
                             "Рольові команди: ", update);
                     break;
+                // --------- end rp config ---------
+                // --------- start aggression config ---------
                 case AGGRESSION_MENU:
                     if (params.length > 3) {
                         boolean param = Boolean.parseBoolean(params[3]);
@@ -122,6 +124,15 @@ public class CallBack extends Command {
                     }
                     booleanChanger(config.isAggressionEnabled(), ConfigStateEnum.AGGRESSION_MENU,
                             "Агресія при відмітці когось через @: ", update);
+                    break;
+                case ALLOW_SPACES:
+                    if (params.length > 3) {
+                        boolean param = Boolean.parseBoolean(params[3]);
+                        config.setAllowSpace(param);
+                        configService.save(config);
+                    }
+                    booleanChanger(config.isAllowSpace(), ConfigStateEnum.ALLOW_SPACES,
+                            "Дозвіл на імена з пробілами: ", update);
                     break;
             }
         }

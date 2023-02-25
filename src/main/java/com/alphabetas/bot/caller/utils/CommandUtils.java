@@ -1,6 +1,7 @@
 package com.alphabetas.bot.caller.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public final class CommandUtils {

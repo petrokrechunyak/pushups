@@ -5,12 +5,14 @@ import com.alphabetas.bot.caller.command.Command;
 import com.alphabetas.bot.caller.command.container.CommandContainer;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
+import com.alphabetas.bot.caller.model.Service;
 import com.alphabetas.bot.caller.service.*;
 import com.alphabetas.bot.caller.service.impl.MessageServiceImpl;
+import com.alphabetas.bot.caller.utils.AbstractNameUtils;
 import com.alphabetas.bot.caller.utils.AddNameUtils;
 import com.alphabetas.bot.caller.utils.CommandUtils;
 import com.alphabetas.bot.caller.utils.DeleteNameUtils;
-import com.alphabetas.bot.caller.utils.SpaceUtils;
+import com.mine.utils.SpaceUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,7 +21,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import java.util.List;
 
@@ -37,17 +38,18 @@ public class CallerBot extends TelegramLongPollingBot {
     private String botToken;
 
     public CallerBot(CallerChatService chatService, CallerUserService userService,
-                     CallerNameService nameService, ChatConfigService configService) {
+                     CallerNameService nameService, ChatConfigService configService,
+                     GroupNameService groupNameService) {
+
         this.userService = userService;
         this.chatService = chatService;
         this.nameService = nameService;
         this.messageService = new MessageServiceImpl(this);
         this.container = new CommandContainer(messageService, chatService, userService,
                 nameService);
-        setAllUtils(userService, chatService, nameService);
 
-        Command.setService(messageService, chatService, userService, nameService, configService);
-
+        Service.setService(messageService, chatService, userService, nameService, configService,
+                groupNameService);
 
     }
 
@@ -83,7 +85,9 @@ public class CallerBot extends TelegramLongPollingBot {
         } else if (update.hasCallbackQuery()) {
             CallerUser user = userService.getByUpdate(update);
             CallerChat chat = chatService.getByUpdate(update);
-            Integer threadId = update.getMessage().getMessageThreadId();
+            Integer threadId = update.getCallbackQuery().getMessage().getIsTopicMessage() != null
+                    ? update.getCallbackQuery().getMessage().getMessageThreadId()
+                    : null;
             CallBack callBackCommand = new CallBack(update.getCallbackQuery().getData(), chat, user, threadId);
             callBackCommand.execute(update);
         }
@@ -144,11 +148,6 @@ public class CallerBot extends TelegramLongPollingBot {
         if (parts.length == 1 || parts[1].equals(getBotUsername())) {
             container.retrieveCommand(text, update).execute(update);
         }
-    }
-
-    private void setAllUtils(CallerUserService userService, CallerChatService chatService, CallerNameService nameService) {
-        AddNameUtils.setServices(userService, chatService, nameService, messageService);
-        DeleteNameUtils.setServices(userService, chatService, nameService, messageService);
     }
 
     @Override

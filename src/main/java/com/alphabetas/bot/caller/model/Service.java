@@ -1,0 +1,25 @@
+package com.alphabetas.bot.caller.model;
+
+import com.alphabetas.bot.caller.service.*;
+
+public abstract class Service {
+
+    protected static MessageService messageService;
+    protected static CallerChatService chatService;
+    protected static CallerUserService userService;
+    protected static CallerNameService nameService;
+    protected static ChatConfigService configService;
+    protected static GroupNameService groupNameService;
+
+    public static void setService(MessageService messageService1, CallerChatService chatService1,
+                                  CallerUserService userService1, CallerNameService nameService1,
+                                  ChatConfigService configService1, GroupNameService groupNameService1) {
+        messageService = messageService1;
+        chatService = chatService1;
+        userService = userService1;
+        nameService = nameService1;
+        configService = configService1;
+        groupNameService = groupNameService1;
+    }
+
+}
