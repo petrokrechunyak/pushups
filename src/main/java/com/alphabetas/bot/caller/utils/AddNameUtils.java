@@ -20,6 +20,11 @@ public class AddNameUtils extends AbstractNameUtils {
         StringBuilder builder = new StringBuilder();
 
         for (String arg : args) {
+            if(groupNameService.getByNameAndChat(CommandUtils.encryptSpace(arg), chat) != null) {
+                GroupUtils.joinGroup(arg, user, chat);
+                builder.append("Групове ім'я <b>").append(arg).append("</b> успішно додано!\n");
+                continue;
+            }
             Set<CallerName> nameSet = nameService.getAllByCallerUser(user);
             if (nameSet.size() >= chat.getConfig().getNameLimit()) {
                 builder.append("Досягнуто ліміту на імена: ")
@@ -46,11 +51,6 @@ public class AddNameUtils extends AbstractNameUtils {
                 }
                 if (arg.length() < 3) {
                     builder.append("занадто мале! Мінімальна кількість символів: <u>3</u>\n");
-                    continue;
-                }
-                if(groupNameService.getByNameAndChat(arg, chat) != null) {
-                    GroupUtils.joinGroup(arg, user, chat);
-                    builder.append("успішно додано як групове ім'я!");
                     continue;
                 }
                 arg = CommandUtils.encryptSpace(arg);

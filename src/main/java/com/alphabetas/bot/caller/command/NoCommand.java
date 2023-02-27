@@ -1,6 +1,7 @@
 package com.alphabetas.bot.caller.command;
 
-import com.alphabetas.bot.caller.comparator.StringLengthComparator;
+import com.alphabetas.bot.caller.comparator.CallerNameStringLengthComparator;
+import com.alphabetas.bot.caller.comparator.GroupNameStringLengthComparator;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerName;
 import com.alphabetas.bot.caller.model.CallerUser;
@@ -280,21 +281,26 @@ public class NoCommand extends Command {
         boolean send = false;
         chat.setCallerNames(chat.getCallerNames()
                 .stream()
-                .sorted(new StringLengthComparator())
+                .sorted(new CallerNameStringLengthComparator())
+                .collect(Collectors.toCollection(LinkedHashSet::new)));
+
+        chat.setGroupNames(chat.getGroupNames()
+                .stream()
+                .sorted(new GroupNameStringLengthComparator())
                 .collect(Collectors.toCollection(LinkedHashSet::new)));
 
         if(msgText.contains("$")) {
             for(GroupName groupName: chat.getGroupNames()) {
-                String full = "$" + groupName.getName();
+                String full = "$" + CommandUtils.decryptSpace(groupName.getName());
                 if(StringUtils.containsIgnoreCase(msgText, full)) {
                     StringBuilder mentions = new StringBuilder();
                     for(CallerUser user1: groupName.getUsers()) {
                         mentions.append(CommandUtils.makeLink(user1.getUserId(),
                                 user1.getNames().size() == 0
                                     ? user1.getFirstname()
-                                    : user1.getNames().stream().findFirst().get().getName()) + ", ");
+                                    : CommandUtils.decryptSpace(user1.getNames().stream().findFirst().get().getName())) + ", ");
                     }
-                    mentions.delete(mentions.length() - 2, mentions.length() - 1);
+                    mentions.delete(mentions.length() - 2, mentions.length());
                     msgText = StringUtils.replaceIgnoreCase(msgText, full, mentions.toString());
                     send = true;
                 }

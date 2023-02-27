@@ -28,7 +28,7 @@ public class AllCommand extends Command {
 
         StringBuilder builder = new StringBuilder("Всі групові імена чату: <b>").append(CommandUtils.deleteBadSymbols(chat.getTitle())).append("</b>\n");
         for(GroupName groupName: chat.getGroupNames()) {
-            builder.append(groupName.getName()).append("\n");
+            builder.append(CommandUtils.decryptSpace(groupName.getName())).append("\n");
         }
 
         messageService.sendMessage(chat.getId(), builder.toString(), threadId);

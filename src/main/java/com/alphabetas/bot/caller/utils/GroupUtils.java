@@ -57,7 +57,7 @@ public class GroupUtils extends AbstractNameUtils {
                 groupName.getUsers().remove(user);
                 groupNameService.save(groupName);
             } else {
-                builder.append("???");
+                builder.append("Такого групового імені не існує!");
             }
             builder.append("\n");
         }
