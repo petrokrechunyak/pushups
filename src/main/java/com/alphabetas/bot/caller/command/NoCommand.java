@@ -293,7 +293,7 @@ public class NoCommand extends Command {
             for(GroupName groupName: chat.getGroupNames()) {
                 String full = "$" + CommandUtils.decryptSpace(groupName.getName());
                 if(StringUtils.containsIgnoreCase(msgText, full)) {
-                    StringBuilder mentions = new StringBuilder();
+                    StringBuilder mentions = new StringBuilder("$" + CommandUtils.decryptSpace(groupName.getName()) + ": ");
                     for(CallerUser user1: groupName.getUsers()) {
                         mentions.append(CommandUtils.makeLink(user1.getUserId(),
                                 user1.getNames().size() == 0

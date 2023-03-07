@@ -28,14 +28,15 @@ public class ScheduleService {
         messageService = new MessageServiceImpl(bot);
     }
 
-    // every 1 hour
-    @Scheduled(fixedDelay = 1000 * 60 * 60)
+    // every 0.5 hour
+    @Scheduled(fixedDelay = 1000 * 60 * 30)
     public void checkForDeletion() {
         List<CallerChat> all = chatService.findAll();
         for(CallerChat chat: all) {
             int counter = 0;
             for (CallerUser user: chat.getCallerUsers()) {
                 ChatMember member = null;
+                int currentSize = user.getNames().size();
                 try {
                     member = messageService.getChatMember(chat.getId(), user.getUserId());
                 } catch (Exception e) {
@@ -52,7 +53,7 @@ public class ScheduleService {
                 if(member instanceof ChatMemberLeft) {
                     userService.delete(user);
                     chat.getCallerUsers().remove(user);
-                    counter += user.getNames().size();
+                    counter += currentSize;
                     break;
                 }
             }

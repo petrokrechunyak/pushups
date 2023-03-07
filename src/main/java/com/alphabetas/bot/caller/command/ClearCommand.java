@@ -26,11 +26,12 @@ public class ClearCommand extends Command{
         log.info(chat.getCallerUsers().toString());
         for(CallerUser u: chat.getCallerUsers()) {
             ChatMember chatMember = null;
+            int currentSize = u.getNames().size();
             try {
                 chatMember = messageService.getChatMember(chat.getId(), u.getUserId());
             } catch (Exception e) {
                 userService.delete(u);
-                counter += u.getNames().size();
+                counter += currentSize;
                 log.info("user to delete found:(Exception)" + u);
                 continue;
             }
@@ -38,13 +39,13 @@ public class ClearCommand extends Command{
             if(chatMember instanceof ChatMemberLeft ||
                     chatMember instanceof ChatMemberBanned) {
                 userService.delete(u);
-                counter += u.getNames().size();
+                counter += currentSize;
                 log.info("user to delete found: " + u);
             } else if(chatMember instanceof ChatMemberRestricted) {
                 ChatMemberRestricted restricted = (ChatMemberRestricted) chatMember;
                 if(!restricted.getIsMember()) {
                     userService.delete(u);
-                    counter += u.getNames().size();
+                    counter += currentSize;
                 }
              }
         }
