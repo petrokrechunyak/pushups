@@ -2,9 +2,11 @@ package com.alphabetas.bot.caller.service.impl;
 
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
+import com.alphabetas.bot.caller.model.GroupName;
 import com.alphabetas.bot.caller.repo.CallerUserRepo;
 import com.alphabetas.bot.caller.service.CallerChatService;
 import com.alphabetas.bot.caller.service.CallerUserService;
+import com.alphabetas.bot.caller.service.GroupNameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ public class CallerUserServiceImpl implements CallerUserService {
     private CallerUserRepo userRepo;
     @Autowired
     private CallerChatService chatService;
+    @Autowired
+    private GroupNameService groupNameService;
 
     @Override
     public CallerUser getById(Long id, Update update) throws UnsupportedOperationException {
@@ -32,6 +36,10 @@ public class CallerUserServiceImpl implements CallerUserService {
 
     @Override
     public void delete(CallerUser user) {
+        user.getGroupNames().forEach(groupName -> groupName.getUsers().remove(user));
+        for(GroupName g: user.getGroupNames()) {
+            groupNameService.save(g);
+        }
         userRepo.delete(user);
     }
 
