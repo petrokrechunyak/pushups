@@ -22,19 +22,19 @@ public class AddNameUtils extends AbstractNameUtils {
         for (String arg : args) {
             if(groupNameService.getByNameAndChat(CommandUtils.encryptSpace(arg), chat) != null) {
                 GroupUtils.joinGroup(arg, user, chat);
-                builder.append("Групове ім'я <b>").append(arg).append("</b> успішно додано!\n");
+                builder.append("Групове ім'я <b><u>").append(arg).append("</u></b> успішно додано!\n");
                 continue;
             }
             Set<CallerName> nameSet = nameService.getAllByCallerUser(user);
             if (nameSet.size() >= chat.getConfig().getNameLimit()) {
                 builder.append("Досягнуто ліміту на імена: ")
                         .append(chat.getConfig().getNameLimit())
-                        .append(". Ім'я <b>")
+                        .append(". Ім'я <b><u>")
                         .append(arg)
-                        .append(" </b>не додано!\n");
+                        .append("</u></b> не додано!\n");
                 continue;
             }
-            builder.append("Ім'я <b>").append(arg).append("</b> ");
+            builder.append("Ім'я <b><u>").append(arg).append("</u></b> ");
             String currentRegex = chat.getConfig().isAllowSpace()
                     ? NAME_WITH_SPACES_REGEX
                     : SINGLE_WORD_REGEX;
