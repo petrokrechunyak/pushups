@@ -20,17 +20,17 @@ public class GroupUtils extends AbstractNameUtils {
             String decrypted = arg;
             arg = CommandUtils.encryptSpace(arg);
 
-            builder.append("Групове ім'я <b>").append(decrypted).append("</b> ");
+            builder.append("Групове ім'я <b><u>").append(decrypted).append("</u></b> ");
 
             GroupName groupName = groupNameService.getByNameAndChat(arg, chat);
             if(groupName == null) {
                 groupName = new GroupName(chat, arg);
                 groupNameService.save(groupName);
-                builder.append("успішно створено!\nПриєднатися до нього можна командою <b>Кликун приєднай ")
-                        .append(decrypted).append("</b>");
+                builder.append("успішно створено!\nПриєднатися до нього можна командою <b><u>Кликун приєднай ")
+                        .append(decrypted).append("</u></b>");
             } else {
-                builder.append("вже існує!\nПриєднатися до нього можна командою <b>Кликун приєднай ")
-                        .append(decrypted).append("</b>");
+                builder.append("вже існує!\nПриєднатися до нього можна командою <u><b>Кликун приєднай ")
+                        .append(decrypted).append("</u></b>");
             }
             builder.append("\n");
         }
@@ -50,7 +50,7 @@ public class GroupUtils extends AbstractNameUtils {
             GroupName groupName = groupNameService.getByNameAndChat(arg, chat);
             if(groupName != null) {
                 if(groupName.getUsers().contains(user)) {
-                    builder.append("Групове ім'я <b>").append(decrypted).append(" </b>успішно покинуто");
+                    builder.append("Групове ім'я <b><u>").append(decrypted).append(" </u></b>успішно покинуто");
                 } else {
                     builder.append("Ви не входите до цього групового імені!");
                 }
@@ -72,7 +72,7 @@ public class GroupUtils extends AbstractNameUtils {
 
         for(String arg: args) {
             String decrypted = arg;
-            String boldArg = "<b>" + arg + "</b>";
+            String boldArg = "<b><u>" + arg + "</u></b>";
             arg = CommandUtils.encryptSpace(arg);
 
             GroupName groupName = groupNameService.getByNameAndChat(arg, chat);
@@ -102,7 +102,7 @@ public class GroupUtils extends AbstractNameUtils {
             String decrypted = arg;
             arg = CommandUtils.encryptSpace(arg);
 
-            builder.append("Групове ім'я <b>").append(decrypted).append("</b> ");
+            builder.append("Групове ім'я <b><u>").append(decrypted).append("</u></b> ");
 
             GroupName groupName = groupNameService.getByNameAndChat(arg, chat);
             if(groupName != null) {

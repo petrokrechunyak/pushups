@@ -19,7 +19,7 @@ public class DeleteNameUtils extends AbstractNameUtils {
             CallerName name = nameService.getByCallerChatAndName(chat, arg);
             arg = CommandUtils.decryptSpace(arg);
             if (name != null) {
-                builder.append("Ім'я <b>").append(arg).append("</b> ");
+                builder.append("Ім'я <b><u>").append(arg).append("</u></b> ");
                 if (name.getCallerUser().equals(user)) {
                     nameService.delete(name);
                     user.setUserState(UserStates.OFF);
@@ -29,7 +29,7 @@ public class DeleteNameUtils extends AbstractNameUtils {
                     builder.append("зайнято іншою людиною. Чужі імена видаляти не можна!");
                 }
             } else {
-                builder.append("У вас немає імені ").append(arg);
+                builder.append("У вас немає імені ").append("<b><u>" + arg + "</u></b>");
             }
             builder.append("\n");
         }
