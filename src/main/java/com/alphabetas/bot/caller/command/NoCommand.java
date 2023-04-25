@@ -2,10 +2,7 @@ package com.alphabetas.bot.caller.command;
 
 import com.alphabetas.bot.caller.comparator.CallerNameStringLengthComparator;
 import com.alphabetas.bot.caller.comparator.GroupNameStringLengthComparator;
-import com.alphabetas.bot.caller.model.CallerChat;
-import com.alphabetas.bot.caller.model.CallerName;
-import com.alphabetas.bot.caller.model.CallerUser;
-import com.alphabetas.bot.caller.model.GroupName;
+import com.alphabetas.bot.caller.model.*;
 import com.alphabetas.bot.caller.model.enums.UserStates;
 import com.alphabetas.bot.caller.utils.AddNameUtils;
 import com.alphabetas.bot.caller.utils.CommandUtils;
@@ -99,13 +96,14 @@ public class NoCommand extends Command {
         return text;
     }
 
+
     @Override
     public void execute(Update update) {
         //check for rp commands
         if (chat.getConfig().isRpEnabled()) {
             checkForRp(update);
         }
-
+        // check for aggression
         if (chat.getConfig().isAggressionEnabled()) {
             checkForMention(update);
         }

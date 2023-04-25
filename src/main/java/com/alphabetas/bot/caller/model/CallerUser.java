@@ -46,6 +46,9 @@ public class CallerUser {
     @OneToMany(mappedBy = "callerUser", cascade = CascadeType.REMOVE)
     private Set<CallerName> names;
 
+    @OneToMany(mappedBy = "callerUser", cascade = CascadeType.REMOVE)
+    private Set<MessageCount> messageCounts;
+
     public CallerUser(Long userId, String firstname, String username, CallerChat callerChat) {
         this.userId = userId;
         this.firstname = firstname;
