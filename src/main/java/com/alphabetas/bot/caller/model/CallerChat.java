@@ -36,8 +36,11 @@ public class CallerChat {
     @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
     private Set<GroupName> groupNames;
 
-    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "chat")
+    @OneToOne(mappedBy = "chat", cascade = CascadeType.REMOVE)
     private ChatConfig config;
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+    private Set<MessageCount> messageCounts;
 
     public CallerChat(Long id, String title) {
         this.id = id;

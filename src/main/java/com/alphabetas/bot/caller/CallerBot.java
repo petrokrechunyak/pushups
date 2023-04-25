@@ -5,6 +5,7 @@ import com.alphabetas.bot.caller.command.Command;
 import com.alphabetas.bot.caller.command.container.CommandContainer;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
+import com.alphabetas.bot.caller.model.MessageCount;
 import com.alphabetas.bot.caller.model.Service;
 import com.alphabetas.bot.caller.service.*;
 import com.alphabetas.bot.caller.service.impl.MessageServiceImpl;
@@ -31,6 +32,7 @@ public class CallerBot extends TelegramLongPollingBot {
     private final CallerChatService chatService;
     private final CallerNameService nameService;
     private final MessageService messageService;
+    private final MessageCountService messageCountService;
     @Value("${bot.caller.username}")
     private String botUsername;
     @Value("${bot.caller.token}")
@@ -38,23 +40,26 @@ public class CallerBot extends TelegramLongPollingBot {
 
     public CallerBot(CallerChatService chatService, CallerUserService userService,
                      CallerNameService nameService, ChatConfigService configService,
-                     GroupNameService groupNameService) {
+                     GroupNameService groupNameService, MessageCountService messageCountService) {
 
         this.userService = userService;
         this.chatService = chatService;
         this.nameService = nameService;
+        this.messageCountService = messageCountService;
         this.messageService = new MessageServiceImpl(this);
         this.container = new CommandContainer(messageService, chatService, userService,
                 nameService);
 
         Service.setService(messageService, chatService, userService, nameService, configService,
-                groupNameService);
+                groupNameService, messageCountService);
 
     }
 
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
+            // count messages for every user
+            addMessageCount(update);
             SpaceUtils utils = new SpaceUtils(messageService, botToken);
             String trimSpaces = utils.trimSpaces(update);
             try {
@@ -90,6 +95,21 @@ public class CallerBot extends TelegramLongPollingBot {
             CallBack callBackCommand = new CallBack(update.getCallbackQuery().getData(), chat, user, threadId);
             callBackCommand.execute(update);
         }
+    }
+
+    private void addMessageCount(Update update) {
+        long i = System.currentTimeMillis();
+        i = i - (i % 100000);
+        Long userId = update.getMessage().getFrom().getId();
+        CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
+
+        MessageCount mc = messageCountService.getByUserIdAndStartTime(userId, i);
+        if(mc == null) {
+            mc = new MessageCount(userId, chat, 0, i);
+        }
+
+        mc.setCount(mc.getCount()+1);
+        messageCountService.save(mc);
 
     }
 
@@ -110,7 +130,7 @@ public class CallerBot extends TelegramLongPollingBot {
                     user);
             userService.delete(user);
             try {
-                messageService.sendMessage(chat.getId(), "Бувай!\nНадіємося ви повернетеся.",
+                messageService.sendMessage(chat.getId(), "Бувайте!\nНадіємося ви повернетеся.",
                         update.getMessage().getMessageThreadId());
             } catch (Exception e) {
                 if (e.getMessage().contains("bot was kicked")) {

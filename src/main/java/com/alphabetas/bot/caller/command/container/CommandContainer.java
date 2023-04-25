@@ -91,8 +91,7 @@ public class CommandContainer {
         prepareCommand(new LeaveCommand());
         prepareCommand(new RemoveCommand());
         prepareCommand(new AllCommand());
-
-
+        prepareCommand(new TopCommand());
     }
 
     public void prepareCommand(Command command) {

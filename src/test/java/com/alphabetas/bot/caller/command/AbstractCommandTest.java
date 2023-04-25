@@ -35,6 +35,7 @@ public class AbstractCommandTest {
     }
 
     protected Update prepareUpdate() {
+
         Chat chat = new Chat();
         chat.setId(CHAT_ID);
 

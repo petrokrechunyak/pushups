@@ -10,16 +10,19 @@ public abstract class Service {
     protected static CallerNameService nameService;
     protected static ChatConfigService configService;
     protected static GroupNameService groupNameService;
+    protected static MessageCountService messageCountService;
 
     public static void setService(MessageService messageService1, CallerChatService chatService1,
                                   CallerUserService userService1, CallerNameService nameService1,
-                                  ChatConfigService configService1, GroupNameService groupNameService1) {
+                                  ChatConfigService configService1, GroupNameService groupNameService1,
+                                  MessageCountService messageCountService1) {
         messageService = messageService1;
         chatService = chatService1;
         userService = userService1;
         nameService = nameService1;
         configService = configService1;
         groupNameService = groupNameService1;
+        messageCountService = messageCountService1;
     }
 
 }

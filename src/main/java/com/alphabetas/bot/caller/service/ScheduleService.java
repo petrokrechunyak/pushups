@@ -3,6 +3,7 @@ package com.alphabetas.bot.caller.service;
 import com.alphabetas.bot.caller.CallerBot;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
+import com.alphabetas.bot.caller.model.MessageCount;
 import com.alphabetas.bot.caller.model.enums.UserStates;
 import com.alphabetas.bot.caller.service.impl.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,13 @@ public class ScheduleService {
     @Autowired
     private CallerUserService userService;
 
+    @Autowired
+    private MessageCountService messageCountService;
+
     private MessageService messageService;
+
+    private static final int SECOND = 1000;
+    private static final int DAY = 86400 * SECOND;
 
     public ScheduleService(CallerBot bot) {
         messageService = new MessageServiceImpl(bot);
@@ -73,6 +80,19 @@ public class ScheduleService {
                 } else {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    // every 100 seconds
+    @Scheduled(fixedDelay = 1000 * 100)
+    public void checkForOldMessages() {
+        List<MessageCount> all = messageCountService.getAll();
+        long current = System.currentTimeMillis();
+        current = current - (current % 100000);
+        for (MessageCount messageCount: all) {
+            if(current - DAY > messageCount.getStartTime()) {
+                messageCountService.delete(messageCount);
             }
         }
     }
