@@ -34,7 +34,7 @@ public class TopCommand extends Command {
                 Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
 
-        StringBuilder builder = new StringBuilder("Статистика по написаним повідомленням за останні 24 години:\n\n");
+        StringBuilder builder = new StringBuilder("Статистика по написаним повідомленням за останню добу:\n\n");
         int general = 0;
         int i = 1;
 
