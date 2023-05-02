@@ -75,7 +75,11 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message sendDocument(SendDocument sendDocument) {
-        return null;
+        try {
+            return bot.execute(sendDocument);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
