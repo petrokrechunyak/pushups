@@ -94,6 +94,7 @@ public class CommandContainer {
         prepareCommand(new TopCommand());
         prepareCommand(new TipCommand());
         prepareCommand(new TellCommand());
+        prepareCommand(new BackupCommand());
 
     }
 
