@@ -30,6 +30,7 @@ public class SpaceUtils {
             writer.write(update.getMessage().getFrom().getFirstName() + "\t||\t" + text);
             writer.newLine();
         } catch (IOException e) {
+		e.printStackTrace();
 
         }
     }
@@ -80,7 +81,6 @@ public class SpaceUtils {
 
 
                 String fileUrl = "https://api.telegram.org/file/bot" + botToken + "/" + file.getFilePath();
-                System.out.println(fileUrl);
                 saveImage(fileUrl, file.getFileId());
 
                 SendVideo sendVideo = new SendVideo(testId, new InputFile(new java.io.File(file.getFileId())));
@@ -90,7 +90,7 @@ public class SpaceUtils {
                 write(update, "sentVideo " + file.getFilePath());
             }
         } catch (Exception e) {
-
+		e.printStackTrace();
         }
 
         return " text ".trim();

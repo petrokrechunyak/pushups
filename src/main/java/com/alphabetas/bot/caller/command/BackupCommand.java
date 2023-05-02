@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.IOException;
 import java.util.List;
+import java.io.File;
 
 @NoArgsConstructor
 @Slf4j
@@ -26,7 +27,7 @@ public class BackupCommand extends Command {
             Runtime.getRuntime().exec("/var/lib/postgresql/terrifficsprite/backup_to_file");
             Runtime.getRuntime().exec("cp /var/lib/postgresql/terrifficsprite/backup ./");
 
-            SendDocument document = new SendDocument("731921794", new InputFile("backup"));
+            SendDocument document = new SendDocument("731921794", new InputFile(new File("backup")));
             messageService.sendDocument(document);
         } catch (IOException e) {
             throw new RuntimeException(e);
