@@ -13,7 +13,7 @@ public interface MessageCountRepo extends JpaRepository<MessageCount, Long> {
 
     List<MessageCount> getAllByCallerUser(CallerUser user);
 
-    MessageCount getByUserIdAndStartTime(Long userId, Long startTime);
+    MessageCount getByCallerUserAndStartTime(CallerUser user, Long startTime);
 
     List<MessageCount> getAllByChat(CallerChat chat);
 

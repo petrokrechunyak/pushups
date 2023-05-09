@@ -51,7 +51,7 @@ public class TipCommand extends Command {
         String helpMessage = helpMessages[new Random().nextInt(helpMessages.length)];
 
         messageService.sendMessage(chat.getId(), helpMessage, threadId);
-        messageService.sendMessage(731921794L, "Використана підказка в чаті " + chat.getTitle(), (Integer) null);
+        messageService.sendMessage(TEST_CHAT_ID, "Використана підказка в чаті " + chat.getTitle(), (Integer) null);
     }
 
     @Override

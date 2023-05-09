@@ -12,6 +12,7 @@ public abstract class Command extends Service {
     protected CallerChat chat;
     protected CallerUser user;
     protected Integer threadId;
+    public static final Long TEST_CHAT_ID = -1001907509347L;
 
     public Command(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
         this.msgText = msgText;

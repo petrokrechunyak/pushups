@@ -1,7 +1,9 @@
 package com.alphabetas.bot.caller.service.impl;
 
 import com.alphabetas.bot.caller.CallerBot;
+import com.alphabetas.bot.caller.command.Command;
 import com.alphabetas.bot.caller.service.MessageService;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatAdministrators;
@@ -140,5 +142,12 @@ public class MessageServiceImpl implements MessageService {
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void sendErrorMessage(Exception e) {
+        e.printStackTrace();
+        String text = ExceptionUtils.getStackTrace(e);
+        sendMessage(Command.TEST_CHAT_ID, text, (Integer) null);
     }
 }

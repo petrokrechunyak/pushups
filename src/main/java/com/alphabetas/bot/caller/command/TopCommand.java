@@ -23,10 +23,9 @@ public class TopCommand extends Command {
     @Override
     public void execute(Update update) {
         log.info("Entered into TopCommand");
-
         List<MessageCount> allInChat = messageCountService.getAllByChat(chat);
         Map<CallerUser, Integer> counter = new LinkedHashMap<>();
-        for(MessageCount one: allInChat) {
+        for (MessageCount one : allInChat) {
             counter.put(one.getCallerUser(), counter.getOrDefault(one.getCallerUser(), 0) + one.getCount());
         }
 
@@ -40,7 +39,7 @@ public class TopCommand extends Command {
 
         Message message = messageService.sendMessage(chat.getId(), builder.toString(), threadId);
 
-        for(Map.Entry<CallerUser, Integer> entries: counter.entrySet()) {
+        for (Map.Entry<CallerUser, Integer> entries : counter.entrySet()) {
             builder.append(i)
                     .append(". ")
                     .append(CommandUtils.makeLink(entries.getKey().getUserId(), entries.getKey().getFirstname())).append(" — ")

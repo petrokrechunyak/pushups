@@ -24,6 +24,7 @@ public class BackupCommand extends Command {
         }
         log.info("Entered into BackupCommand");
         try {
+            Runtime.getRuntime().exec("sudo -iu postgres");
             Runtime.getRuntime().exec("/var/lib/postgresql/terrifficsprite/backup_to_file");
             Runtime.getRuntime().exec("cp /var/lib/postgresql/terrifficsprite/backup ./");
 

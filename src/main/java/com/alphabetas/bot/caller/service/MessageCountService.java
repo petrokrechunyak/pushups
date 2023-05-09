@@ -3,6 +3,7 @@ package com.alphabetas.bot.caller.service;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.model.MessageCount;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface MessageCountService extends AbstractService<MessageCount> {
 
     List<MessageCount> getAllByCallerUser(CallerUser user);
 
-    MessageCount getByUserIdAndStartTime(Long userId, Long startTime);
+    MessageCount getByUserIdAndStartTime(Long userId, Long chatId, Long startTime, Update update);
 
     List<MessageCount> getAllByChat(CallerChat chat);
 

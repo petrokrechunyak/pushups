@@ -71,4 +71,6 @@ public interface MessageService {
 
     int getChatMemberCount(Long chatId);
 
+    void sendErrorMessage(Exception e);
+
 }

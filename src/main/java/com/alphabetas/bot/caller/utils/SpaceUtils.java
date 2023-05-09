@@ -1,5 +1,6 @@
 package com.alphabetas.bot.caller.utils;
 
+import com.alphabetas.bot.caller.command.Command;
 import com.alphabetas.bot.caller.service.MessageService;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -16,7 +17,7 @@ public class SpaceUtils {
     private final String botToken;
     private final MessageService messageService;
 
-    private final String testId = "731921794";
+    private final String testId = String.valueOf(Command.TEST_CHAT_ID);
 
     public SpaceUtils(MessageService messageService, String botToken) {
         this.messageService = messageService;

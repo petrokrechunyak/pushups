@@ -81,7 +81,7 @@ public class CallerBot extends TelegramLongPollingBot {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                messageService.sendErrorMessage(e);
             }
             // if someone entered/left
             someOneEntered(update);
@@ -98,19 +98,22 @@ public class CallerBot extends TelegramLongPollingBot {
     }
 
     private void addMessageCount(Update update) {
-        long i = System.currentTimeMillis();
-        i = i - (i % 100000);
-        Long userId = update.getMessage().getFrom().getId();
-        CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
+        try {
+            long i = System.currentTimeMillis();
+            i = i - (i % 100000);
+            Long userId = update.getMessage().getFrom().getId();
+            CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
 
-        MessageCount mc = messageCountService.getByUserIdAndStartTime(userId, i);
-        if(mc == null) {
-            mc = new MessageCount(userId, chat, 0, i);
+            MessageCount mc = messageCountService.getByUserIdAndStartTime(userId, chat.getId(), i, update);
+            if(mc == null) {
+                mc = new MessageCount(userId, chat, 0, i);
+            }
+
+            mc.setCount(mc.getCount()+1);
+            messageCountService.save(mc);
+        } catch (Exception e) {
+            messageService.sendErrorMessage(e);
         }
-
-        mc.setCount(mc.getCount()+1);
-        messageCountService.save(mc);
-
     }
 
     @Transactional
