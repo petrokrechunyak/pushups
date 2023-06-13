@@ -73,7 +73,7 @@ public class ConfigUtils {
         ), update, chat);
     }
 
-    public static InlineKeyboardButton byTextAndCallBack(String text, String callback) {
+    public static InlineKeyboardButton buttonByTextAndCallBack(String text, String callback) {
         return InlineKeyboardButton.builder()
                 .callbackData(callback)
                 .text(text)
@@ -81,7 +81,7 @@ public class ConfigUtils {
     }
 
     public static InlineKeyboardButton backButton(CallerChat chat) {
-        return byTextAndCallBack("Назад",
+        return buttonByTextAndCallBack("Назад",
                 CONFIG_DATA + chat.getId() + "." + ConfigStateEnum.BACK);
     }
 
@@ -106,7 +106,7 @@ public class ConfigUtils {
     }
 
     public static InlineKeyboardButton changeLimit(CallerChat chat) {
-        return byTextAndCallBack("Змінити ліміт",
+        return buttonByTextAndCallBack("Змінити ліміт",
                 CONFIG_DATA + chat.getId() + "." + ConfigStateEnum.CHANGE_NAME_LIMIT);
     }
 
@@ -123,4 +123,6 @@ public class ConfigUtils {
                 .text("Вимкнути ліміт")
                 .build();
     }
+
+
 }

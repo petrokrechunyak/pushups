@@ -1,5 +1,6 @@
 package com.alphabetas.bot.caller.service;
 
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMemberCount;
@@ -7,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
@@ -34,7 +36,7 @@ public interface MessageService {
      * @param sendMessage {@link SendMessage} object that need to be sent
      * @return {@link Message} that has been already sent
      */
-    Message sendMessage(BotApiMethod sendMessage);
+    Message sendMessage(SendMessage sendMessage);
 
     Message sendMessage(Long chatId, String message, Long replyToMessage);
 
@@ -63,6 +65,8 @@ public interface MessageService {
      */
     void editMessage(Long chatId, Long msgToUpdate, String text);
 
+    void editMessage(EditMessageText editMessageText);
+
     List<ChatMember> getAdminsByChatId(Long chatId);
 
     void sendPhoto(SendPhoto photo);
@@ -72,5 +76,7 @@ public interface MessageService {
     int getChatMemberCount(Long chatId);
 
     void sendErrorMessage(Exception e);
+
+    void sendAnswerCallback(AnswerCallbackQuery answerCallbackQuery);
 
 }

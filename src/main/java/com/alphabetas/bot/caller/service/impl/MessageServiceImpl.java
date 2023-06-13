@@ -3,7 +3,9 @@ package com.alphabetas.bot.caller.service.impl;
 import com.alphabetas.bot.caller.CallerBot;
 import com.alphabetas.bot.caller.command.Command;
 import com.alphabetas.bot.caller.service.MessageService;
+import com.alphabetas.bot.caller.utils.CommandUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatAdministrators;
@@ -49,7 +51,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message sendMessage(BotApiMethod sendMessage) {
+    public Message sendMessage(SendMessage sendMessage) {
+        sendMessage.enableHtml(true);
         try {
             return (Message) bot.execute(sendMessage);
         } catch (TelegramApiException e) {
@@ -99,6 +102,11 @@ public class MessageServiceImpl implements MessageService {
         EditMessageText editMessage = new EditMessageText(text);
         editMessage.setChatId(chatId.toString());
         editMessage.setMessageId(msgToUpdate.intValue());
+        editMessage(editMessage);
+    }
+
+    @Override
+    public void editMessage(EditMessageText editMessage) {
         editMessage.enableHtml(true);
         try {
             bot.execute(editMessage);
@@ -148,6 +156,16 @@ public class MessageServiceImpl implements MessageService {
     public void sendErrorMessage(Exception e) {
         e.printStackTrace();
         String text = ExceptionUtils.getStackTrace(e);
+        text = CommandUtils.deleteBadSymbols(text);
         sendMessage(Command.TEST_CHAT_ID, text, (Integer) null);
+    }
+
+    @Override
+    public void sendAnswerCallback(AnswerCallbackQuery answerCallbackQuery) {
+        try {
+            bot.execute(answerCallbackQuery);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

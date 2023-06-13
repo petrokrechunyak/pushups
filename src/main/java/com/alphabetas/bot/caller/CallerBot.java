@@ -3,6 +3,7 @@ package com.alphabetas.bot.caller;
 import com.alphabetas.bot.caller.command.CallBack;
 import com.alphabetas.bot.caller.command.Command;
 import com.alphabetas.bot.caller.command.container.CommandContainer;
+import com.alphabetas.bot.caller.command.marriage.service.MarriageService;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.model.MessageCount;
@@ -14,19 +15,29 @@ import com.alphabetas.bot.caller.utils.AddNameUtils;
 import com.alphabetas.bot.caller.utils.CommandUtils;
 import com.alphabetas.bot.caller.utils.SpaceUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.List;
 
 @Component
 @Slf4j
 public class CallerBot extends TelegramLongPollingBot {
+
+    public static final long MY_ID = 731921794L;
     private final CommandContainer container;
     private final CallerUserService userService;
     private final CallerChatService chatService;
@@ -40,7 +51,8 @@ public class CallerBot extends TelegramLongPollingBot {
 
     public CallerBot(CallerChatService chatService, CallerUserService userService,
                      CallerNameService nameService, ChatConfigService configService,
-                     GroupNameService groupNameService, MessageCountService messageCountService) {
+                     GroupNameService groupNameService, MessageCountService messageCountService,
+                     MarriageService marriageService) {
 
         this.userService = userService;
         this.chatService = chatService;
@@ -50,13 +62,35 @@ public class CallerBot extends TelegramLongPollingBot {
         this.container = new CommandContainer(messageService, chatService, userService,
                 nameService);
 
+        userService.setBot(this);
+
         Service.setService(messageService, chatService, userService, nameService, configService,
-                groupNameService, messageCountService);
+                groupNameService, messageCountService, marriageService);
 
     }
 
+    public static void saveImage(String imageUrl, String destinationFile) throws IOException {
+        URL url = new URL(imageUrl);
+        InputStream is = url.openStream();
+        OutputStream os = new FileOutputStream(destinationFile);
+
+        byte[] b = new byte[2048];
+        int length;
+
+        while ((length = is.read(b)) != -1) {
+            os.write(b, 0, length);
+        }
+
+        is.close();
+        os.close();
+    }
+
+    String downloadId = null;
+
     @Override
     public void onUpdateReceived(Update update) {
+
+
         if (update.hasMessage()) {
             // count messages for every user
             addMessageCount(update);
@@ -125,10 +159,10 @@ public class CallerBot extends TelegramLongPollingBot {
             CallerChat chat = chatService.getById(update.getMessage().getChatId(), update);
 
             update.getMessage().getFrom().setId(left.getId());
-            CallerUser user = userService.getByUserIdAndCallerChat(left.getId(), chat, update);
+            CallerUser user = userService.getByUserIdAndCallerChat(left.getId(), chat);
             log.info("Into someOneLeft before deleting user wth user {}", user.toString());
             userService.delete(user);
-            user = userService.getByUserIdAndCallerChat(left.getId(), chat, update);
+            user = userService.getByUserIdAndCallerChat(left.getId(), chat);
             log.info("Into someOneLeft AFTER deleting user {}",
                     user);
             userService.delete(user);

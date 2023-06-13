@@ -33,7 +33,7 @@ public class MessageCountServiceImpl implements MessageCountService {
     @Override
     public MessageCount getByUserIdAndStartTime(Long userId, Long chatId, Long startTime, Update update) {
         CallerChat chat = chatService.getById(chatId, update);
-        CallerUser user = userService.getByUserIdAndCallerChat(userId, chat, update);
+        CallerUser user = userService.getByUserIdAndCallerChat(userId, chat);
 
         return messageCountRepo.getByCallerUserAndStartTime(user, startTime);
     }

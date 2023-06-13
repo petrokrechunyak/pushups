@@ -1,5 +1,6 @@
 package com.alphabetas.bot.caller.service.impl;
 
+import com.alphabetas.bot.caller.CallerBot;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.model.GroupName;
@@ -7,14 +8,19 @@ import com.alphabetas.bot.caller.repo.CallerUserRepo;
 import com.alphabetas.bot.caller.service.CallerChatService;
 import com.alphabetas.bot.caller.service.CallerUserService;
 import com.alphabetas.bot.caller.service.GroupNameService;
+import com.alphabetas.bot.caller.service.MessageService;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.ChatMemberUpdated;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 
 @Service
 @Slf4j
+@Setter
 public class CallerUserServiceImpl implements CallerUserService {
 
     @Autowired
@@ -23,6 +29,8 @@ public class CallerUserServiceImpl implements CallerUserService {
     private CallerChatService chatService;
     @Autowired
     private GroupNameService groupNameService;
+    private MessageService messageService;
+
 
     @Override
     public CallerUser getById(Long id, Update update) throws UnsupportedOperationException {
@@ -54,37 +62,29 @@ public class CallerUserServiceImpl implements CallerUserService {
         Long userId = update.getMessage() == null
                 ? update.getCallbackQuery().getFrom().getId()
                 : update.getMessage().getFrom().getId();
-        return getByUserIdAndCallerChat(userId, callerChat, update);
+        return getByUserIdAndCallerChat(userId, callerChat);
     }
 
     @Override
-    public CallerUser getByUserIdAndCallerChat(Long userId, CallerChat callerChat, Update update) {
-        CallerUser user = userRepo.getByUserIdAndCallerChat(userId, callerChat);
-        User from = update.getMessage() == null
-                ? update.getCallbackQuery().getFrom()
-                : update.getMessage().getFrom();
-        if (user != null) {
-            String updateUsername = from.getUserName();
-            String updateFirstname = from.getFirstName();
+    public CallerUser getByUserIdAndCallerChat(Long userId, CallerChat callerChat) {
 
-            if (!updateFirstname.equals(user.getFirstname())) {
-                user.setFirstname(from.getFirstName());
+        CallerUser user = userRepo.getByUserIdAndCallerChat(userId, callerChat);
+        User fromUser = messageService.getChatMember(callerChat.getId(), userId).getUser();
+        if (user == null) {
+            user = new CallerUser(userId, fromUser.getFirstName(), fromUser.getUserName(), callerChat);
+            log.info("Creating new user..");
+            save(user);
+        } else {
+            if(!user.getFirstname().equals(fromUser.getFirstName())) {
+                user.setFirstname(fromUser.getFirstName());
                 save(user);
             }
-            if (updateUsername != null && !updateUsername.equals(user.getUsername())) {
-                user.setUsername(from.getUserName());
+            if(fromUser.getUserName()!= null && !fromUser.getUserName().equals(user.getUsername())) {
+                user.setUsername(fromUser.getUserName());
                 save(user);
             }
-            return user;
         }
 
-        log.debug("Creating new user..");
-        Long chatId = update.getMessage().getChatId();
-        CallerChat chat = chatService.getById(chatId, update);
-        String firstName = from.getFirstName();
-        String userName = from.getUserName();
-        user = new CallerUser(userId, firstName, userName, chat);
-        save(user);
         return user;
     }
 
@@ -96,5 +96,11 @@ public class CallerUserServiceImpl implements CallerUserService {
     @Override
     public void removeByUserIdAndCallerChat(Long userId, CallerChat chat) {
         userRepo.removeByUserIdAndCallerChat(userId, chat);
+    }
+
+    @Override
+    public CallerUserService setBot(CallerBot bot) {
+        this.messageService = new MessageServiceImpl(bot);
+        return null;
     }
 }

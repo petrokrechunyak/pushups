@@ -5,6 +5,7 @@ import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.model.enums.UserStates;
 import com.alphabetas.bot.caller.utils.AddNameUtils;
 import com.alphabetas.bot.caller.utils.CommandUtils;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -23,10 +24,6 @@ public class AddNameCommand extends Command {
             "Хочете додати ім'я? Просто напишіть його. Не хочете? - Напишіть /cancel"};
 
     private final String[] badWords = new String[]{"кликун", "додати"};
-
-    public AddNameCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
-        super(msgText, chat, user, threadId);
-    }
 
     @Override
     public void execute(Update update) {
@@ -89,6 +86,7 @@ public class AddNameCommand extends Command {
                 "додай імена", "додай ім'я", "додай",
                 "додати імена", "додати ім'я", "додати"};
     }
+
 
 
 }

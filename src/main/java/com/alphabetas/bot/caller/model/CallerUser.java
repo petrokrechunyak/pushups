@@ -1,7 +1,9 @@
 package com.alphabetas.bot.caller.model;
 
+import com.alphabetas.bot.caller.command.marriage.model.MarriageModel;
 import com.alphabetas.bot.caller.model.enums.ConfigEmojiEnum;
 import com.alphabetas.bot.caller.model.enums.UserStates;
+import com.alphabetas.bot.caller.utils.CommandUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,12 +51,22 @@ public class CallerUser {
     @OneToMany(mappedBy = "callerUser", cascade = CascadeType.REMOVE)
     private Set<MessageCount> messageCounts;
 
+    @OneToOne
+    @JoinColumn(name = "marriage_model_id", referencedColumnName = "id")
+    private MarriageModel marriageModel;
+
+    @Transient
+    private String mentionedUser;
     public CallerUser(Long userId, String firstname, String username, CallerChat callerChat) {
         this.userId = userId;
         this.firstname = firstname;
         this.username = username;
         this.callerChat = callerChat;
         names = new HashSet<>();
+    }
+
+    public String getMentionedUser() {
+        return CommandUtils.makeLink(userId, firstname);
     }
 
     @Override

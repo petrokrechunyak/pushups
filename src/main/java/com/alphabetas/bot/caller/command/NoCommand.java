@@ -8,6 +8,7 @@ import com.alphabetas.bot.caller.utils.AddNameUtils;
 import com.alphabetas.bot.caller.utils.CommandUtils;
 import com.alphabetas.bot.caller.utils.DeleteNameUtils;
 import com.alphabetas.bot.caller.utils.GroupUtils;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 import static com.alphabetas.bot.caller.utils.CommandUtils.makeLink;
 
 @Slf4j
+@NoArgsConstructor
 public class NoCommand extends Command {
 
     public static final Map<String, String> rpCommands = new HashMap<>() {{
@@ -326,6 +328,7 @@ public class NoCommand extends Command {
             SendMessage sendMessage = new SendMessage(chat.getId().toString(), msgText);
             sendMessage.enableHtml(true);
             sendMessage.setReplyToMessageId(update.getMessage().getMessageId());
+            sendMessage.setMessageThreadId(threadId);
             messageService.sendMessage(sendMessage);
         }
     }

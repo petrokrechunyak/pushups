@@ -2,10 +2,14 @@ package com.alphabetas.bot.caller.command;
 
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.Random;
 
+@NoArgsConstructor
+@Slf4j
 public class IAmHereCommand extends Command {
     private final String[] commonPhrases = new String[]{"Я тут та готовий вас кликати", "Хтось мене кликав?",
             "Так?", "Завжди тут"};
