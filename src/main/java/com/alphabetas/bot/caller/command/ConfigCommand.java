@@ -1,5 +1,6 @@
 package com.alphabetas.bot.caller.command;
 
+import com.alphabetas.bot.caller.CallerBot;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.utils.CommandUtils;
@@ -37,8 +38,10 @@ public class ConfigCommand extends Command {
     public void execute(Update update) {
         List<ChatMember> admins = messageService.getAdminsByChatId(chat.getId());
         for (ChatMember member : admins) {
-            if (member instanceof ChatMemberOwner
-                    && user.getUserId().equals(member.getUser().getId())) {
+            if (user.getUserId().equals(member.getUser().getId())
+                    && (
+                    !(member instanceof ChatMemberOwner))
+                    && !member.getUser().getId().equals(CallerBot.MY_ID)) {
                 messageService.sendMessage(mainMenuMessage(chat));
             }
         }
