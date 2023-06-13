@@ -1,6 +1,8 @@
 package com.alphabetas.bot.caller.service.impl;
 
 import com.alphabetas.bot.caller.CallerBot;
+import com.alphabetas.bot.caller.command.marriage.model.MarriageModel;
+import com.alphabetas.bot.caller.command.marriage.service.MarriageService;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.model.GroupName;
@@ -31,6 +33,9 @@ public class CallerUserServiceImpl implements CallerUserService {
     private GroupNameService groupNameService;
     private MessageService messageService;
 
+    @Autowired
+    private MarriageService marriageService;
+
 
     @Override
     public CallerUser getById(Long id, Update update) throws UnsupportedOperationException {
@@ -44,6 +49,11 @@ public class CallerUserServiceImpl implements CallerUserService {
 
     @Override
     public void delete(CallerUser user) {
+        MarriageModel marriageModel = marriageService.findByUserIdAndChat(user.getUserId(), user.getCallerChat());
+        if(marriageModel != null) {
+            marriageService.delete(marriageModel);
+        }
+
         user.getGroupNames().forEach(groupName -> groupName.getUsers().remove(user));
         for(GroupName g: user.getGroupNames()) {
             groupNameService.save(g);

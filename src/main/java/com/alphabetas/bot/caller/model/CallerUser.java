@@ -51,10 +51,6 @@ public class CallerUser {
     @OneToMany(mappedBy = "callerUser", cascade = CascadeType.REMOVE)
     private Set<MessageCount> messageCounts;
 
-    @OneToOne
-    @JoinColumn(name = "marriage_model_id", referencedColumnName = "id")
-    private MarriageModel marriageModel;
-
     @Transient
     private String mentionedUser;
     public CallerUser(Long userId, String firstname, String username, CallerChat callerChat) {

@@ -17,8 +17,6 @@ public class MarriageServiceImpl implements MarriageService {
 
     @Autowired
     private MarriageRepo repo;
-    @Autowired
-    private CallerUserService userService;
 
     @Override
     public MarriageModel findByUserIdAndChat(Long userId, CallerChat chat) {
