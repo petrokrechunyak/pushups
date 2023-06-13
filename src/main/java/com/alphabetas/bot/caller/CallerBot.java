@@ -162,10 +162,6 @@ public class CallerBot extends TelegramLongPollingBot {
             CallerUser user = userService.getByUserIdAndCallerChat(left.getId(), chat);
             log.info("Into someOneLeft before deleting user wth user {}", user.toString());
             userService.delete(user);
-            user = userService.getByUserIdAndCallerChat(left.getId(), chat);
-            log.info("Into someOneLeft AFTER deleting user {}",
-                    user);
-            userService.delete(user);
             try {
                 messageService.sendMessage(chat.getId(), "Бувайте!\nНадіємося ви повернетеся.",
                         update.getMessage().getMessageThreadId());

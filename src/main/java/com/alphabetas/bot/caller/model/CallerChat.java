@@ -1,5 +1,6 @@
 package com.alphabetas.bot.caller.model;
 
+import com.alphabetas.bot.caller.command.marriage.model.MarriageModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,9 @@ public class CallerChat {
 
     @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
     private Set<MessageCount> messageCounts;
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
+    private Set<MarriageModel> marriageModels;
 
     public CallerChat(Long id, String title) {
         this.id = id;
