@@ -47,10 +47,11 @@ public class CallBack extends Command {
         if (params[0].equals("CONFIG")) {
             List<ChatMember> admins = messageService.getAdminsByChatId(chat.getId());
             for (ChatMember member : admins) {
+                if(user.getUserId().equals(CallerBot.MY_ID)) {
+                    continue;
+                }
                 if (user.getUserId().equals(member.getUser().getId())
-                        && (
-                        !(member instanceof ChatMemberOwner))
-                        && !user.getUserId().equals(CallerBot.MY_ID)) {
+                        && (!(member instanceof ChatMemberOwner))) {
                     return;
                 }
             }

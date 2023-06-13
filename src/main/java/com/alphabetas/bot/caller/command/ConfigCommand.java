@@ -36,11 +36,14 @@ public class ConfigCommand extends Command {
 
     @Override
     public void execute(Update update) {
+
+        if(user.getUserId().equals(CallerBot.MY_ID)) {
+            messageService.sendMessage(mainMenuMessage(chat));
+        }
         List<ChatMember> admins = messageService.getAdminsByChatId(chat.getId());
         for (ChatMember member : admins) {
             if ((member instanceof ChatMemberOwner
-                    && user.getUserId().equals(member.getUser().getId()))
-                    || user.getUserId().equals(CallerBot.MY_ID)) {
+                    && user.getUserId().equals(member.getUser().getId()))) {
                 messageService.sendMessage(mainMenuMessage(chat));
             }
         }
