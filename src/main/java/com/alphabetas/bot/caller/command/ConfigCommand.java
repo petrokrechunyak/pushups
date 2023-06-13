@@ -38,10 +38,9 @@ public class ConfigCommand extends Command {
     public void execute(Update update) {
         List<ChatMember> admins = messageService.getAdminsByChatId(chat.getId());
         for (ChatMember member : admins) {
-            if (user.getUserId().equals(member.getUser().getId())
-                    && (
-                    !(member instanceof ChatMemberOwner))
-                    && !member.getUser().getId().equals(CallerBot.MY_ID)) {
+            if ((member instanceof ChatMemberOwner
+                    && user.getUserId().equals(member.getUser().getId()))
+                    || user.getUserId().equals(CallerBot.MY_ID)) {
                 messageService.sendMessage(mainMenuMessage(chat));
             }
         }

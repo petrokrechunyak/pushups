@@ -50,7 +50,7 @@ public class CallBack extends Command {
                 if (user.getUserId().equals(member.getUser().getId())
                         && (
                         !(member instanceof ChatMemberOwner))
-                        && !member.getUser().getId().equals(CallerBot.MY_ID)) {
+                        && !user.getUserId().equals(CallerBot.MY_ID)) {
                     return;
                 }
             }
