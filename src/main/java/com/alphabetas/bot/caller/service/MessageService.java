@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 
 import java.util.List;
@@ -75,7 +76,7 @@ public interface MessageService {
 
     int getChatMemberCount(Long chatId);
 
-    void sendErrorMessage(Exception e);
+    void sendErrorMessage(Exception e, Update u);
 
     void sendAnswerCallback(AnswerCallbackQuery answerCallbackQuery);
 

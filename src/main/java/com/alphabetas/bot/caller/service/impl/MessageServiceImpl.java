@@ -19,6 +19,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -153,9 +154,10 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void sendErrorMessage(Exception e) {
+    public void sendErrorMessage(Exception e, Update u) {
         e.printStackTrace();
-        String text = ExceptionUtils.getStackTrace(e);
+        String text = u.getMessage().getText();
+        text = text + "\n\n" + ExceptionUtils.getStackTrace(e);
         text = CommandUtils.deleteBadSymbols(text);
         sendMessage(Command.TEST_CHAT_ID, text, (Integer) null);
     }

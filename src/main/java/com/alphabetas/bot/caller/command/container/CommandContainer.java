@@ -53,12 +53,6 @@ public class CommandContainer {
     }
 
     public Command retrieveText(String text, Update update) {
-        String startText = text;
-        CallerChat chat = chatService.getByUpdate(update);
-        CallerUser user = userService.getByUpdate(update);
-        Message repliedMessage = update.getMessage().getReplyToMessage();
-        Integer threadId = update.getMessage().getIsTopicMessage() != null ? update.getMessage().getMessageThreadId() : null;
-
         if (text.equalsIgnoreCase("кликун")) {
             return classToCommand(new IAmHereCommand(), update);
         }
@@ -93,6 +87,9 @@ public class CommandContainer {
         prepareCommand(new MarriageCommand());
         prepareCommand(new AllMarriagesCommand());
         prepareCommand(new DivorceCommand());
+        prepareCommand(new StartCommand());
+        prepareCommand(new IdeaCommand());
+        prepareCommand(new HelpCommand());
 
     }
 

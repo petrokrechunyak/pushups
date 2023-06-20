@@ -115,7 +115,7 @@ public class CallerBot extends TelegramLongPollingBot {
                     }
                 }
             } catch (Exception e) {
-                messageService.sendErrorMessage(e);
+                messageService.sendErrorMessage(e, update);
             }
             // if someone entered/left
             someOneEntered(update);
@@ -146,7 +146,7 @@ public class CallerBot extends TelegramLongPollingBot {
             mc.setCount(mc.getCount()+1);
             messageCountService.save(mc);
         } catch (Exception e) {
-            messageService.sendErrorMessage(e);
+            messageService.sendErrorMessage(e, update);
         }
     }
 
