@@ -34,6 +34,11 @@ public class MarriageServiceImpl implements MarriageService {
     }
 
     @Override
+    public List<MarriageModel> findAllByChat(CallerChat chat) {
+        return repo.findAllByChat(chat);
+    }
+
+    @Override
     public MarriageModel getById(Long id, Update update) {
         throw new UnsupportedOperationException();
     }

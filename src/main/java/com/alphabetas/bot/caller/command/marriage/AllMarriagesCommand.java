@@ -28,7 +28,7 @@ public class AllMarriagesCommand extends Command {
         StringBuilder builder = new StringBuilder("\uD83D\uDC8D Топ шлюбів <b>")
                 .append(CommandUtils.deleteBadSymbols(chat.getTitle()))
                 .append(" </b>\uD83D\uDC8D\n\n");
-        List<MarriageModel> marriageModelList = marriageService.findAll().stream().sorted().collect(Collectors.toList());
+        List<MarriageModel> marriageModelList = marriageService.findAllByChat(chat).stream().sorted().collect(Collectors.toList());
         for (int i = 0; i < marriageModelList.size(); i++) {
             MarriageModel current = marriageModelList.get(i);
             builder.append("<b>").append(i+1).append(".</b> ")

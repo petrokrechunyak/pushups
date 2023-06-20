@@ -11,4 +11,6 @@ public interface MarriageService extends AbstractService<MarriageModel> {
     MarriageModel findByUserIdAndChat(Long userId, CallerChat chat);
 
     List<MarriageModel> findAll();
+
+    List<MarriageModel> findAllByChat(CallerChat chat);
 }
