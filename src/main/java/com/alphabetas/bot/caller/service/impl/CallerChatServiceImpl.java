@@ -29,7 +29,7 @@ public class CallerChatServiceImpl implements CallerChatService {
             if (chat.getConfig() == null) {
                 return saveWithConfig(chat);
             }
-            if(!chat.getTitle().equals(update.getMessage().getChat().getTitle())) {
+            if(update.getMessage().getChat().getTitle() != null && !chat.getTitle().equals(update.getMessage().getChat().getTitle())) {
                 chat.setTitle(update.getMessage().getChat().getTitle());
                 save(chat);
             }
