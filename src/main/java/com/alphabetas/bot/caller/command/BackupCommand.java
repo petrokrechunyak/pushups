@@ -17,8 +17,8 @@ import java.io.File;
 @Slf4j
 public class BackupCommand extends Command {
 
-    public BackupCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
-        super(msgText, chat, user, threadId);
+    @Override
+    public void execute(Update update) {
         if(!user.getUserId().equals(CallerBot.MY_ID)) {
             return;
         }
@@ -34,11 +34,6 @@ public class BackupCommand extends Command {
 
         SendDocument document = new SendDocument("731921794", new InputFile(new File("backup")));
         messageService.sendDocument(document);
-    }
-
-    @Override
-    public void execute(Update update) {
-
     }
 
     @Override
