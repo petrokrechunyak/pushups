@@ -46,6 +46,8 @@ public class CallerChat {
     @OneToMany(mappedBy = "chat", cascade = CascadeType.REMOVE)
     private Set<MarriageModel> marriageModels;
 
+
+
     public CallerChat(Long id, String title) {
         this.id = id;
         this.title = title;

@@ -286,15 +286,27 @@ public class NoCommand extends Command {
                 .collect(Collectors.toCollection(LinkedHashSet::new)));
 
         if(msgText.contains("$")) {
+            if(msgText.contains("$всі")) {
+                StringBuilder mentions = new StringBuilder("$всі: ");
+                for(CallerUser user1: chat.getCallerUsers()) {
+                    mentions.append(CommandUtils.makeLink(user1.getUserId(),
+                            user1.getNames().isEmpty()
+                                    ? user1.getFirstname()
+                                    : CommandUtils.decryptSpace(user1.getNames().stream().findFirst().get().getName()))).append(", ");
+                }
+                mentions.delete(mentions.length() - 2, mentions.length());
+                msgText = StringUtils.replaceIgnoreCase(msgText, "$всі", mentions.toString());
+                send = true;
+            }
             for(GroupName groupName: chat.getGroupNames()) {
                 String full = "$" + CommandUtils.decryptSpace(groupName.getName());
                 if(StringUtils.containsIgnoreCase(msgText, full)) {
                     StringBuilder mentions = new StringBuilder("$" + CommandUtils.decryptSpace(groupName.getName()) + ": ");
                     for(CallerUser user1: groupName.getUsers()) {
                         mentions.append(CommandUtils.makeLink(user1.getUserId(),
-                                user1.getNames().size() == 0
-                                    ? user1.getFirstname()
-                                    : CommandUtils.decryptSpace(user1.getNames().stream().findFirst().get().getName())) + ", ");
+                                user1.getNames().isEmpty()
+                                        ? user1.getFirstname()
+                                        : CommandUtils.decryptSpace(user1.getNames().stream().findFirst().get().getName()))).append(", ");
                     }
                     mentions.delete(mentions.length() - 2, mentions.length());
                     msgText = StringUtils.replaceIgnoreCase(msgText, full, mentions.toString());
