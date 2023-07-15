@@ -29,6 +29,10 @@ public class CallerChatServiceImpl implements CallerChatService {
             if (chat.getConfig() == null) {
                 return saveWithConfig(chat);
             }
+            if(!chat.getTitle().equals(update.getMessage().getChat().getTitle())) {
+                chat.setTitle(update.getMessage().getChat().getTitle());
+                save(chat);
+            }
             return chat;
         } catch (NoSuchElementException e) {
             String chatTitle = CommandUtils.deleteBadSymbols(update.getMessage().getChat().getTitle());

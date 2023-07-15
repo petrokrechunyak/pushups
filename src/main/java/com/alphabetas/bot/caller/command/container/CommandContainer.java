@@ -64,6 +64,9 @@ public class CommandContainer {
         text = StringUtils.replaceIgnoreCase(text, "кликун", "");
         String[] splitted = ArrayUtils.removeAllOccurrences(text.split(" ", 3), "");
 
+        if(splitted.length == 0) {
+            return new NoCommand();
+        }
         Command command = classMap.getOrDefault(splitted[0], new NoCommand());
         return classToCommand(command, update);
     }
