@@ -1,5 +1,6 @@
 package com.alphabetas.bot.caller.command;
 
+import com.alphabetas.bot.caller.CallerBot;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import lombok.NoArgsConstructor;
@@ -16,10 +17,9 @@ import java.io.File;
 @Slf4j
 public class BackupCommand extends Command {
 
-
     public BackupCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
         super(msgText, chat, user, threadId);
-        if(!user.getUserId().equals(731921794L)) {
+        if(!user.getUserId().equals(CallerBot.MY_ID)) {
             return;
         }
         log.info("Entered into BackupCommand");
@@ -28,11 +28,12 @@ public class BackupCommand extends Command {
             Runtime.getRuntime().exec("/var/lib/postgresql/terrifficsprite/backup_to_file");
             Runtime.getRuntime().exec("cp /var/lib/postgresql/terrifficsprite/backup ./");
 
-            SendDocument document = new SendDocument("731921794", new InputFile(new File("backup")));
-            messageService.sendDocument(document);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+
+        SendDocument document = new SendDocument("731921794", new InputFile(new File("backup")));
+        messageService.sendDocument(document);
     }
 
     @Override

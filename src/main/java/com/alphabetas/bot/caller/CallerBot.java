@@ -146,6 +146,7 @@ public class CallerBot extends TelegramLongPollingBot {
             mc.setCount(mc.getCount()+1);
             messageCountService.save(mc);
         } catch (Exception e) {
+
             messageService.sendErrorMessage(e, update);
         }
     }
