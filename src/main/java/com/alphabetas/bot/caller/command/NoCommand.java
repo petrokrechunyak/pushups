@@ -68,10 +68,6 @@ public class NoCommand extends Command {
         put("ляснути по попі", "%s ляснув(ла) по попі %s \uD83D\uDD90\uD83C\uDFFB \uD83C\uDF51");
     }};
 
-    public NoCommand(String msgText, CallerChat chat, CallerUser user, Integer threadId) {
-        super(msgText, chat, user, threadId);
-    }
-
     private static boolean contains(String text, String toSearch) {
         text = text.toLowerCase();
         toSearch = toSearch.toLowerCase();

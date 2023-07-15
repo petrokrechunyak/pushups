@@ -81,6 +81,10 @@ public class ScheduleService {
                     e.printStackTrace();
                 }
             }
+
+            if(chat.getTitle() == null) {
+                chatService.delete(chat);
+            }
         }
     }
 

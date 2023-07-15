@@ -90,7 +90,6 @@ public class CallerBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
-
         if (update.hasMessage()) {
             // count messages for every user
             addMessageCount(update);

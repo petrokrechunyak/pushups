@@ -29,7 +29,7 @@ public class ChatConfig {
     @ColumnDefault("true")
     private boolean rpEnabled;
 
-    @ColumnDefault("true")
+    @ColumnDefault("false")
     private boolean aggressionEnabled;
 
     @ColumnDefault("false")
@@ -38,7 +38,7 @@ public class ChatConfig {
     public ChatConfig(Long chatId, Integer nameLimit) {
         this.chatId = chatId;
         this.nameLimit = nameLimit;
-        this.aggressionEnabled = true;
+        this.aggressionEnabled = false;
         this.rpEnabled = true;
         this.allowSpace = false;
     }
