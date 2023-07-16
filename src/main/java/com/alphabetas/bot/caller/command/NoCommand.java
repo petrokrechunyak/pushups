@@ -186,7 +186,6 @@ public class NoCommand extends Command {
         if (answer == null || update.getMessage().getReplyToMessage() == null) {
             return;
         }
-        log.info("arg[0] is rp command, replyToMessage isn't null");
         Long replyToMessage = update.getMessage().getMessageId().longValue();
 
         StringBuilder builder = new StringBuilder(answer);
@@ -197,7 +196,6 @@ public class NoCommand extends Command {
                             args[0] + "\n", ""))
                     .append("</b>\"");
         }
-        log.info("temporary builder value: {}", builder);
 
         // if it did with caller
         if (to.getIsBot() && to.getUserName().equals("caller_ua_bot")) {
@@ -266,7 +264,6 @@ public class NoCommand extends Command {
                     "Рольові-комадни не можна виконувати з ботами", replyToMessage);
             return;
         }
-        log.info("all right, continue...");
         messageService.sendMessage(chatId,
                 String.format(builder.toString(), makeLink(user.getUserId(), user.getFirstname()),
                         makeLink(to.getId(), to.getFirstName())), replyToMessage);

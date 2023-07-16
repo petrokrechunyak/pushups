@@ -4,6 +4,7 @@ import com.alphabetas.bot.caller.command.CallBack;
 import com.alphabetas.bot.caller.command.Command;
 import com.alphabetas.bot.caller.command.container.CommandContainer;
 import com.alphabetas.bot.caller.command.marriage.service.MarriageService;
+import com.alphabetas.bot.caller.command.premium.service.PremiumChatService;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.model.MessageCount;
@@ -52,7 +53,7 @@ public class CallerBot extends TelegramLongPollingBot {
     public CallerBot(CallerChatService chatService, CallerUserService userService,
                      CallerNameService nameService, ChatConfigService configService,
                      GroupNameService groupNameService, MessageCountService messageCountService,
-                     MarriageService marriageService) {
+                     MarriageService marriageService, PremiumChatService premiumChatService) {
 
         this.userService = userService;
         this.chatService = chatService;
@@ -65,28 +66,9 @@ public class CallerBot extends TelegramLongPollingBot {
         userService.setBot(this);
 
         Service.setService(messageService, chatService, userService, nameService, configService,
-                groupNameService, messageCountService, marriageService);
+                groupNameService, messageCountService, marriageService, premiumChatService);
 
     }
-
-    public static void saveImage(String imageUrl, String destinationFile) throws IOException {
-        URL url = new URL(imageUrl);
-        InputStream is = url.openStream();
-        OutputStream os = new FileOutputStream(destinationFile);
-
-        byte[] b = new byte[2048];
-        int length;
-
-        while ((length = is.read(b)) != -1) {
-            os.write(b, 0, length);
-        }
-
-        is.close();
-        os.close();
-    }
-
-    String downloadId = null;
-
     @Override
     public void onUpdateReceived(Update update) {
 
