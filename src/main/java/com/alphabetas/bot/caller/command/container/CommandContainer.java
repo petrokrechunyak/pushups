@@ -5,6 +5,7 @@ import com.alphabetas.bot.caller.command.group.*;
 import com.alphabetas.bot.caller.command.marriage.AllMarriagesCommand;
 import com.alphabetas.bot.caller.command.marriage.DivorceCommand;
 import com.alphabetas.bot.caller.command.marriage.MarriageCommand;
+import com.alphabetas.bot.caller.command.premium.command.PremiumCommand;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.service.CallerChatService;
@@ -57,7 +58,7 @@ public class CommandContainer {
             return classToCommand(new IAmHereCommand(), update);
         }
 
-        if (!CommandUtils.isCommand(text)) {
+        if (!CommandUtils.isCommand(text) && false) {
             return classToCommand(new NoCommand(), update);
         }
         text = text.toLowerCase().replaceFirst("^[.|!]|кликун?", "");
@@ -93,6 +94,7 @@ public class CommandContainer {
         prepareCommand(new StartCommand());
         prepareCommand(new IdeaCommand());
         prepareCommand(new HelpCommand());
+//        prepareCommand(new PremiumCommand());
 
     }
 

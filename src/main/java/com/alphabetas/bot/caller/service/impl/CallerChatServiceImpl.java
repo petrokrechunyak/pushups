@@ -1,5 +1,7 @@
 package com.alphabetas.bot.caller.service.impl;
 
+import com.alphabetas.bot.caller.command.premium.model.PremiumChat;
+import com.alphabetas.bot.caller.command.premium.service.PremiumChatService;
 import com.alphabetas.bot.caller.model.CallerChat;
 import com.alphabetas.bot.caller.model.ChatConfig;
 import com.alphabetas.bot.caller.repo.CallerChatRepo;
@@ -22,12 +24,18 @@ public class CallerChatServiceImpl implements CallerChatService {
     @Autowired
     private ChatConfigService chatConfigService;
 
+    @Autowired
+    private PremiumChatService premiumChatService;
+
     @Override
     public CallerChat getById(Long id, Update update) {
         try {
             CallerChat chat = chatRepo.findById(id).get();
             if (chat.getConfig() == null) {
-                return saveWithConfig(chat);
+                return saveWithMoreTables(chat);
+            }
+            if(update.hasCallbackQuery()) {
+                update.setMessage(update.getCallbackQuery().getMessage());
             }
             if(update.getMessage().getChat().getTitle() != null && !chat.getTitle().equals(update.getMessage().getChat().getTitle())) {
                 chat.setTitle(update.getMessage().getChat().getTitle());
@@ -38,7 +46,7 @@ public class CallerChatServiceImpl implements CallerChatService {
             String chatTitle = CommandUtils.deleteBadSymbols(update.getMessage().getChat().getTitle());
             CallerChat chat = new CallerChat(id, chatTitle);
 
-            saveWithConfig(chat);
+            saveWithMoreTables(chat);
             return chat;
         }
     }
@@ -67,10 +75,15 @@ public class CallerChatServiceImpl implements CallerChatService {
         return chatRepo.findAll();
     }
 
-    private CallerChat saveWithConfig(CallerChat chat) {
+    private CallerChat saveWithMoreTables(CallerChat chat) {
         ChatConfig config = new ChatConfig(chat.getId(), ConfigUtils.DEFAULT_CHAT_LIMIT);
         chatConfigService.save(config);
         chat.setConfig(config);
+
+        PremiumChat premiumChat = new PremiumChat(chat.getId());
+        premiumChatService.save(premiumChat);
+        chat.setPremiumChat(premiumChat);
+
         return save(chat);
     }
 }

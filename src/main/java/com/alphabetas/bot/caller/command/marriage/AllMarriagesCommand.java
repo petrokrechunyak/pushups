@@ -131,15 +131,6 @@ public class AllMarriagesCommand extends Command {
                 first = false;
             }
         }
-
-
-        System.out.println(intSeconds);
-        System.out.println(intMinutes);
-        System.out.println(intHours);
-        System.out.println(intDays);
-        System.out.println(intMonths);
-        System.out.println("////////////////////////////");
-        System.out.println(builder);
         return builder.toString();
     }
 
