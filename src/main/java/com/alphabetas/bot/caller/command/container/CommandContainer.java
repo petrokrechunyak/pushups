@@ -94,7 +94,7 @@ public class CommandContainer {
         prepareCommand(new StartCommand());
         prepareCommand(new IdeaCommand());
         prepareCommand(new HelpCommand());
-        prepareCommand(new PremiumCommand());
+//        prepareCommand(new PremiumCommand());
 
     }
 

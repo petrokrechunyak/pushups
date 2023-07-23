@@ -71,45 +71,49 @@ public class CallerBot extends TelegramLongPollingBot {
     }
     @Override
     public void onUpdateReceived(Update update) {
-
-        if (update.hasMessage()) {
-            // count messages for every user
-            addMessageCount(update);
-            SpaceUtils utils = new SpaceUtils(messageService, botToken);
-            String trimSpaces = utils.trimSpaces(update);
-            try {
-                // if message is sent by bot
-                if (update.getMessage().getFrom().getIsBot() ||
-                        update.getMessage().getForwardDate() != null) {
-                    return;
-                }
-                if (update.getMessage().getCaption() != null) {
-                    update.getMessage().setText(update.getMessage().getCaption());
-                }
-                // if message have Text
-                if (update.getMessage().hasText()) {
-                    String msgText = update.getMessage().getText();
-                    if (msgText.startsWith("/")) {
-                        readCommand(update);
-                    } else {
-                        container.retrieveText(msgText, update).execute(update);
+        try {
+            if (update.hasMessage()) {
+                // count messages for every user
+                addMessageCount(update);
+                SpaceUtils utils = new SpaceUtils(messageService, botToken);
+                String trimSpaces = utils.trimSpaces(update);
+                try {
+                    // if message is sent by bot
+                    if (update.getMessage().getFrom().getIsBot() ||
+                            update.getMessage().getForwardDate() != null) {
+                        return;
                     }
+                    if (update.getMessage().getCaption() != null) {
+                        update.getMessage().setText(update.getMessage().getCaption());
+                    }
+                    // if message have Text
+                    if (update.getMessage().hasText()) {
+                        String msgText = update.getMessage().getText();
+                        if (msgText.startsWith("/")) {
+                            readCommand(update);
+                        } else {
+                            container.retrieveText(msgText, update).execute(update);
+                        }
+                    }
+                } catch (Exception e) {
+                    messageService.sendErrorMessage(e, update);
                 }
-            } catch (Exception e) {
-                messageService.sendErrorMessage(e, update);
+                // if someone entered/left
+                someOneEntered(update);
+                someOneLeft(update);
+            } else if (update.hasCallbackQuery()) {
+                CallerUser user = userService.getByUpdate(update);
+                CallerChat chat = chatService.getByUpdate(update);
+                Integer threadId = update.getCallbackQuery().getMessage().getIsTopicMessage() != null
+                        ? update.getCallbackQuery().getMessage().getMessageThreadId()
+                        : null;
+                CallBack callBackCommand = new CallBack(update.getCallbackQuery().getData(), chat, user, threadId);
+                callBackCommand.execute(update);
             }
-            // if someone entered/left
-            someOneEntered(update);
-            someOneLeft(update);
-        } else if (update.hasCallbackQuery()) {
-            CallerUser user = userService.getByUpdate(update);
-            CallerChat chat = chatService.getByUpdate(update);
-            Integer threadId = update.getCallbackQuery().getMessage().getIsTopicMessage() != null
-                    ? update.getCallbackQuery().getMessage().getMessageThreadId()
-                    : null;
-            CallBack callBackCommand = new CallBack(update.getCallbackQuery().getData(), chat, user, threadId);
-            callBackCommand.execute(update);
+        } catch (Exception e) {
+            messageService.sendErrorMessage(e, update);
         }
+
     }
 
     private void addMessageCount(Update update) {

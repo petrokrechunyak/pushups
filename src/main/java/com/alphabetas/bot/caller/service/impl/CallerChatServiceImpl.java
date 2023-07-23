@@ -31,8 +31,11 @@ public class CallerChatServiceImpl implements CallerChatService {
     public CallerChat getById(Long id, Update update) {
         try {
             CallerChat chat = chatRepo.findById(id).get();
-            if (chat.getConfig() == null || chat.getPremiumChat() == null) {
+            if (chat.getConfig() == null) {
                 return saveWithMoreTables(chat);
+            }
+            if(update.hasCallbackQuery()) {
+                update.setMessage(update.getCallbackQuery().getMessage());
             }
             if(update.getMessage().getChat().getTitle() != null && !chat.getTitle().equals(update.getMessage().getChat().getTitle())) {
                 chat.setTitle(update.getMessage().getChat().getTitle());
