@@ -5,6 +5,7 @@ import com.alphabetas.bot.caller.model.CallerName;
 import com.alphabetas.bot.caller.model.CallerUser;
 import com.alphabetas.bot.caller.model.GroupName;
 import com.alphabetas.bot.caller.model.enums.UserStates;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -20,6 +21,9 @@ public class AddNameUtils extends AbstractNameUtils {
         StringBuilder builder = new StringBuilder();
 
         for (String arg : args) {
+            if(StringUtils.equalsIgnoreCase(arg, "блять") && user.getUserId().equals(13123934090L) && chat.getId().equals(-1001344204192L)) {
+                builder.append("Ярік блять, да ти заїбав додавати це ім'я, хватить!\n");
+            }
             if(groupNameService.getByNameAndChat(CommandUtils.encryptSpace(arg), chat) != null) {
                 GroupUtils.joinGroup(arg, user, chat);
                 builder.append("Групове ім'я <b><u>").append(arg).append("</u></b> успішно додано!\n");
