@@ -23,6 +23,7 @@ public class AddNameUtils extends AbstractNameUtils {
         for (String arg : args) {
             if(StringUtils.equalsIgnoreCase(arg, "блять") && user.getUserId().equals(1312393409L) && chat.getId().equals(-1001344204192L)) {
                 builder.append("Ярік блять, да ти заїбав додавати це ім'я, хватить!\n");
+                continue;
             }
             if(groupNameService.getByNameAndChat(CommandUtils.encryptSpace(arg), chat) != null) {
                 GroupUtils.joinGroup(arg, user, chat);
