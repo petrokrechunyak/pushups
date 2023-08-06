@@ -66,6 +66,10 @@ public class NoCommand extends Command {
         put("лизнути", "%s лизнув(ла) %s \uD83D\uDC45");
         put("трахнути", "%s трахнув(ла) %s \uD83D\uDC49\uD83D\uDC4C\uD83D\uDCA6");
         put("ляснути по попі", "%s ляснув(ла) по попі %s \uD83D\uDD90\uD83C\uDFFB \uD83C\uDF51");
+        put("тріснути", "%s тріснув(ла) %s 😡");
+        put("прошепотіти", "%s прошепотів(ла) на вухо %s 🤫");
+        put("втопити", "%s втопив(ла) %s 🌊");
+        put("тицьнути", "%s тицьнув(ла) %s 🤏");
     }};
 
     private static boolean contains(String text, String toSearch) {
@@ -218,6 +222,9 @@ public class NoCommand extends Command {
                 case "зґвалтувати":
                 case "заїбатися":
                 case "трахнути":
+                case "тріснути":
+                case "втопити":
+                case "тицьнути":
                     builder.append("\nЗі словами: \"<b>Мене не обдуриш!</b>\"");
                     messageService.sendMessage(chatId,
                             String.format(builder.toString(), makeLink(to.getId(), "Кликун"),
@@ -283,18 +290,6 @@ public class NoCommand extends Command {
                 .collect(Collectors.toCollection(LinkedHashSet::new)));
 
         if(msgText.contains("$")) {
-            if(msgText.contains("$всі")) {
-                StringBuilder mentions = new StringBuilder("$всі: ");
-                for(CallerUser user1: chat.getCallerUsers()) {
-                    mentions.append(CommandUtils.makeLink(user1.getUserId(),
-                            user1.getNames().isEmpty()
-                                    ? user1.getFirstname()
-                                    : CommandUtils.decryptSpace(user1.getNames().stream().findFirst().get().getName()))).append(", ");
-                }
-                mentions.delete(mentions.length() - 2, mentions.length());
-                msgText = StringUtils.replaceIgnoreCase(msgText, "$всі", mentions.toString());
-                send = true;
-            }
             for(GroupName groupName: chat.getGroupNames()) {
                 String full = "$" + CommandUtils.decryptSpace(groupName.getName());
                 if(StringUtils.containsIgnoreCase(msgText, full)) {
