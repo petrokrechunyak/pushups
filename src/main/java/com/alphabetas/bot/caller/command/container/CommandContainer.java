@@ -58,9 +58,9 @@ public class CommandContainer {
             return classToCommand(new IAmHereCommand(), update);
         }
 
-//        if (!CommandUtils.isCommand(text) && false) {
-//            return classToCommand(new NoCommand(), update);
-//        }
+        if (!CommandUtils.isCommand(text)) {
+            return classToCommand(new NoCommand(), update);
+        }
         text = text.toLowerCase().replaceFirst("^[.|!]|кликун?", "");
         text = StringUtils.replaceIgnoreCase(text, "кликун", "");
         String[] splitted = ArrayUtils.removeAllOccurrences(text.split(" ", 3), "");
