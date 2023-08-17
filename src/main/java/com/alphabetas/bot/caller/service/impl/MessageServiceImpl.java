@@ -1,73 +1,40 @@
 package com.alphabetas.bot.caller.service.impl;
 
 import com.alphabetas.bot.caller.CallerBot;
-import com.alphabetas.bot.caller.command.Command;
 import com.alphabetas.bot.caller.service.MessageService;
-import com.alphabetas.bot.caller.utils.CommandUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
-import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatAdministrators;
-import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
-import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMemberCount;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.List;
-
 public class MessageServiceImpl implements MessageService {
-    private final CallerBot bot;
+    private CallerBot bot;
 
     public MessageServiceImpl(CallerBot bot) {
         this.bot = bot;
     }
 
     @Override
-    public ChatMember getChatMember(Long chatId, Long userId) {
-        GetChatMember getChatMember = new GetChatMember(chatId.toString(), userId);
-        try {
-            return bot.execute(getChatMember);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public Message sendMessage(Long chatId, String message, Integer threadId) {
+    public Message sendMessage(Long chatId, String message) {
         SendMessage sendMessage = new SendMessage(chatId.toString(), message);
-        sendMessage.setMessageThreadId(threadId);
         sendMessage.enableHtml(true);
 
         return sendMessage(sendMessage);
     }
 
     @Override
-    public Message sendMessage(SendMessage sendMessage) {
-        sendMessage.enableHtml(true);
+    public Message sendMessage(BotApiMethod sendMessage) {
         try {
             return (Message) bot.execute(sendMessage);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public Message sendMessage(Long chatId, String message, Long replyToMessage) {
-        SendMessage sendMessage = new SendMessage(chatId.toString(), message);
-        sendMessage.enableHtml(true);
-        sendMessage.setReplyToMessageId(replyToMessage.intValue());
-
-        return sendMessage(sendMessage);
     }
 
     @Override
@@ -81,11 +48,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message sendDocument(SendDocument sendDocument) {
-        try {
-            return bot.execute(sendDocument);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
+        return null;
     }
 
     @Override
@@ -103,11 +66,6 @@ public class MessageServiceImpl implements MessageService {
         EditMessageText editMessage = new EditMessageText(text);
         editMessage.setChatId(chatId.toString());
         editMessage.setMessageId(msgToUpdate.intValue());
-        editMessage(editMessage);
-    }
-
-    @Override
-    public void editMessage(EditMessageText editMessage) {
         editMessage.enableHtml(true);
         try {
             bot.execute(editMessage);
@@ -117,56 +75,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<ChatMember> getAdminsByChatId(Long chatId) {
-        GetChatAdministrators chatAdministrators = new GetChatAdministrators(chatId.toString());
-        try {
-            return bot.execute(chatAdministrators);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void sendPhoto(SendPhoto photo) {
         try {
             bot.execute(photo);
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void sendVideo(SendVideo video) {
-        try {
-            bot.execute(video);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public int getChatMemberCount(Long chatId) {
-        GetChatMemberCount count = new GetChatMemberCount(chatId.toString());
-        try {
-            return bot.execute(count);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void sendErrorMessage(Exception e, Update u) {
-        e.printStackTrace();
-        String text = u.getMessage().getText();
-        text = text + "\n\n" + ExceptionUtils.getStackTrace(e);
-        text = CommandUtils.deleteBadSymbols(text);
-        sendMessage(Command.TEST_CHAT_ID, text, (Integer) null);
-    }
-
-    @Override
-    public void sendAnswerCallback(AnswerCallbackQuery answerCallbackQuery) {
-        try {
-            bot.execute(answerCallbackQuery);
-        } catch (TelegramApiException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage().contains("403"));
             throw new RuntimeException(e);
         }
     }
