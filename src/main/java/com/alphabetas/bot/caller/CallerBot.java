@@ -12,6 +12,10 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+
 @Component
 public class CallerBot extends TelegramLongPollingBot {
     private CommandContainer container;
@@ -34,10 +38,15 @@ public class CallerBot extends TelegramLongPollingBot {
                 container.retrieveCommand(text).execute(update);
             } else if (StringUtils.isNumeric(text)) {
                 User user = update.getMessage().getFrom();
-                Push push = pushRepo.getByUserId(user.getId());
-                push.setAllPushUps(push.getAllPushUps() + Integer.parseInt(text));
+                Integer dayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                Integer month = Calendar.getInstance().get(Calendar.MONTH);
+                Push push = pushRepo.getByUserIdAndMonthDayAndMonth(user.getId(), dayOfMonth, month);
+                if(push == null) {
+                    push = new Push(user.getId(), user.getUserName(), user.getFirstName(), 0, dayOfMonth, month);
+                }
+                push.incrementPushUps(Integer.parseInt(text));
                 pushRepo.save(push);
-                messageService.sendMessage(user.getId(), "Збережено!\nЗагальна кількість віджимань: " + push.getAllPushUps());
+                messageService.sendMessage(user.getId(), "Збережено!\nВиконано сьогодні віджимань: " + push.getAllPushUps());
             }
         }
     }

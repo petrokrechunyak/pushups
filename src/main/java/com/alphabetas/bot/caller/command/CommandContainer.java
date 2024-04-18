@@ -11,7 +11,7 @@ public class CommandContainer {
     private final MessageService messageService;
 
     // All Commands
-    Command start, stop, unknown, stats, say;
+    Command start, stop, unknown, stats, clear, say;
 
     public CommandContainer(MessageService messageService, PushRepo pushRepo) {
         this.commands = new HashMap<>();
@@ -19,9 +19,11 @@ public class CommandContainer {
 
         start = new StartCommand(messageService, pushRepo);
         stats = new StatsCommand(messageService, pushRepo);
+        clear = new ClearCommand(messageService, pushRepo);
         commands.put("/start", start);
         commands.put("/stop", stop);
         commands.put("/stats", stats);
+        commands.put("/clear", clear);
         commands.put("/say", say);
     }
 

@@ -22,14 +22,14 @@ public class StartCommand implements Command {
     @Override
     public void execute(Update update) {
         User from = update.getMessage().getFrom();
-        Push push = new Push(
-                from.getId(),
-                from.getUserName(),
-                from.getFirstName(),
-                0
-        );
+//        Push push = new Push(
+//                from.getId(),
+//                from.getUserName(),
+//                from.getFirstName(),
+//                0
+//        );
 
-        pushRepo.save(push);
+//        pushRepo.save(push);
         service.sendMessage(from.getId(), "Все, вас зареєстровано!");
     }
 
