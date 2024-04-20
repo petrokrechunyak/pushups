@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.util.Objects;
 
@@ -15,9 +16,12 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Push {
+public class Push implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private Long userId;
 
     private String username;
@@ -29,6 +33,15 @@ public class Push {
     private Integer monthDay;
 
     private Integer month;
+
+    public Push(Long userId, String username, String firstname, Integer allPushUps, Integer monthDay, Integer month) {
+        this.userId = userId;
+        this.username = username;
+        this.firstname = firstname;
+        this.allPushUps = allPushUps;
+        this.monthDay = monthDay;
+        this.month = month;
+    }
 
     @Override
     public boolean equals(Object o) {
