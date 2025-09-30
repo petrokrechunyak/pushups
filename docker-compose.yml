@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  bot-c:
+    build:
+      context: ./
+    container_name: pushups_bot
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${PUSHUPS_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      BOT_TOKEN: ${PUSHUPS_TOKEN}
+    networks:
+      - bot-network
+
+volumes:
+  pgdata:
+
+networks:
+  bot-network:
+    external: true
